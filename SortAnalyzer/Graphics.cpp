@@ -1,54 +1,66 @@
-#include <GL/glut.h>
+#define GLFW_INCLUDE_GLU
+#include <GLFW/glfw3.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 
+// https://www.glfw.org/docs/3.0/quick.html
 
-// g++ Graphics.cpp -o Graphics -lglut -lGLU -lGL
-
-void display()
+static void error_callback (int error, const char* description)
 {
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        glBegin(GL_QUADS);
-        glColor3f(1.0, 1.0, 1.0);
-        glVertex2i(250, 450);
-        glColor3f(0.0, 0.0, 1.0);
-        glVertex2i(250, 150);
-        glColor3f(0.0, 1.0, 0.0);
-        glVertex2i(550, 150);
-        glColor3f(1.0, 0.0, 0.0);
-        glVertex2i(550, 450);
-        glEnd();
-        
-        glutSwapBuffers();
+    fputs (description, stderr);
+}
+static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if  (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose (window, GL_TRUE);
 }
 
 
-
-void reshape(int w, int h)
+int main  (void)
 {
-        glViewport(0, 0, w, h);
+    GLFWwindow* window;
+    glfwSetErrorCallback (error_callback);
+    if  (!glfwInit ())
+        exit (EXIT_FAILURE);
+    window = glfwCreateWindow (640, 480, "Simple example", glfwGetPrimaryMonitor (), NULL);
+    if  (!window)
+    {
+        glfwTerminate ();
+        exit (EXIT_FAILURE);
+    }
+    glfwMakeContextCurrent (window);
+    glfwSetKeyCallback (window, key_callback);
+    while  (!glfwWindowShouldClose (window))
+    {
+        float ratio;
+        int width, height;
+        glfwGetFramebufferSize (window, &width, &height);
+        ratio = width /  (float) height;
         
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluOrtho2D(0, w, 0, h);
+        glViewport (0, 0, width, height);
         
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-}
+        glClear (GL_COLOR_BUFFER_BIT);
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        glOrtho (-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+        glMatrixMode (GL_MODELVIEW);
+        glLoadIdentity ();
+        glRotatef ( (float) glfwGetTime () * 50.f, 0.f, 0.f, 1.f);
+        glBegin (GL_TRIANGLES);
+        glColor3f (1.f, 0.f, 0.f);
+        glVertex3f (-0.6f, -0.4f, 0.f);
+        glColor3f (0.f, 1.f, 0.f);
+        glVertex3f (0.6f, -0.4f, 0.f);
+        glColor3f (0.f, 0.f, 1.f);
+        glVertex3f (0.f, 0.6f, 0.f);
+        glEnd ();
+        glfwSwapBuffers (window);
+        glfwPollEvents ();
+    }
 
 
-int main (int argc, char * argv[])
-{
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA); /*Включаем двойную буферизацию и четырехкомпонентный цвет*/
-        
-        glutInitWindowSize(800, 600);
-        glutCreateWindow("OpenGL lesson 1");
-        
-        glutReshapeFunc(reshape);
-        glutDisplayFunc(display);
-        
-        glutMainLoop();
-    
-        return 0;
+    glfwDestroyWindow (window);
+    glfwTerminate ();
+    exit (EXIT_SUCCESS);
 }
