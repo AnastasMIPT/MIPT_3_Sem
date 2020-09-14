@@ -32,3 +32,8 @@ addall:
 	@git add .
 commit:
 	@git commit -m "Automatic commit" -a
+
+gl:
+	@g++ -c  Graphics.cpp -o Graphics.o
+	@g++ Graphics.o -o Graphics -lGL -lGLU -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lGLEW
+	@./Graphics
