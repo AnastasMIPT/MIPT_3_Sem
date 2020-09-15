@@ -1,7 +1,9 @@
-#ifndef MY_LIB_H
-#define MY_LIB_H
+#ifndef MY_VEC_H
+#define MY_VEC_H
 #include <cstdio>
 #include <iostream>
+
+#include "debug_new.h"
 
 
 template <typename T>
@@ -79,7 +81,7 @@ void Vector<T>::destroy () {
 template <typename T>
 void Vector<T>::reallocate () {
     // printf ("reallocate\n");
-    T* buf_new = reinterpret_cast<T*> (new char [sz == 0 ? sizeof (T) : 2 * sz * sizeof (T)]);
+    T* buf_new = reinterpret_cast<T*> (NEW char [sz == 0 ? sizeof (T) : 2 * sz * sizeof (T)]);
     cp = (sz == 0 ? 1 : sz * 2);
 
     for (int i = 0; i < sz; ++i) {
@@ -95,7 +97,7 @@ Vector<T>::Vector (size_t n, const T& value) : sz (n), cp (n){
     //count++, number_obj = count;
     // printf ("Constructor num = %lu!\n", number_obj);
 
-    buf = reinterpret_cast<T*> (new char [n * sizeof (T)]);
+    buf = reinterpret_cast<T*> (NEW char [n * sizeof (T)]);
     
     for (size_t i = 0; i < n; ++i) {
         new (static_cast<void*> (buf + i)) T (value);
@@ -107,7 +109,7 @@ Vector<T>::Vector (const Vector<T>& other) : sz (other.sz), cp (other.cp) {
 
     //count++, number_obj = count;
     // printf ("Copy Constructor obj_num = %lu!\n", number_obj);
-    buf = reinterpret_cast<T*> (new char [sz * sizeof (T)]);
+    buf = reinterpret_cast<T*> (NEW char [sz * sizeof (T)]);
     for (size_t i = 0; i < sz; ++i) {
         new (static_cast<void*> (buf + i)) T (std::move (other.buf[i]));
     }
@@ -173,4 +175,4 @@ const T& Vector<T>::operator[] (size_t i) const {
 
 
 
-#endif //NY_LIB_H
+#endif //NY_VEC_H
