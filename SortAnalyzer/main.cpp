@@ -1,6 +1,6 @@
 #include <cstdio>
 #include "Sorts.h"
-#include "MyInteger.h"
+#include "../MyLib/MyInteger.h"
 #include "../MyLib/my_vector.h"
 
 using MyType = Numeric<int>;
