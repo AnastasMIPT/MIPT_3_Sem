@@ -1,7 +1,7 @@
 #include <cstdio>
 #include "Sorts.h"
 #include "MyInteger.h"
-#include "my_vector.h"
+#include "../MyLib/my_vector.h"
 
 using MyType = Numeric<int>;
 
@@ -60,10 +60,10 @@ int main () {
         printf ("size = %lu, comp = %lu, assigns = %lu\n", result[i][0], result[i][1], result[i][2]);
     }
 
-    Vector<Vector<size_t>> result2 = CompGraph_of_sort (BubbleSort <MyType>);
+    Vector<Vector<size_t>> result2 = CompGraph_of_sort (MergeSortRecursive <MyType>);
     printf ("BubbleSort:\n");
     for (int i = 0; i < result.size (); ++i) {
-        printf ("size = %lu, comp = %lu, assigns = %lu\n", result2[i][0], result2[i][1], result2[i][2]);
+        printf ("%lu;%lu\n", result2[i][0], result2[i][1]);
     }
 
     return 0;
