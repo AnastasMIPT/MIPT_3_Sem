@@ -4,7 +4,7 @@
 #include "../MyLib/MyInteger.h"
 #include "../MyLib/my_vector.h"
 
-FILE* Log = fopen ("main.cpp", "w");
+FILE* Log = fopen ("logs.txt", "w");
 
 using MyType = Numeric<int>;
 

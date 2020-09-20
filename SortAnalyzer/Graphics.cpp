@@ -84,35 +84,23 @@ void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
         glEnd();
         //glClear (GL_COLOR_BUFFER_BIT);
 
-        Arrow OY (0,0,0,0);
+        Arrow OY (-1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008 - 0.05 - 0.92, -1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008);
         OY.draw ();
 
-        // glBegin (GL_TRIANGLES);
-        //         glColor3f (0.0, 0.0, 0.0);
-        //         glVertex2d (-1.0 + 0.008, 1.0 - 0.008 - 0.05);
-        //         glVertex2d (-1.0 + 0.008 + 0.010, 1.0 - 0.008 - 0.05);
-        //         glVertex2d (-1.0 + 0.008 + 0.005, 1.0 - 0.008);
-        // glEnd ();
+        Arrow OX (-1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008 - 0.05 - 0.92, -0.01, 1.0 - 0.008 - 0.05 - 0.92);
+        OX.draw ();
 
-        // glBegin (GL_LINE_STRIP);
-        //         glColor3f (0.0, 0.0, 0.0);
-                
-        //         glVertex2d (-1.0 + 0.008 + 0.005, 1.0 - 0.008 - 0.05 - 0.92);
-        //         glVertex2d (-1.0 + 0.008 + 0.005, 1.0 - 0.008 - 0.05);
-        // glEnd ();
+        glClear (GL_COLOR_BUFFER_BIT);
 
 
-        // glClear (GL_COLOR_BUFFER_BIT);
-
-
-        // glBegin (GL_LINE_STRIP);
-        // glColor3f (1.0, 1.0, 1.0);
-        // for (int i = 0; i < results.size (); ++i) {
-        //         glVertex2f (80 + i * results[i][0], 280 + results[i][1]);
-        // }
+//         glBegin (GL_LINE_STRIP);
+//         glColor3f (1.0, 1.0, 1.0);
+//         for (int i = 0; i < results.size (); ++i) {
+//                 glVertex2f (80 + i * results[i][0], 280 + results[i][1]);
+//         }
     
-        // glEnd ();
-}
+//         glEnd ();
+// }
 
 int main  (void)
 {

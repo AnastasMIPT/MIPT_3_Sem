@@ -17,7 +17,7 @@ $(EXECUTABLE): $(OBJFILES)
 	@g++ $(OBJFILES) -o $@
 
 %.o: %.cpp
-	g++ $(CFlags) $(Warnings) $(NoWarnings) -c $< -o $@
+	@g++ $(CFlags) $(Warnings) $(NoWarnings) -c $< -o $@
 
 
 clean:
