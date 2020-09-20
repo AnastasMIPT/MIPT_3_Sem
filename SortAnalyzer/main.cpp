@@ -1,7 +1,10 @@
 #include <cstdio>
+#define DEBUG_NEW
 #include "Sorts.h"
 #include "../MyLib/MyInteger.h"
 #include "../MyLib/my_vector.h"
+
+FILE* Log = fopen ("main.cpp", "w");
 
 using MyType = Numeric<int>;
 

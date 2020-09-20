@@ -4,19 +4,63 @@
 #include "../MyLib/my_vector.h"
 
 bool search_of_chain (unsigned int vertex, Vector<bool>& used, const Vector<Vector<unsigned int>>& bi_graph,
-                      Vector<int>& matches) {
+                      Vector<int>& matches);
+Vector<int> KunhAlgorithm (const Vector<Vector<unsigned int>>& bi_graph, unsigned int l_size, unsigned int r_size);
 
-    if (used[vertex] == true) return false;
-    used[vertex] = true;
-    for (int i = 0; i < bi_graph[vertex].size (); ++i) {
-        unsigned int cur_v = bi_graph[vertex][i];
-        if (matches[cur_v] == -1 || search_of_chain (matches[cur_v],used, bi_graph, matches)) {
-            matches[cur_v] = vertex;
-            return true;
+void SquareMoreProfitable (FILE* f_in, FILE* f_out, int n, int m); 
+
+void RectangleMoreProfitable (FILE* f_in, FILE* f_out, int n, int m); 
+
+int main (int argc, char** argv)
+{
+    int n (0), m (0), a (0), b (0);
+
+    FILE* f_in  = fopen ("dominoes.in",  "r");
+    FILE* f_out = fopen ("dominoes.out", "w");
+
+    fscanf (f_in, "%d%d%d%d\n", &n, &m, &a, &b);
+    
+    if (2 * b < a) {
+        SquareMoreProfitable (f_in, f_out, n, m);
+    } else {
+        RectangleMoreProfitable (f_in, f_out, n, m);
+    }
+
+    return 0;
+}
+
+void RectangleMoreProfitable (FILE* f_in, FILE* f_out, int n, int m) {
+    // char symbol = 0;
+    // size_t quantity = 0;
+    // for (int i = 0; i < n; ++i) {
+    //     for (int j = 0; j < m; ++j) {
+    //         fscanf (f_in, "%c", &symbol);
+    //         if (symbol == '*') {
+    //             quantity++;
+    //         }
+    //     }
+    // }
+    // fprintf (f_out, "%lu\n", quantity);
+
+}
+
+
+
+void SquareMoreProfitable (FILE* f_in, FILE* f_out, int n, int m) {
+    char symbol = 0;
+    size_t quantity = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            fscanf (f_in, "%c", &symbol);
+            if (symbol == '*') {
+                quantity++;
+            }
         }
     }
-    return false;
+    fprintf (f_out, "%lu\n", quantity);
+    
 }
+
 
 Vector<int> KunhAlgorithm (const Vector<Vector<unsigned int>>& bi_graph, unsigned int l_size, unsigned int r_size) {
     Vector<int> matches (r_size, -1);
@@ -30,42 +74,17 @@ Vector<int> KunhAlgorithm (const Vector<Vector<unsigned int>>& bi_graph, unsigne
     return matches;
 }
 
-int main (int argc, char** argv)
-{
-    unsigned int l_size = 0;
-    unsigned int r_size = 0;
-    scanf ("%u%u", &l_size, &r_size);
+bool search_of_chain (unsigned int vertex, Vector<bool>& used, const Vector<Vector<unsigned int>>& bi_graph,
+                      Vector<int>& matches) {
 
-    Vector<Vector<unsigned int>> bi_graph;
-
-    unsigned int temp_v = 0;
-    for (int i = 0; i < l_size; ++i) {
-        Vector <unsigned int> temp_vec;
-        scanf ("%u", &temp_v);
-        while (temp_v)
-        {
-            temp_vec.push_back (temp_v - 1);
-            scanf ("%u", &temp_v);
+    if (used[vertex] == true) return false;
+    used[vertex] = true;
+    for (int i = 0; i < bi_graph[vertex].size (); ++i) {
+        unsigned int cur_v = bi_graph[vertex][i];
+        if (matches[cur_v] == -1 || search_of_chain (matches[cur_v],used, bi_graph, matches)) {
+            matches[cur_v] = vertex;
+            return true;
         }
-        bi_graph.push_back (temp_vec);
     }
-
-    // for (int i = 0; i < bi_graph.size (); ++i) {
-    //     for (int j = 0; j < bi_graph[i].size (); ++j) {
-    //         printf ("%u ", bi_graph[i][j]);
-    //     }
-    //     printf ("\n");
-    // }
-    Vector<int> matches (KunhAlgorithm (bi_graph, l_size, r_size));
-    unsigned int num_matches = 0;
-    for (int i = 0; i < matches.size (); ++i) {
-        if (matches[i] != -1) num_matches++;
-    }
-    printf ("%u\n", num_matches);
-    for (int i = 0; i < matches.size (); ++i) {
-        if (matches[i] != -1) printf ("%d %d\n", matches[i] + 1, i + 1);
-    }
-
-
-    return 0;
+    return false;
 }

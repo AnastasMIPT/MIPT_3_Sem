@@ -1,12 +1,13 @@
-//#include <unistd.h>
-//#include <sys/syscall.h>
+enum {
+    SizeOfBuf = 997,
+    SYS_write = 1,
+    SYS_read  = 0,
+    SYS_exit  = 60,
+    stdout    = 1,
+    stdin     = 0
+};
 
-#define SizeOfBuf  997
-#define SYS_write 1
-#define SYS_read  0
-#define SYS_exit 60
-#define stdout 1
-#define stdin 0
+
 
 long syscall(long number, ...);
 
@@ -17,7 +18,7 @@ void _start () {
         num_symbls = syscall (SYS_read, stdin, Message, SizeOfBuf);
         syscall (SYS_write, stdout, Message, num_symbls);
         if (num_symbls < SizeOfBuf) break;
-    }
+    }   
     
     syscall (SYS_exit , 0);
 }

@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "Primitives.cpp"
+
 
 // https://www.glfw.org/docs/3.0/quick.html
 
@@ -66,19 +68,50 @@ static void error_callback (int error, const char* description);
 static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods);
 void GraphicsMainLoop (GLFWwindow* window);
 
+
 void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
         
+        //glDisable (GL_DEPTH_TEST);
 
         glClear (GL_COLOR_BUFFER_BIT);
+                //glClearColor (1.f, 0.f, 0.f, 0);
+        glBegin(GL_QUADS);
+                glColor3f (1.f, 1.f, 1.f);
+                glVertex2d (-1.0, 0.0);
+                glVertex2d (-1.0, 1.0);
+                glVertex2d (0.0, 1.0);
+                glVertex2d (0.0, 0.0);
+        glEnd();
+        //glClear (GL_COLOR_BUFFER_BIT);
+
+        Arrow OY (0,0,0,0);
+        OY.draw ();
+
+        // glBegin (GL_TRIANGLES);
+        //         glColor3f (0.0, 0.0, 0.0);
+        //         glVertex2d (-1.0 + 0.008, 1.0 - 0.008 - 0.05);
+        //         glVertex2d (-1.0 + 0.008 + 0.010, 1.0 - 0.008 - 0.05);
+        //         glVertex2d (-1.0 + 0.008 + 0.005, 1.0 - 0.008);
+        // glEnd ();
+
+        // glBegin (GL_LINE_STRIP);
+        //         glColor3f (0.0, 0.0, 0.0);
+                
+        //         glVertex2d (-1.0 + 0.008 + 0.005, 1.0 - 0.008 - 0.05 - 0.92);
+        //         glVertex2d (-1.0 + 0.008 + 0.005, 1.0 - 0.008 - 0.05);
+        // glEnd ();
 
 
-        glBegin (GL_LINE_STRIP);
-        glColor3f (1.0, 1.0, 1.0);
-        for (int i = 0; i < results.size (); ++i) {
-                glVertex2f (80 + i * results[i][0], 280 + results[i][1]);
-        }
+        // glClear (GL_COLOR_BUFFER_BIT);
+
+
+        // glBegin (GL_LINE_STRIP);
+        // glColor3f (1.0, 1.0, 1.0);
+        // for (int i = 0; i < results.size (); ++i) {
+        //         glVertex2f (80 + i * results[i][0], 280 + results[i][1]);
+        // }
     
-        glEnd ();
+        // glEnd ();
 }
 
 int main  (void)
@@ -120,7 +153,7 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 void GraphicsMainLoop (GLFWwindow* window) {
         Vector<Vector<size_t>> result = CompGraph_of_sort (MergeSortRecursive<MyType>);
         while  (!glfwWindowShouldClose (window)) {
-                float ratio;
+                /*float ratio;
                 int width, height;
                 glfwGetFramebufferSize (window, &width, &height);
                 ratio = width /  (float) height;
@@ -154,13 +187,9 @@ void GraphicsMainLoop (GLFWwindow* window) {
                 // glVertex3f (0.f, 0.6f, 0.f);
                 // glEnd ();*/
 
-                // glClear (GL_COLOR_BUFFER_BIT);
-                // glClearColor (1.f, 0.f, 0.f, 0);
-                // glBegin(GL_TRIANGLES);
-                // glVertex2d(0.0, 0.0);
-                // glVertex2d(0.0, 1.0);
-                // glVertex2d(1.0, 0.0);
-                // glEnd();
+                
+
+                DrawGraphByVertex (result);
 
 
                 glfwSwapBuffers (window);

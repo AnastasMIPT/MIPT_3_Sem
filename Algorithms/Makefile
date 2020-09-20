@@ -1,6 +1,6 @@
 EXECUTABLE   = main
 second       = backend_x86
-LIBS         = Sorts.h
+LIBS         = 
 SOURCEFILES  = main.cpp 
 OBJFILES     = $(SOURCEFILES:.cpp=.o)
 CFlags       = --std=c++17 -msse4 -O3
