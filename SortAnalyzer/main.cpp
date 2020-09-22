@@ -1,5 +1,5 @@
 #include <cstdio>
-#define DEBUG_NEW
+//#define DEBUG_NEW
 #include "Sorts.h"
 #include "../MyLib/MyInteger.h"
 #include "../MyLib/my_vector.h"

@@ -90,7 +90,8 @@ void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
         Arrow OX (-1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008 - 0.05 - 0.92, -0.01, 1.0 - 0.008 - 0.05 - 0.92);
         OX.draw ();
 
-        glClear (GL_COLOR_BUFFER_BIT);
+
+        //glClear (GL_COLOR_BUFFER_BIT);
 
 
 //         glBegin (GL_LINE_STRIP);
@@ -101,6 +102,7 @@ void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
     
 //         glEnd ();
 // }
+}
 
 int main  (void)
 {
