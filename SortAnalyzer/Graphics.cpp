@@ -154,6 +154,8 @@ void GraphicsMainLoop (GLFWwindow* window) {
                 vec_y[i] = result[i][1];
         }
         Graph graph_of_assigns (1.0, 1.0, -1.0, 0.0, vec_x, vec_y);
+        Graph graph_of_assigns_2 (1.0, 1.0, 0.0, 0.0, vec_x, vec_y);
+        
         while  (!glfwWindowShouldClose (window)) {
                 /*float ratio;
                 int width, height;
@@ -192,7 +194,10 @@ void GraphicsMainLoop (GLFWwindow* window) {
                 
 
                 //DrawGraphByVertex (result);
+                glClear (GL_COLOR_BUFFER_BIT);
                 graph_of_assigns.draw ();
+                graph_of_assigns_2.draw ();
+                
 
                 glfwSwapBuffers (window);
                 glfwPollEvents ();
