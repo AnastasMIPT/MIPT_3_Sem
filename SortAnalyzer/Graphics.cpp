@@ -82,7 +82,7 @@ void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
                 glVertex2d (0.0, 1.0);
                 glVertex2d (0.0, 0.0);
         glEnd();
-        //glClear (GL_COLOR_BUFFER_BIT);
+       
 
         Arrow OY (-1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008 - 0.05 - 0.92, -1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008);
         OY.draw ();
@@ -90,18 +90,22 @@ void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
         Arrow OX (-1.0 + 0.008 + 0.010 / 2, 1.0 - 0.008 - 0.05 - 0.92, -0.01, 1.0 - 0.008 - 0.05 - 0.92);
         OX.draw ();
 
+        // Graph g (0,0,0,0);
 
-        //glClear (GL_COLOR_BUFFER_BIT);
+        glBegin (GL_LINE_STRIP);
+        
+        glColor3f (0.0, 1.0, 0.0);
+        
+        double max_x = results[results.size () - 1][0];
+        double max_y = results[results.size () - 1][1];
 
-
-//         glBegin (GL_LINE_STRIP);
-//         glColor3f (1.0, 1.0, 1.0);
-//         for (int i = 0; i < results.size (); ++i) {
-//                 glVertex2f (80 + i * results[i][0], 280 + results[i][1]);
-//         }
+        for (int i = 0; i < results.size (); ++i) {
+                glVertex2d (-1.0 + results[i][0] / max_x, results[i][1] / max_y);
+                //glVertex2d (80 + i * results[i][0], 280 + results[i][1]);
+        }
     
-//         glEnd ();
-// }
+        glEnd ();
+
 }
 
 int main  (void)
@@ -141,7 +145,7 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 
 
 void GraphicsMainLoop (GLFWwindow* window) {
-        Vector<Vector<size_t>> result = CompGraph_of_sort (MergeSortRecursive<MyType>);
+        Vector<Vector<size_t>> result = CompGraph_of_sort (BubbleSort<MyType>);
         while  (!glfwWindowShouldClose (window)) {
                 /*float ratio;
                 int width, height;
