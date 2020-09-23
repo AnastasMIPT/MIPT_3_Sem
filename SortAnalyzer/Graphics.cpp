@@ -96,8 +96,9 @@ void DrawGraphByVertex (const Vector<Vector<size_t>>& results) {
         
         glColor3f (0.0, 1.0, 0.0);
         
-        double max_x = results[results.size () - 1][0];
-        double max_y = results[results.size () - 1][1];
+        GLdouble max_x = results[results.size () - 1][0];
+        GLdouble max_y = results[results.size () - 1][1];
+
 
         for (int i = 0; i < results.size (); ++i) {
                 glVertex2d (-1.0 + results[i][0] / max_x, results[i][1] / max_y);
@@ -146,6 +147,13 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 
 void GraphicsMainLoop (GLFWwindow* window) {
         Vector<Vector<size_t>> result = CompGraph_of_sort (BubbleSort<MyType>);
+        Vector <GLdouble> vec_y (result.size ());
+        Vector <GLdouble> vec_x (result.size ());
+        for (int i = 0; i < result.size (); ++i) {
+                vec_x[i] = result[i][0];
+                vec_y[i] = result[i][1];
+        }
+        Graph graph_of_assigns (1.0, 1.0, -1.0, 0.0, vec_x, vec_y);
         while  (!glfwWindowShouldClose (window)) {
                 /*float ratio;
                 int width, height;
@@ -183,8 +191,8 @@ void GraphicsMainLoop (GLFWwindow* window) {
 
                 
 
-                DrawGraphByVertex (result);
-
+                //DrawGraphByVertex (result);
+                graph_of_assigns.draw ();
 
                 glfwSwapBuffers (window);
                 glfwPollEvents ();

@@ -57,6 +57,7 @@ Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_
 
 int main () {
 
+
     Vector<Vector<size_t>> result = CompGraph_of_sort (MergeSortRecursive<MyType>);
     printf ("MergeSort:\n");
     for (int i = 0; i < result.size (); ++i) {

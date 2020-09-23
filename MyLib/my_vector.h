@@ -58,6 +58,8 @@ public:
     T& operator[] (size_t i);
     const T& operator[] (size_t i) const;
 
+    size_t max_element () const;
+
 };
 
 
@@ -165,8 +167,19 @@ const T& Vector<T>::operator[] (size_t i) const {
     return buf[i];
 }
 
+template <typename T>
+size_t Vector<T>::max_element () const {
+    T max_elem = buf[0];
+    size_t index = 0;
+    for (size_t i = 1; i < sz; ++i) {
+        if (buf[i] > max_elem) {
+            max_elem = buf[i];
+            index = i;
+        }
+    }
 
-
+    return index;
+}
 
 
 
