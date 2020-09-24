@@ -10,6 +10,9 @@
 #include "../MyLib/my_vector.h"
 
 
+double Len_of_vec (const glm::highp_vec2& vec);
+
+
 class Point2d {
 public:
     GLdouble x;
@@ -45,14 +48,22 @@ public:
     void draw () const;
 };
 
+class LineStrip {
+    const Vector<Point2d>& points;
+public:
+    LineStrip (const Vector<Point2d>& _points);
+    void draw () const;
+
+}; 
 
 
 class Graph {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
-    GLdouble image_x;
-    GLdouble image_y;
+    GLdouble im_size_x;
+    GLdouble im_size_y;
+
 
     const Vector<GLdouble>& vec_x;
     const Vector<GLdouble>& vec_y;

@@ -5,6 +5,11 @@
 #include "Primitives.h"
 
 
+double Len_of_vec (const glm::highp_vec2& vec) {
+    return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
+}
+
+
 Point2d::Point2d (GLdouble _x, GLdouble _y)
     : x (_x), y (_y) {}
 
@@ -16,10 +21,18 @@ void Point2d::draw () const {
 }
 
 
+LineStrip::LineStrip (const Vector<Point2d>& _points) : points (_points) {}
 
-double Len_of_vec (const glm::highp_vec2& vec) {
-    return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
+void LineStrip::draw () const {
+
+    glBegin (GL_LINE_STRIP);
+    glColor3f (0.0, 1.0, 0.0);
+
+    for (int i = 0; i < points.size (); ++i) {
+        points[i].draw ();
+    }
 }
+
 
 Arrow::Arrow (GLdouble _x1, GLdouble _y1, GLdouble _x2, GLdouble _y2) : x1 (_x1), y1 (_y1), x2 (_x2), y2 (_y2) {}
 
