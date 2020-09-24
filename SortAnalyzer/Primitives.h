@@ -63,7 +63,9 @@ class Graph {
     Point2d coord;
     GLdouble im_size_x;
     GLdouble im_size_y;
-
+    GLdouble im_x;
+    GLdouble im_y;
+    static constexpr GLdouble off_image = 0.015;
 
     const Vector<GLdouble>& vec_x;
     const Vector<GLdouble>& vec_y;

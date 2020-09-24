@@ -113,9 +113,11 @@ void GraphicsMainLoop (GLFWwindow* window) {
                 vec_x[i] = result[i][0];
                 vec_y[i] = result[i][1];
         }
-        Graph graph_of_assigns (1.0, 1.0, Point2d (-1.0, 0.0), vec_x, vec_y);
+        //printf ("Hello 1\n");
+        Graph graph_of_assigns (0.5, 0.5, Point2d (-1.0, 0.0), vec_x, vec_y);
+        //printf ("Hello 2\n");
         Graph graph_of_assigns_2 (1.0, 1.0, Point2d (0.0, 0.0), vec_x, vec_y);
-        
+        //printf ("Hello 3\n");
         while  (!glfwWindowShouldClose (window)) {
                 /*float ratio;
                 int width, height;

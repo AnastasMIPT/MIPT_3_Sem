@@ -91,7 +91,13 @@ void Rect::draw () const {
 
 Graph::Graph (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord,
               const Vector<GLdouble>& _vec_x, const Vector<GLdouble>& _vec_y) 
-    : size_x (_size_x), size_y (_size_y), coord (_coord), vec_x (_vec_x), vec_y (_vec_y) {}
+    : size_x (_size_x), size_y (_size_y), coord (_coord), vec_x (_vec_x), vec_y (_vec_y) {
+        im_x = coord.x + 0.015 * size_x;
+        im_y = coord.y + 0.015 * size_y;
+        im_size_y = (1 - 2 * off_image) * size_y;
+        im_size_x = (1 - 2 * off_image) * size_x;
+        
+}
 
 
 void Graph::draw () {
@@ -101,12 +107,12 @@ void Graph::draw () {
 
     Rect (size_x, size_y, coord).draw ();
 
-    Arrow OY (coord.x + 0.008 + 0.010 / 2, coord.y + size_y - 0.008 - 0.05 - 0.92, 
-              coord.x + 0.008 + 0.010 / 2, coord.y + size_y - 0.008);
+    Arrow OY (im_x, im_y, 
+              im_x, im_y + im_size_y);
     OY.draw ();
 
-    Arrow OX (coord.x + 0.008 + 0.010 / 2, coord.y + size_y - 0.008 - 0.05 - 0.92, 
-              coord.x + size_x -0.01, coord.y + size_y - 0.008 - 0.05 - 0.92);
+    Arrow OX (im_x, im_y, 
+              im_x + im_size_x, im_y);
     OX.draw ();
 
     GLdouble max_x = vec_x[vec_x.max_element ()];
@@ -118,8 +124,8 @@ void Graph::draw () {
     glColor3f (0.0, 1.0, 0.0);
 
     for (int i = 0; i < vec_x.size (); ++i) {
-        glVertex2d (coord.x + vec_x[i] / max_x, coord.y + vec_y[i] / max_y);
-    }
+        glVertex2d (im_x + vec_x[i] * im_size_x / max_x, im_y + vec_y[i] * im_size_y / max_y);
+    }   
 
     glEnd ();
 
