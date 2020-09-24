@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "Primitives.cpp"
+#include "Primitives.h"
 
 
 // https://www.glfw.org/docs/3.0/quick.html
@@ -153,8 +153,8 @@ void GraphicsMainLoop (GLFWwindow* window) {
                 vec_x[i] = result[i][0];
                 vec_y[i] = result[i][1];
         }
-        Graph graph_of_assigns (1.0, 1.0, -1.0, 0.0, vec_x, vec_y);
-        Graph graph_of_assigns_2 (1.0, 1.0, 0.0, 0.0, vec_x, vec_y);
+        Graph graph_of_assigns (1.0, 1.0, Point2d (-1.0, 0.0), vec_x, vec_y);
+        Graph graph_of_assigns_2 (1.0, 1.0, Point2d (0.0, 0.0), vec_x, vec_y);
         
         while  (!glfwWindowShouldClose (window)) {
                 /*float ratio;
