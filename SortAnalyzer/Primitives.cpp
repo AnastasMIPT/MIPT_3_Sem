@@ -1,25 +1,21 @@
-#include <cstdio>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <iostream>
-
 
 #define DEBUG_ASSERT
 #include "../MyLib/debug_assert.h"
 
-class Arrow {
-    GLdouble x1;
-    GLdouble y1;
-    GLdouble x2;
-    GLdouble y2;
-    static constexpr double tip_width = 0.010;
-    static constexpr double tip_height = 0.05;
-public:
-    Arrow (GLdouble x1, GLdouble y1, GLdouble x2, GLdouble y2);
-    void draw ();
-};
+#include "Primitives.h"
+
+
+Point2d::Point2d (GLdouble _x, GLdouble _y)
+    : x (_x), y (_y) {}
+
+Point2d::Point2d (const Point2d& other) 
+    : x (other.x), y (other.y) {}
+
+void Point2d::draw () const {
+    glVertex2d (x, y);
+}
+
+
 
 double Len_of_vec (const glm::highp_vec2& vec) {
     return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
@@ -61,28 +57,28 @@ void Arrow::draw () {
     glEnd ();
 }
 
-class Graph {
-    GLdouble size_x;
-    GLdouble size_y;
-    GLdouble object_x;
-    GLdouble object_y;
-    GLdouble image_x;
-    GLdouble image_y;
-
-    const Vector<GLdouble>& vec_x;
-    const Vector<GLdouble>& vec_y;
-
-public:
-
-    Graph (GLdouble _size_x, GLdouble _size_y, GLdouble _object_x, GLdouble _object_y, 
-    const Vector<GLdouble>& vec_x, const Vector<GLdouble>& vec_y);
-    void draw ();
-};
 
 
-Graph::Graph (GLdouble _size_x, GLdouble _size_y, GLdouble _object_x, GLdouble _object_y,
+
+Rect::Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord) 
+    : size_x (_size_x), size_y (_size_y), coord (_coord) {}
+
+void Rect::draw () const {
+    glBegin (GL_QUADS);
+        glColor3f (1.f, 1.f, 1.f);
+        Point2d (coord.x, coord.y).draw ();
+        Point2d (coord.x, coord.y + size_y).draw ();
+        Point2d (coord.x + size_x, coord.y + size_y).draw ();
+        Point2d (coord.x + size_x, coord.y).draw ();
+    glEnd ();
+}
+
+
+
+
+Graph::Graph (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord,
               const Vector<GLdouble>& _vec_x, const Vector<GLdouble>& _vec_y) 
-    : size_x (_size_x), size_y (_size_y), object_x (_object_x), object_y (_object_y), vec_x (_vec_x), vec_y (_vec_y) {}
+    : size_x (_size_x), size_y (_size_y), coord (_coord), vec_x (_vec_x), vec_y (_vec_y) {}
 
 
 void Graph::draw () {
@@ -90,36 +86,28 @@ void Graph::draw () {
 
     //glClear (GL_COLOR_BUFFER_BIT);
 
-    glBegin(GL_QUADS);
-        glColor3f (1.f, 1.f, 1.f);
-        glVertex2d (object_x, object_y);
-        glVertex2d (object_x, object_y + size_y);
-        glVertex2d (object_x + size_x, object_y + size_y);
-        glVertex2d (object_x + size_x, object_y);
-    glEnd();
+    Rect (size_x, size_y, coord).draw ();
 
-    Arrow OY (object_x + 0.008 + 0.010 / 2, object_y + size_y - 0.008 - 0.05 - 0.92, 
-              object_x + 0.008 + 0.010 / 2, object_y + size_y - 0.008);
+    Arrow OY (coord.x + 0.008 + 0.010 / 2, coord.y + size_y - 0.008 - 0.05 - 0.92, 
+              coord.x + 0.008 + 0.010 / 2, coord.y + size_y - 0.008);
     OY.draw ();
 
-    Arrow OX (object_x + 0.008 + 0.010 / 2, object_y + size_y - 0.008 - 0.05 - 0.92, 
-              object_x + size_x -0.01, object_y + size_y - 0.008 - 0.05 - 0.92);
+    Arrow OX (coord.x + 0.008 + 0.010 / 2, coord.y + size_y - 0.008 - 0.05 - 0.92, 
+              coord.x + size_x -0.01, coord.y + size_y - 0.008 - 0.05 - 0.92);
     OX.draw ();
-
-    glBegin (GL_LINE_STRIP);
-    
-    glColor3f (0.0, 1.0, 0.0);
-    
 
     GLdouble max_x = vec_x[vec_x.max_element ()];
     GLdouble max_y = vec_y[vec_y.max_element ()];
 
 
+    glBegin (GL_LINE_STRIP);
+    
+    glColor3f (0.0, 1.0, 0.0);
+
     for (int i = 0; i < vec_x.size (); ++i) {
-        glVertex2d (object_x + vec_x[i] / max_x, object_y + vec_y[i] / max_y);
+        glVertex2d (coord.x + vec_x[i] / max_x, coord.y + vec_y[i] / max_y);
     }
 
     glEnd ();
-
 
 }
