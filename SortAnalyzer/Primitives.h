@@ -10,8 +10,11 @@
 #include "../MyLib/my_vector.h"
 
 
-double Len_of_vec (const glm::highp_vec2& vec);
+const GLdouble DefaultMaxVal = -228;
 
+
+
+double Len_of_vec (const glm::highp_vec2& vec);
 
 class Point2d {
 public:
@@ -22,8 +25,13 @@ public:
 
     Point2d (const Point2d& other);
 
+    Point2d () = default;
+
     void draw () const;
 };
+
+
+
 
 class Arrow {
     GLdouble x1;
@@ -58,6 +66,29 @@ public:
 
 
 class Graph {
+    GLdouble im_size_x;
+    GLdouble im_size_y;
+    GLdouble im_x;
+    GLdouble im_y;
+    GLdouble max_x;
+    GLdouble max_y;
+    Vector<Point2d> points;
+
+public:
+    Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
+           const Vector<Point2d>& _points, GLdouble _max_x , GLdouble _max_y);
+
+    Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
+           const Vector<Point2d>& _points);
+
+
+    void change_max_x (GLdouble _max_x);
+    void change_max_y (GLdouble _max_y);
+    void draw ();
+};
+
+
+class CoordinatePlane {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
@@ -65,17 +96,26 @@ class Graph {
     GLdouble im_size_y;
     GLdouble im_x;
     GLdouble im_y;
-    static constexpr GLdouble off_image = 0.015;
+    static constexpr GLdouble off_image = 0.03;
 
-    const Vector<GLdouble>& vec_x;
-    const Vector<GLdouble>& vec_y;
+    Vector<Graph> graphs;
 
 public:
 
-    Graph (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord,
-    const Vector<GLdouble>& _vec_x, const Vector<GLdouble>& _vec_y);
+    CoordinatePlane (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord);
+    //void add_graph (const Graph& graph);
+    void add_graph_by_p_arr (const Vector<Point2d>& points);
+    void draw_graphs ();
     void draw ();
 };
+
+
+
+
+
+int Ind_of_point_with_max_x (const Vector<Point2d>& points);
+int Ind_of_point_with_max_y (const Vector<Point2d>& points);
+
 
 
 #endif // PRIMITIVES_H
