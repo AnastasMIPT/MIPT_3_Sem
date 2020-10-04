@@ -126,7 +126,7 @@ CoordinatePlane::CoordinatePlane (GLdouble _size_x, GLdouble _size_y, const Poin
         
 }
 
-void CoordinatePlane::draw_graphs () {
+void CoordinatePlane::draw_graphs () const {
     for (int i = 0; i < graphs.size (); ++i) {
         graphs[i].draw ();
     }
@@ -140,7 +140,7 @@ void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
     graphs.push_back (Graph (im_x, im_y, im_size_x, im_size_y, points));
 }
 
-void CoordinatePlane::draw () {
+void CoordinatePlane::draw () const {
 
     Rect (size_x, size_y, coord).draw ();
 
@@ -150,22 +150,7 @@ void CoordinatePlane::draw () {
     Arrow OX (im_x, im_y, im_x + im_size_x, im_y);
     OX.draw ();
 
-    // GLdouble max_x = vec_x[vec_x.max_element ()];
-    // GLdouble max_y = vec_y[vec_y.max_element ()];
-
     draw_graphs ();
-
-
-    // glBegin (GL_LINE_STRIP);
-    
-    // glColor3f (0.0, 1.0, 0.0);
-
-    // for (int i = 0; i < vec_x.size (); ++i) {
-    //     glVertex2d (im_x + vec_x[i] * im_size_x / max_x, im_y + vec_y[i] * im_size_y / max_y);
-    // }   
-
-    // glEnd ();
-
 }
 
 
@@ -188,7 +173,7 @@ Graph::Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_
 }
 
 
-void Graph::draw () {
+void Graph::draw () const {
 
     glBegin (GL_LINE_STRIP);
     glColor3f (0.0, 1.0, 0.0);

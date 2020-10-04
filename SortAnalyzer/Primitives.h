@@ -99,7 +99,7 @@ public:
 
     void change_max_x (GLdouble _max_x);
     void change_max_y (GLdouble _max_y);
-    void draw ();
+    void draw () const;
 };
 
 
@@ -120,8 +120,8 @@ public:
     CoordinatePlane (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord);
     //void add_graph (const Graph& graph);
     void add_graph_by_p_arr (const Vector<Point2d>& points);
-    void draw_graphs ();
-    void draw ();
+    void draw_graphs () const;
+    void draw () const;
 };
 
 
