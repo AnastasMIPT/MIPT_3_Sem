@@ -8,14 +8,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include "../MyLib/my_vector.h"
+#include "CalculateFunc.h"
 
 
 const GLdouble DefaultMaxVal = -228;
-
-template <typename T>
-using SortFunc_t = void (*) (T*, size_t, size_t);
-
-
 
 
 
