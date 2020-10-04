@@ -12,6 +12,11 @@
 
 const GLdouble DefaultMaxVal = -228;
 
+template <typename T>
+using SortFunc_t = void (*) (T*, size_t, size_t);
+
+
+
 
 
 double Len_of_vec (const glm::highp_vec2& vec);
@@ -116,6 +121,38 @@ public:
 int Ind_of_point_with_max_x (const Vector<Point2d>& points);
 int Ind_of_point_with_max_y (const Vector<Point2d>& points);
 
+
+
+template <typename T>
+class SortDrawFunctor {
+    const CoordinatePlane& coord_plane;
+    SortFunc_t<T> func_sort;
+    
+public:
+    SortDrawFunctor (const CoordinatePlane& _coord_plane, SortFunc_t<T> _func_sort);
+
+    void operator () () {
+        printf ("Hello I'm functor\n");
+
+    }
+
+};
+
+
+template<typename T>
+SortDrawFunctor<T>::SortDrawFunctor (const CoordinatePlane& _coord_plane, SortFunc_t<T> _func_sort)
+    : coord_plane (_coord_plane), func_sort (_func_sort) {}
+
+
+
+template <typename Functor_t>
+class Button {
+public:
+    Functor_t action;
+
+    template <typename ...Args_t>
+    Button (Args_t&&... args) : action (std::forward<Args_t> (args)...) {}
+};
 
 
 #endif // PRIMITIVES_H

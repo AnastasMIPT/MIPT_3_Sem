@@ -65,7 +65,7 @@ public:
 
 template <typename T>
 void Vector<T>::print () {
-    for (int i = 0; i < sz; ++i)
+    for (size_t i = 0; i < sz; ++i)
         std::cout << buf[i] << " ";
     printf ("\n");
 }
@@ -74,7 +74,7 @@ void Vector<T>::print () {
 template <typename T>
 void Vector<T>::destroy () {
     // printf ("Destroy! %lu\n", number_obj); 
-    for (int i = 0; i < sz; ++i) {
+    for (size_t i = 0; i < sz; ++i) {
         (buf + i)->~T();
     }
     delete[] reinterpret_cast<char*> (buf);
@@ -86,7 +86,7 @@ void Vector<T>::reallocate () {
     T* buf_new = reinterpret_cast<T*> (NEW char [sz == 0 ? sizeof (T) : 2 * sz * sizeof (T)]);
     cp = (sz == 0 ? 1 : sz * 2);
 
-    for (int i = 0; i < sz; ++i) {
+    for (size_t i = 0; i < sz; ++i) {
         new (buf_new + i) T (std::move (buf[i]));
     }
     destroy ();

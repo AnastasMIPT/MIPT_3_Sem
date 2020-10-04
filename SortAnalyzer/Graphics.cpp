@@ -17,10 +17,6 @@
 
 using MyType = Numeric<int>;
 
-template <typename T>
-using SortFunc_t = void (*) (T*, size_t, size_t);
-
-
 template<>
 size_t Numeric<int>::num_assigns = 0;
 
@@ -126,45 +122,15 @@ void GraphicsMainLoop (GLFWwindow* window) {
         }
         graph_of_assigns.add_graph_by_p_arr (points);
         graph_of_assigns.add_graph_by_p_arr (points2);
+        
+
+        Button<SortDrawFunctor<Numeric<int>>> but (graph_of_assigns, BubbleSort<MyType>);
+        but.action ();
+
         DEB_INFO
         //CoordinatePlane graph_of_assigns_2 (1.0, 1.0, Point2d (0.0, 0.0), points);
         //printf ("Hello 3\n");
         while  (!glfwWindowShouldClose (window)) {
-                /*float ratio;
-                int width, height;
-                glfwGetFramebufferSize (window, &width, &height);
-                ratio = width /  (float) height;
-                
-                glViewport (0, 0, width, height);
-                
-                glMatrixMode(GL_PROJECTION);
-                glLoadIdentity();
-                gluOrtho2D (0, width, 0, height);
-
-                glMatrixMode (GL_MODELVIEW);
-                glLoadIdentity ();
-                
-                
-                DrawGraphByVertex (result);
-
-                // glClearColor (1.f, 0.f, 1.f, 0.5f);
-                // glClear (GL_COLOR_BUFFER_BIT);
-                // glMatrixMode (GL_PROJECTION);
-                // glLoadIdentity ();
-                // glOrtho (-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-                // glMatrixMode (GL_MODELVIEW);
-                // glLoadIdentity ();
-                // glRotatef ( (float) glfwGetTime () * 50.f, 0.f, 0.f, 1.f);
-                // glBegin (GL_TRIANGLES);
-                // glColor3f (1.f, 0.f, 0.f);
-                // glVertex3f (-0.6f, -0.4f, 0.f);
-                // glColor3f (0.f, 1.f, 0.f);
-                // glVertex3f (0.6f, -0.4f, 0.f);
-                // glColor3f (0.f, 0.f, 1.f);
-                // glVertex3f (0.f, 0.6f, 0.f);
-                // glEnd ();*/
-
-                
 
                 //DrawGraphByVertex (result);
                 glClear (GL_COLOR_BUFFER_BIT);
