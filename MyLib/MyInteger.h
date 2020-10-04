@@ -1,4 +1,5 @@
-
+#ifndef MY_INTEGER_H
+#define MY_INTEGER_H
 
 #include <cstdio>
 
@@ -75,3 +76,5 @@ template <typename T>
 Numeric<T>::Numeric (const Numeric& other) {
     data = other.data;
 }
+
+#endif // MY_INTEGER

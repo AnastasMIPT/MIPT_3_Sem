@@ -1,3 +1,4 @@
+
 #ifndef PRIMITIVES_H
 #define PRIMITIVES_H
 
@@ -8,10 +9,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include "../MyLib/my_vector.h"
-#include "CalculateFunc.h"
 
 
 const GLdouble DefaultMaxVal = -228;
+
+template <typename T>
+using SortFunc_t = void (*) (T*, size_t, size_t);
+
 
 
 
@@ -32,6 +36,15 @@ public:
 };
 
 
+struct Color {
+    GLdouble red   = 1.0;
+    GLdouble green = 1.0;
+    GLdouble blue  = 1.0;
+
+    Color () {}
+    Color (GLdouble _red, GLdouble _green, GLdouble _blue);
+    void draw () const;
+};
 
 
 class Arrow {
@@ -51,9 +64,10 @@ class Rect {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
+    Color color;
 
 public:
-    Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& coord);
+    Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord, Color _color = Color ());
     void draw () const;
 };
 
@@ -121,14 +135,30 @@ int Ind_of_point_with_max_y (const Vector<Point2d>& points);
 
 template <typename T>
 class SortDrawFunctor {
-    const CoordinatePlane& coord_plane;
+    CoordinatePlane& coord_plane_ass;
+    CoordinatePlane& coord_plane_comp;
     SortFunc_t<T> func_sort;
     
 public:
-    SortDrawFunctor (const CoordinatePlane& _coord_plane, SortFunc_t<T> _func_sort);
+    SortDrawFunctor (CoordinatePlane& _coord_plane_ass, CoordinatePlane& _coord_plane_comp, SortFunc_t<T> _func_sort);
 
     void operator () () {
         printf ("Hello I'm functor\n");
+        Vector<Vector<size_t>> result = CompGraph_of_sort (func_sort);
+        
+        Vector <Point2d> points_assigns (result.size ());
+        Vector <Point2d> points_comp (result.size ());
+        
+        for (int i = 0; i < result.size (); ++i) {
+                points_assigns[i].x = result[i][0];
+                points_assigns[i].y = result[i][1];
+
+                points_comp[i].x = result[i][0];
+                points_comp[i].y = result[i][2];
+        }
+        
+        coord_plane_ass.add_graph_by_p_arr (points_assigns);
+        coord_plane_comp.add_graph_by_p_arr (points_comp);
 
     }
 
@@ -136,19 +166,29 @@ public:
 
 
 template<typename T>
-SortDrawFunctor<T>::SortDrawFunctor (const CoordinatePlane& _coord_plane, SortFunc_t<T> _func_sort)
-    : coord_plane (_coord_plane), func_sort (_func_sort) {}
+SortDrawFunctor<T>::SortDrawFunctor (CoordinatePlane& _coord_plane_ass, CoordinatePlane& _coord_plane_comp, SortFunc_t<T> _func_sort)
+    : coord_plane_ass (_coord_plane_ass), coord_plane_comp (_coord_plane_comp), func_sort (_func_sort) {}
 
 
 
 template <typename Functor_t>
 class Button {
+    Rect background;
 public:
     Functor_t action;
 
     template <typename ...Args_t>
-    Button (Args_t&&... args) : action (std::forward<Args_t> (args)...) {}
+    Button (GLdouble size_x, GLdouble size_y, const Point2d& coord, const Color& color, Args_t&&... args) 
+    : action (std::forward<Args_t> (args)...), background (size_x, size_y, coord, color) {}
+
+    void draw () const;
 };
 
+
+
+template <typename Functor_t>
+void Button<Functor_t>::draw () const {
+    background.draw ();
+}
 
 #endif // PRIMITIVES_H

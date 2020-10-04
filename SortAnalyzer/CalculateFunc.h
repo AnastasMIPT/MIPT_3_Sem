@@ -1,3 +1,7 @@
+#ifndef CALCULATEFUNC_H
+#define CALCULATEFUNC_H
+
+
 #include "Sorts.h"
 #include "../MyLib/MyInteger.h"
 #include "../MyLib/my_vector.h"
@@ -8,22 +12,8 @@ template <typename T>
 using SortFunc_t = void (*) (T*, size_t, size_t);
 
 
-template<>
-size_t Numeric<int>::num_assigns = 0;
 
-template<>
-size_t Numeric<int>::num_comparisons = 0;
-
-
-
-Vector<MyType> rand_vector (size_t size) {
-    Vector<MyType> vec (size);
-    for (int i = 0; i < size; ++i) {
-        vec[i] = rand () % 1024;
-    }
-    return vec;
-}
-
+Vector<MyType> rand_vector (size_t size);
 
 template <typename T>
 Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_size = 10, size_t delta = 10, size_t max_size = 100) {
@@ -49,3 +39,5 @@ Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_
     
     return result;
 }
+
+#endif //CALCULATEFUNC_H

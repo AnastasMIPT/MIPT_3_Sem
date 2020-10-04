@@ -38,6 +38,12 @@ int Ind_of_point_with_max_y (const Vector<Point2d>& points) {
 }
 
 
+void Color::draw () const {
+    glColor3f (red, green, blue);
+}
+
+Color::Color (GLdouble _red, GLdouble _green, GLdouble _blue) : red (_red), green (_green), blue (_blue) {}
+
 Point2d::Point2d (GLdouble _x, GLdouble _y)
     : x (_x), y (_y) {}
 
@@ -95,12 +101,12 @@ void Arrow::draw () {
 
 
 
-Rect::Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord) 
-    : size_x (_size_x), size_y (_size_y), coord (_coord) {}
+Rect::Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord, Color _color) 
+    : size_x (_size_x), size_y (_size_y), coord (_coord), color (_color) {}
 
 void Rect::draw () const {
     glBegin (GL_QUADS);
-        glColor3f (1.f, 1.f, 1.f);
+        color.draw ();
         Point2d (coord.x, coord.y).draw ();
         Point2d (coord.x, coord.y + size_y).draw ();
         Point2d (coord.x + size_x, coord.y + size_y).draw ();
@@ -199,3 +205,5 @@ void Graph::change_max_x (GLdouble _max_x) {
 void Graph::change_max_y (GLdouble _max_y) {
     max_y = _max_y;
 }
+
+
