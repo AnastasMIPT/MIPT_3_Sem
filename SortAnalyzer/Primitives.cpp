@@ -2,21 +2,22 @@
 #define DEBUG_ASSERT
 #include "../MyLib/debug_assert.h"
 
-#include "Primitives.h"
 
 
-#define DEBUG
+//#define DEBUG
 #include "../MyLib/debug_info.h"
+
+#include "Primitives.h"
 
 
 double Len_of_vec (const glm::highp_vec2& vec) {
     return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 }
 
-int Ind_of_point_with_max_x (const Vector<Point2d>& points) {
-    int ind = 0;
+size_t Ind_of_point_with_max_x (const Vector<Point2d>& points) {
+    size_t ind = 0;
     GLdouble max_x = points[0].x;
-    for (int i = 1; i < points.size (); ++i) {
+    for (size_t i = 1; i < points.size (); ++i) {
         if (points[i].x > max_x) {
             ind = i;
             max_x = points[i].x;
@@ -25,10 +26,10 @@ int Ind_of_point_with_max_x (const Vector<Point2d>& points) {
     return ind;
 }
 
-int Ind_of_point_with_max_y (const Vector<Point2d>& points) {
-    int ind = 0;
+size_t Ind_of_point_with_max_y (const Vector<Point2d>& points) {
+    size_t ind = 0;
     GLdouble max_y = points[0].y;
-    for (int i = 1; i < points.size (); ++i) {
+    for (size_t i = 1; i < points.size (); ++i) {
         if (points[i].y > max_y) {
             ind = i;
             max_y = points[i].y;
@@ -39,7 +40,7 @@ int Ind_of_point_with_max_y (const Vector<Point2d>& points) {
 
 
 void Color::draw () const {
-    glColor3f (red, green, blue);
+    glColor3d (red, green, blue);
 }
 
 Color::Color (GLdouble _red, GLdouble _green, GLdouble _blue) : red (_red), green (_green), blue (_blue) {}
@@ -62,7 +63,7 @@ void LineStrip::draw () const {
     glBegin (GL_LINE_STRIP);
     glColor3f (0.0, 1.0, 0.0);
 
-    for (int i = 0; i < points.size (); ++i) {
+    for (size_t i = 0; i < points.size (); ++i) {
         points[i].draw ();
     }
 }
@@ -70,7 +71,7 @@ void LineStrip::draw () const {
 
 Arrow::Arrow (GLdouble _x1, GLdouble _y1, GLdouble _x2, GLdouble _y2) : x1 (_x1), y1 (_y1), x2 (_x2), y2 (_y2) {}
 
-void Arrow::draw () {
+void Arrow::draw () const {
 
     glm::highp_vec2 base (x2 - x1, y2- y1);
     base *= (Len_of_vec (base) - tip_height) / Len_of_vec (base);
@@ -127,7 +128,7 @@ CoordinatePlane::CoordinatePlane (GLdouble _size_x, GLdouble _size_y, const Poin
 }
 
 void CoordinatePlane::draw_graphs () const {
-    for (int i = 0; i < graphs.size (); ++i) {
+    for (size_t i = 0; i < graphs.size (); ++i) {
         graphs[i].draw ();
     }
 }
@@ -137,7 +138,10 @@ void CoordinatePlane::draw_graphs () const {
 // }
 
 void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
+    DEB_INFO
     graphs.push_back (Graph (im_x, im_y, im_size_x, im_size_y, points));
+    DEB_INFO
+    DEB_INFO
 }
 
 void CoordinatePlane::draw () const {
@@ -166,18 +170,19 @@ Graph::Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_
     
     : im_x (_im_x), im_y (_im_y), im_size_x (_im_size_x), im_size_y (_im_size_y), 
       points (_points) {
-    
+    DEB_INFO
     max_x = points[Ind_of_point_with_max_x (points)].x;
     max_y = points[Ind_of_point_with_max_y (points)].y;
-    
+    DEB_INFO
+   
 }
 
 
 void Graph::draw () const {
 
     glBegin (GL_LINE_STRIP);
-    glColor3f (0.0, 1.0, 0.0);
-    for (int i = 0; i < points.size (); ++i) {
+    glColor3d (0.0, 1.0, 0.0);
+    for (size_t i = 0; i < points.size (); ++i) {
         glVertex2d (im_x + points[i].x * im_size_x / max_x, im_y + points[i].y * im_size_y / max_y);
     }   
     glEnd ();

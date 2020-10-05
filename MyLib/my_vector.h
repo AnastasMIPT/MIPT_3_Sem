@@ -5,6 +5,8 @@
 
 #include "debug_new.h"
 
+//#define DEBUG
+#include "debug_info.h"
 
 template <typename T>
 class Vector {
@@ -33,9 +35,11 @@ public:
     template <typename... Args>
     void emplase_back (Args&&...  args) {
         //printf ("emplase_back ()!\n");
+        DEB_INFO
         if (sz == cp) {
             reallocate ();
         }
+        DEB_INFO
         new (static_cast<void*> (buf + sz)) T (std::forward<Args>(args)...);
         sz++;
     }
@@ -130,7 +134,9 @@ Vector<T>::Vector (Vector<T>&& other) : sz (other.sz), cp (other.cp) {
 
 template <typename T>
 void Vector<T>::push_back (T&& value) {
+    DEB_INFO
     emplase_back (std::move (value));
+    DEB_INFO
 }
 
 template <typename T>

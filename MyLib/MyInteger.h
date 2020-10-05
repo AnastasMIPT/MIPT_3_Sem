@@ -36,7 +36,7 @@ public:
         num_comparisons = 0;
     }
 
-    static size_t num_of_assigns_to_zero () {
+    static void num_of_assigns_to_zero () {
         num_assigns = 0;
     }
 };

@@ -10,6 +10,8 @@
 #include <iostream>
 #include "../MyLib/my_vector.h"
 
+//#define DEBUG
+#include "../MyLib/debug_info.h"
 
 const GLdouble DefaultMaxVal = -228;
 
@@ -21,7 +23,16 @@ using SortFunc_t = void (*) (T*, size_t, size_t);
 
 double Len_of_vec (const glm::highp_vec2& vec);
 
-class Point2d {
+
+class DrawableObject {
+public:
+    virtual void draw () const = 0;
+    virtual ~DrawableObject () = default;
+};
+
+
+
+class Point2d : public DrawableObject {
 public:
     GLdouble x;
     GLdouble y;
@@ -32,22 +43,26 @@ public:
 
     Point2d () = default;
 
-    void draw () const;
+    void draw () const final override;
+
+   ~Point2d () final = default;
 };
 
 
-struct Color {
+struct Color : public DrawableObject {
     GLdouble red   = 1.0;
     GLdouble green = 1.0;
     GLdouble blue  = 1.0;
 
-    Color () {}
+    Color () = default;
     Color (GLdouble _red, GLdouble _green, GLdouble _blue);
-    void draw () const;
+    void draw () const override;
+
+    ~Color () final = default;
 };
 
 
-class Arrow {
+class Arrow : DrawableObject {
     GLdouble x1;
     GLdouble y1;
     GLdouble x2;
@@ -56,11 +71,13 @@ class Arrow {
     static constexpr double tip_height = 0.05;
 public:
     Arrow (GLdouble x1, GLdouble y1, GLdouble x2, GLdouble y2);
-    void draw ();
+    void draw () const override;
+
+    ~Arrow () final = default;
 };
 
 
-class Rect {
+class Rect : public DrawableObject {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
@@ -68,26 +85,32 @@ class Rect {
 
 public:
     Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord, Color _color = Color ());
-    void draw () const;
+    void draw () const override;
+
+    ~Rect () final = default;
 };
 
-class LineStrip {
+class LineStrip : public DrawableObject {
     const Vector<Point2d>& points;
 public:
     LineStrip (const Vector<Point2d>& _points);
-    void draw () const;
+    void draw () const override;
 
+    ~LineStrip () final = default;
 }; 
 
 
-class Graph {
-    GLdouble im_size_x;
-    GLdouble im_size_y;
+class Graph : public DrawableObject {
     GLdouble im_x;
     GLdouble im_y;
+    GLdouble im_size_x;
+    GLdouble im_size_y;
+    
+    Vector<Point2d> points;
+
     GLdouble max_x;
     GLdouble max_y;
-    Vector<Point2d> points;
+    
 
 public:
     Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
@@ -99,11 +122,12 @@ public:
 
     void change_max_x (GLdouble _max_x);
     void change_max_y (GLdouble _max_y);
-    void draw () const;
+    void draw () const final override;
+    ~Graph () final = default;
 };
 
 
-class CoordinatePlane {
+class CoordinatePlane : public DrawableObject {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
@@ -121,15 +145,17 @@ public:
     //void add_graph (const Graph& graph);
     void add_graph_by_p_arr (const Vector<Point2d>& points);
     void draw_graphs () const;
-    void draw () const;
+    void draw () const final override;
+
+    ~CoordinatePlane () final = default;
 };
 
 
 
 
 
-int Ind_of_point_with_max_x (const Vector<Point2d>& points);
-int Ind_of_point_with_max_y (const Vector<Point2d>& points);
+size_t Ind_of_point_with_max_x (const Vector<Point2d>& points);
+size_t Ind_of_point_with_max_y (const Vector<Point2d>& points);
 
 
 
@@ -143,23 +169,24 @@ public:
     SortDrawFunctor (CoordinatePlane& _coord_plane_ass, CoordinatePlane& _coord_plane_comp, SortFunc_t<T> _func_sort);
 
     void operator () () {
+        
+        
         printf ("Hello I'm functor\n");
+        
         Vector<Vector<size_t>> result = CompGraph_of_sort (func_sort);
         
         Vector <Point2d> points_assigns (result.size ());
         Vector <Point2d> points_comp (result.size ());
         
-        for (int i = 0; i < result.size (); ++i) {
+        for (size_t i = 0; i < result.size (); ++i) {
                 points_assigns[i].x = result[i][0];
                 points_assigns[i].y = result[i][1];
 
                 points_comp[i].x = result[i][0];
                 points_comp[i].y = result[i][2];
         }
-        
         coord_plane_ass.add_graph_by_p_arr (points_assigns);
         coord_plane_comp.add_graph_by_p_arr (points_comp);
-
     }
 
 };
@@ -172,16 +199,17 @@ SortDrawFunctor<T>::SortDrawFunctor (CoordinatePlane& _coord_plane_ass, Coordina
 
 
 template <typename Functor_t>
-class Button {
+class Button : public DrawableObject {
     Rect background;
 public:
     Functor_t action;
 
     template <typename ...Args_t>
     Button (GLdouble size_x, GLdouble size_y, const Point2d& coord, const Color& color, Args_t&&... args) 
-    : action (std::forward<Args_t> (args)...), background (size_x, size_y, coord, color) {}
+    : background (size_x, size_y, coord, color), action (std::forward<Args_t> (args)...) {}
 
-    void draw () const;
+    void draw () const override;
+    ~Button () final = default;
 };
 
 

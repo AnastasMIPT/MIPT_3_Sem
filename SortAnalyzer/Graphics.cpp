@@ -27,7 +27,7 @@ size_t Numeric<int>::num_comparisons = 0;
 
 Vector<MyType> rand_vector (size_t size) {
     Vector<MyType> vec (size);
-    for (int i = 0; i < size; ++i) {
+    for (size_t i = 0; i < size; ++i) {
         vec[i] = rand () % 1024;
     }
     return vec;
@@ -69,13 +69,14 @@ void GraphicsMainLoop (GLFWwindow* window);
 
 int main  (void)
 {
+        DEB_INFO
         GLFWwindow* window;
         glfwSetErrorCallback (error_callback);
         
         if  (!glfwInit ()) exit (EXIT_FAILURE);
         
         window = glfwCreateWindow (1200, 675, "Simple example", NULL, NULL);
-        
+        DEB_INFO
         if  (!window) {
                 glfwTerminate ();
                 exit (EXIT_FAILURE);
@@ -83,8 +84,9 @@ int main  (void)
 
         glfwMakeContextCurrent (window);
         glfwSetKeyCallback (window, key_callback);
+        DEB_INFO
         GraphicsMainLoop (window);
-
+        DEB_INFO
         glfwDestroyWindow (window);
         glfwTerminate ();
         exit (EXIT_SUCCESS);
@@ -111,10 +113,10 @@ void GraphicsMainLoop (GLFWwindow* window) {
         //         points[i].x = result[i][0];
         //         points[i].y = result[i][1];
         // }
-        // DEB_INFO
+        DEB_INFO
         CoordinatePlane graph_of_assigns (1.0, 1.0, Point2d (-1.0, 0.0));
         CoordinatePlane graph_of_comp    (1.0, 1.0, Point2d (0.0, 0.0));
-
+        DEB_INFO
 
         // Vector<Vector<size_t>> result2 = CompGraph_of_sort (BubbleSort<MyType>);
         // Vector <Point2d> points2 (result2.size ());
@@ -127,7 +129,7 @@ void GraphicsMainLoop (GLFWwindow* window) {
         
 
         Button<SortDrawFunctor<Numeric<int>>> butBub (0.3, 0.3, Point2d (-0.5, -0.5), Color (1.0, 0.0, 0.0), graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
-        
+        DEB_INFO
         butBub.action ();
         
         //but.action ();
