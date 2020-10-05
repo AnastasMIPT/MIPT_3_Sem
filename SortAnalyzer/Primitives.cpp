@@ -133,9 +133,6 @@ void CoordinatePlane::draw_graphs () const {
     }
 }
 
-// void CoordinatePlane::add_graph (const Graph& graph) {
-//     graphs.push_back (graph);
-// }
 
 void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
     DEB_INFO
@@ -195,5 +192,3 @@ void Graph::change_max_x (GLdouble _max_x) {
 void Graph::change_max_y (GLdouble _max_y) {
     max_y = _max_y;
 }
-
-

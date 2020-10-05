@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "Primitives.h"
+#include "button.h"
 
 //#define DEBUG
 #include "../MyLib/debug_info.h"
@@ -66,6 +67,21 @@ static void error_callback (int error, const char* description);
 static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods);
 void GraphicsMainLoop (GLFWwindow* window);
 
+static void mouse_callback (GLFWwindow* window, int button, int action, int mods)
+{
+    bool lbutton_down = false;
+    if (button == GLFW_MOUSE_BUTTON_LEFT) {
+        if(GLFW_PRESS == action)
+            lbutton_down = true;
+         else if (GLFW_RELEASE == action)
+            lbutton_down = false;
+    }
+
+    if(lbutton_down) {
+        printf ("Hello\n");
+    }
+}
+
 
 int main  (void)
 {
@@ -84,6 +100,7 @@ int main  (void)
 
         glfwMakeContextCurrent (window);
         glfwSetKeyCallback (window, key_callback);
+        glfwSetMouseButtonCallback (window, mouse_callback);
         DEB_INFO
         GraphicsMainLoop (window);
         DEB_INFO
@@ -107,36 +124,19 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 
 
 void GraphicsMainLoop (GLFWwindow* window) {
-        // Vector<Vector<size_t>> result = CompGraph_of_sort (MergeSortRecursive<MyType>);
-        // Vector <Point2d> points (result.size ());
-        // for (int i = 0; i < result.size (); ++i) {
-        //         points[i].x = result[i][0];
-        //         points[i].y = result[i][1];
-        // }
+
         DEB_INFO
         CoordinatePlane graph_of_assigns (1.0, 1.0, Point2d (-1.0, 0.0));
         CoordinatePlane graph_of_comp    (1.0, 1.0, Point2d (0.0, 0.0));
         DEB_INFO
 
-        // Vector<Vector<size_t>> result2 = CompGraph_of_sort (BubbleSort<MyType>);
-        // Vector <Point2d> points2 (result2.size ());
-        // for (int i = 0; i < result2.size (); ++i) {
-        //         points2[i].x = result2[i][0];
-        //         points2[i].y = result2[i][1];
-        // }
-        // graph_of_assigns.add_graph_by_p_arr (points);
-        // graph_of_assigns.add_graph_by_p_arr (points2);
-        
-
         Button<SortDrawFunctor<Numeric<int>>> butBub (0.3, 0.3, Point2d (-0.5, -0.5), Color (1.0, 0.0, 0.0), graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
         DEB_INFO
-        butBub.action ();
+        butBub.MouseClick ();
         
         //but.action ();
 
         DEB_INFO
-        //CoordinatePlane graph_of_assigns_2 (1.0, 1.0, Point2d (0.0, 0.0), points);
-        //printf ("Hello 3\n");
         while  (!glfwWindowShouldClose (window)) {
 
                 //DrawGraphByVertex (result);

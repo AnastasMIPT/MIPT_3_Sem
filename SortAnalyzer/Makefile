@@ -1,6 +1,6 @@
 EXECUTABLE   = Graphics
 second       = backend_x86
-LIBS         = Sorts.h Primitives.h
+LIBS         = Sorts.h Primitives.h button.h
 SOURCEFILES  = Graphics.cpp Primitives.cpp
 OBJFILES     = $(SOURCEFILES:.cpp=.o)
 CFlags       = --std=c++17 -msse4 -O3
