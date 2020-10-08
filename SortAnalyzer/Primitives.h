@@ -19,15 +19,8 @@ const GLdouble DefaultMaxVal = -228;
 double Len_of_vec (const glm::highp_vec2& vec);
 
 
-class DrawableObject {
-public:
-    virtual void draw () const = 0;
-    virtual ~DrawableObject () = default;
-};
 
-
-
-class Point2d : public DrawableObject {
+class Point2d {
 public:
     GLdouble x;
     GLdouble y;
@@ -38,26 +31,26 @@ public:
 
     Point2d () = default;
 
-    void draw () const final override;
+    void draw () const;
 
-   ~Point2d () final = default;
+   ~Point2d ()   = default;
 };
 
 
-struct Color : public DrawableObject {
+struct Color   {
     GLdouble red   = 1.0;
     GLdouble green = 1.0;
     GLdouble blue  = 1.0;
 
     Color () = default;
     Color (GLdouble _red, GLdouble _green, GLdouble _blue);
-    void draw () const override;
+    void draw () const;
 
-    ~Color () final = default;
+    ~Color ()   = default;
 };
 
 
-class Arrow : DrawableObject {
+class Arrow {
     GLdouble x1;
     GLdouble y1;
     GLdouble x2;
@@ -66,13 +59,13 @@ class Arrow : DrawableObject {
     static constexpr double tip_height = 0.05;
 public:
     Arrow (GLdouble x1, GLdouble y1, GLdouble x2, GLdouble y2);
-    void draw () const override;
+    void draw () const   ;
 
-    ~Arrow () final = default;
+    ~Arrow ()   = default;
 };
 
 
-class Rect : public DrawableObject {
+class Rect   {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
@@ -80,22 +73,22 @@ class Rect : public DrawableObject {
 
 public:
     Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord, Color _color = Color ());
-    void draw () const override;
+    void draw () const   ;
 
-    ~Rect () final = default;
+    ~Rect ()   = default;
 };
 
-class LineStrip : public DrawableObject {
+class LineStrip   {
     const Vector<Point2d>& points;
 public:
     LineStrip (const Vector<Point2d>& _points);
-    void draw () const override;
+    void draw () const   ;
 
-    ~LineStrip () final = default;
+    ~LineStrip ()   = default;
 }; 
 
 
-class Graph : public DrawableObject {
+class Graph   {
     GLdouble im_x;
     GLdouble im_y;
     GLdouble im_size_x;
@@ -117,12 +110,12 @@ public:
 
     void change_max_x (GLdouble _max_x);
     void change_max_y (GLdouble _max_y);
-    void draw () const final override;
-    ~Graph () final = default;
+    void draw () const     ;
+    ~Graph ()   = default;
 };
 
 
-class CoordinatePlane : public DrawableObject {
+class CoordinatePlane   {
     GLdouble size_x;
     GLdouble size_y;
     Point2d coord;
@@ -140,9 +133,9 @@ public:
     //void add_graph (const Graph& graph);
     void add_graph_by_p_arr (const Vector<Point2d>& points);
     void draw_graphs () const;
-    void draw () const final override;
+    void draw () const     ;
 
-    ~CoordinatePlane () final = default;
+    ~CoordinatePlane ()   = default;
 };
 
 

@@ -3,6 +3,7 @@
 
 
 #include "Primitives.h"
+#include "window.h"
 
 template <typename T>
 using SortFunc_t = void (*) (T*, size_t, size_t);
@@ -23,16 +24,17 @@ public:
 
 
 template <typename Functor_t>
-class Button : public DrawableObject {
+class Button : public AbstractWindow {
     Rect background;
-public:
     Functor_t MouseClick;
+public:
 
     template <typename ...Args_t>
     Button (GLdouble size_x, GLdouble size_y, const Point2d& coord, const Color& color, Args_t&&... args) 
     : background (size_x, size_y, coord, color), MouseClick (std::forward<Args_t> (args)...) {}
 
     void draw () const override;
+    void onMouseClick () override;
     ~Button () final = default;
 };
 
@@ -76,5 +78,12 @@ template <typename Functor_t>
 void Button<Functor_t>::draw () const {
     background.draw ();
 }
+
+
+template <typename Functor_t>
+void Button<Functor_t>::onMouseClick () {
+  
+}
+
 
 #endif // BUTTON_H

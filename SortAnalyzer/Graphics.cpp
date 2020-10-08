@@ -130,9 +130,11 @@ void GraphicsMainLoop (GLFWwindow* window) {
         CoordinatePlane graph_of_comp    (1.0, 1.0, Point2d (0.0, 0.0));
         DEB_INFO
 
-        Button<SortDrawFunctor<Numeric<int>>> butBub (0.3, 0.3, Point2d (-0.5, -0.5), Color (1.0, 0.0, 0.0), graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
+        Button<SortDrawFunctor<Numeric<int>>> butBub (0.3, 0.3, Point2d (-0.5, -0.5), Color (1.0, 0.0, 0.0), 
+                                                      graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
+                                                      
         DEB_INFO
-        butBub.MouseClick ();
+        butBub.MouseClick (); 
         
         //but.action ();
 
