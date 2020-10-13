@@ -63,13 +63,14 @@ class AbstractWindowContainer : AbstractWindow {
 
     
 public:
-    void addWindow (AbstractWindow* window);
-    void draw () const;
+    //void addWindow (AbstractWindow* window);
+    
 
     bool HandleEvent (AbstractEvent* event) override;
     void onMouseClick (MouseClickEvent* event) override {}
+    void draw () const override {}
+
     
-    ~AbstractWindowContainer () = default;
 };
 
 
