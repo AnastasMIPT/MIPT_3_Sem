@@ -17,7 +17,7 @@ class AbstractEvent {
 public:
     unsigned int type;
     bool coordinatble;
-    virtual ~AbstractEvent ();
+    virtual ~AbstractEvent () = default;
 };
 
 

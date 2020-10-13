@@ -7,9 +7,9 @@
 #include <stdio.h>
 
 #include "Primitives.h"
-#include "window.h"
-#include "button.h"
 
+#include "button.h"
+#include "window.h"
 //#define DEBUG
 #include "../MyLib/debug_info.h"
 
@@ -27,8 +27,8 @@ size_t Numeric<int>::num_comparisons = 0;
 
 AbstractWindowContainer AbstractApplication::windows;
 std::queue <std::unique_ptr<AbstractEvent>> AbstractApplication::event_queue;
-
 AbstractWindowContainer::WindowList AbstractWindowContainer::subwindows;
+
 
 Vector<MyType> rand_vector (size_t size) {
     Vector<MyType> vec (size);
