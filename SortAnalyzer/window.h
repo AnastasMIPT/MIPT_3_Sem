@@ -69,7 +69,7 @@ public:
     bool HandleEvent (AbstractEvent* event) override;
     void onMouseClick (MouseClickEvent* event) override {}
     
-
+    ~AbstractWindowContainer () = default;
 };
 
 
