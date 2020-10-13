@@ -26,15 +26,16 @@ public:
 template <typename Functor_t>
 class Button : public AbstractWindow {
     Rect background;
-    Functor_t MouseClick;
+    
 public:
 
+    Functor_t MouseClick;
     template <typename ...Args_t>
     Button (GLdouble size_x, GLdouble size_y, const Point2d& coord, const Color& color, Args_t&&... args) 
     : background (size_x, size_y, coord, color), MouseClick (std::forward<Args_t> (args)...) {}
 
     void draw () const override;
-    void onMouseClick () override;
+    void onMouseClick (MouseClickEvent* event) override;
     ~Button () final = default;
 };
 
@@ -81,8 +82,19 @@ void Button<Functor_t>::draw () const {
 
 
 template <typename Functor_t>
-void Button<Functor_t>::onMouseClick () {
-  
+void Button<Functor_t>::onMouseClick (MouseClickEvent* event) {
+    bool lbutton_down = false;
+    if (event->button == GLFW_MOUSE_BUTTON_LEFT) {
+        if(GLFW_PRESS == event->action)
+            lbutton_down = true;
+         else if (GLFW_RELEASE == event->action)
+            lbutton_down = false;
+    }
+
+    if(lbutton_down) {
+        printf ("Hello\n");
+        //MouseClick ();
+    }
 }
 
 

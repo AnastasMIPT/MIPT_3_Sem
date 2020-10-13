@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "Primitives.h"
+#include "window.h"
 #include "button.h"
 
 //#define DEBUG
@@ -85,6 +86,7 @@ static void mouse_callback (GLFWwindow* window, int button, int action, int mods
 
 int main  (void)
 {
+        //SortAnalyzer obj;
         DEB_INFO
         GLFWwindow* window;
         glfwSetErrorCallback (error_callback);
@@ -100,7 +102,7 @@ int main  (void)
 
         glfwMakeContextCurrent (window);
         glfwSetKeyCallback (window, key_callback);
-        glfwSetMouseButtonCallback (window, mouse_callback);
+        glfwSetMouseButtonCallback (window, SortAnalyzer::MouseClickCallback);
         DEB_INFO
         GraphicsMainLoop (window);
         DEB_INFO
