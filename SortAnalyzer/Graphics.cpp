@@ -25,7 +25,10 @@ size_t Numeric<int>::num_assigns = 0;
 template<>
 size_t Numeric<int>::num_comparisons = 0;
 
+AbstractWindowContainer AbstractApplication::windows;
+std::queue <std::unique_ptr<AbstractEvent>> AbstractApplication::event_queue;
 
+AbstractWindowContainer::WindowList AbstractWindowContainer::subwindows;
 
 Vector<MyType> rand_vector (size_t size) {
     Vector<MyType> vec (size);
