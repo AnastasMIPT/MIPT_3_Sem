@@ -75,6 +75,8 @@ void Button<Functor_t>::draw () const {
 
 template <typename Functor_t>
 void Button<Functor_t>::onMouseClick (MouseClickEvent* event) {
+
+    printf ("Зашел в onClick кнопки\n");
     bool lbutton_down = false;
     if (event->button == GLFW_MOUSE_BUTTON_LEFT) {
         if(GLFW_PRESS == event->action)
@@ -85,7 +87,7 @@ void Button<Functor_t>::onMouseClick (MouseClickEvent* event) {
 
     if(lbutton_down) {
         printf ("Hello\n");
-        //MouseClick ();
+        MouseClick ();
     }
 }
 

@@ -134,14 +134,17 @@ void GraphicsMainLoop (GLFWwindow* window) {
         CoordinatePlane graph_of_comp    (0.0, 0.0,1.0, 1.0);
         DEB_INFO
 
+        SortAnalyzer app;
         
+        // Button<SortDrawFunctor<Numeric<int>>> butBub (-0.5, -0.5, 0.3, 0.3, Color (1.0, 0.0, 0.0), 
+                                                    //   graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
+        std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> butt (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
+        Color (1.0, 0.0, 0.0), graph_of_assigns, graph_of_comp, BubbleSort<MyType>));
+        app.addObject (butt.get ());
 
-        Button<SortDrawFunctor<Numeric<int>>> butBub (-0.5, -0.5, 0.3, 0.3, Color (1.0, 0.0, 0.0), 
-                                                      graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
-                                                      
         DEB_INFO
-        butBub.MouseClick (); 
-        
+        // butBub.MouseClick (); 
+        //butt->MouseClick ();
         //but.action ();
 
         DEB_INFO
@@ -153,12 +156,13 @@ void GraphicsMainLoop (GLFWwindow* window) {
                 graph_of_assigns.draw ();
                 DEB_INFO
                 graph_of_comp.draw ();
-                butBub.draw ();
-                
+                //butBub.draw ();
+                butt->draw ();
                 
                 glfwSwapBuffers (window);
                 DEB_INFO
                 glfwPollEvents ();
+                app.run ();
                 DEB_INFO
         }
 
