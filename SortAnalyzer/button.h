@@ -24,26 +24,18 @@ public:
 
 
 template <typename Functor_t>
-class Button : public AbstractWindow {
-    Rect background;
-    
+class Button : public QuadWindow {
 public:
-
+    Color color;
     Functor_t MouseClick;
     template <typename ...Args_t>
-    Button (GLdouble size_x, GLdouble size_y, const Point2d& coord, const Color& color, Args_t&&... args) 
-    : background (size_x, size_y, coord, color), MouseClick (std::forward<Args_t> (args)...) {}
+    Button (double _x, double _y, double _size_x, double _size_y, const Color& _color, Args_t&&... args) 
+    : QuadWindow (_x, _y, _size_x, _size_y), color (_color), MouseClick (std::forward<Args_t> (args)...) {}
 
     void draw () const override;
     void onMouseClick (MouseClickEvent* event) override;
     ~Button () final = default;
 };
-
-
-
-
-
-
 
 
 
@@ -77,7 +69,7 @@ SortDrawFunctor<T>::SortDrawFunctor (CoordinatePlane& _coord_plane_ass, Coordina
 
 template <typename Functor_t>
 void Button<Functor_t>::draw () const {
-    background.draw ();
+    Rect (x, y, x_size, y_size, color).draw ();
 }
 
 

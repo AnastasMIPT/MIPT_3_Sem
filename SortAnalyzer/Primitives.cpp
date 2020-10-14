@@ -16,7 +16,7 @@ double Len_of_vec (const glm::highp_vec2& vec) {
 
 size_t Ind_of_point_with_max_x (const Vector<Point2d>& points) {
     size_t ind = 0;
-    GLdouble max_x = points[0].x;
+    double max_x = points[0].x;
     for (size_t i = 1; i < points.size (); ++i) {
         if (points[i].x > max_x) {
             ind = i;
@@ -28,7 +28,7 @@ size_t Ind_of_point_with_max_x (const Vector<Point2d>& points) {
 
 size_t Ind_of_point_with_max_y (const Vector<Point2d>& points) {
     size_t ind = 0;
-    GLdouble max_y = points[0].y;
+    double max_y = points[0].y;
     for (size_t i = 1; i < points.size (); ++i) {
         if (points[i].y > max_y) {
             ind = i;
@@ -43,9 +43,9 @@ void Color::draw () const {
     glColor3d (red, green, blue);
 }
 
-Color::Color (GLdouble _red, GLdouble _green, GLdouble _blue) : red (_red), green (_green), blue (_blue) {}
+Color::Color (double _red, double _green, double _blue) : red (_red), green (_green), blue (_blue) {}
 
-Point2d::Point2d (GLdouble _x, GLdouble _y)
+Point2d::Point2d (double _x, double _y)
     : x (_x), y (_y) {}
 
 Point2d::Point2d (const Point2d& other) 
@@ -69,7 +69,7 @@ void LineStrip::draw () const {
 }
 
 
-Arrow::Arrow (GLdouble _x1, GLdouble _y1, GLdouble _x2, GLdouble _y2) : x1 (_x1), y1 (_y1), x2 (_x2), y2 (_y2) {}
+Arrow::Arrow (double _x1, double _y1, double _x2, double _y2) : x1 (_x1), y1 (_y1), x2 (_x2), y2 (_y2) {}
 
 void Arrow::draw () const {
 
@@ -79,10 +79,10 @@ void Arrow::draw () const {
     right /= Len_of_vec (right);
     right *= tip_width / 2;
 
-    GLdouble r_x = x1 + base[0] + right[0];
-    GLdouble r_y = y1 + base[1] + right[1];
-    GLdouble l_x = x1 + base[0] - right[0];
-    GLdouble l_y = y1 + base[1] - right[1];
+    double r_x = x1 + base[0] + right[0];
+    double r_y = y1 + base[1] + right[1];
+    double l_x = x1 + base[0] - right[0];
+    double l_y = y1 + base[1] - right[1];
 
     // printf ("%lf\n", sqrt (right[0] * right[0] + right[1] * right[1]));
 
@@ -102,26 +102,26 @@ void Arrow::draw () const {
 
 
 
-Rect::Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord, Color _color) 
-    : size_x (_size_x), size_y (_size_y), coord (_coord), color (_color) {}
+Rect::Rect (double _x, double _y, double _size_x, double _size_y, Color _color) 
+    : x (_x), y (_y), size_x (_size_x), size_y (_size_y), color (_color) {}
 
 void Rect::draw () const {
     glBegin (GL_QUADS);
         color.draw ();
-        Point2d (coord.x, coord.y).draw ();
-        Point2d (coord.x, coord.y + size_y).draw ();
-        Point2d (coord.x + size_x, coord.y + size_y).draw ();
-        Point2d (coord.x + size_x, coord.y).draw ();
+        Point2d (x, y).draw ();
+        Point2d (x, y + size_y).draw ();
+        Point2d (x + size_x, y + size_y).draw ();
+        Point2d (x + size_x, y).draw ();
     glEnd ();
 }
 
 
 
 
-CoordinatePlane::CoordinatePlane (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord) 
-    : size_x (_size_x), size_y (_size_y), coord (_coord) {
-        im_x = coord.x + off_image * size_x;
-        im_y = coord.y + off_image * size_y;
+CoordinatePlane::CoordinatePlane (double _x, double _y, double _size_x, double _size_y) 
+    : x (_x), y (_y), size_x (_size_x), size_y (_size_y) {
+        im_x = x + off_image * size_x;
+        im_y = y + off_image * size_y;
         im_size_y = (1 - 2 * off_image) * size_y;
         im_size_x = (1 - 2 * off_image) * size_x;
         
@@ -143,7 +143,7 @@ void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
 
 void CoordinatePlane::draw () const {
 
-    Rect (size_x, size_y, coord).draw ();
+    Rect (x, y, size_x, size_y).draw ();
 
     Arrow OY (im_x, im_y, im_x, im_y + im_size_y);
     OY.draw ();
@@ -155,14 +155,14 @@ void CoordinatePlane::draw () const {
 }
 
 
-Graph::Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
-           const Vector<Point2d>& _points, GLdouble _max_x, GLdouble _max_y) 
+Graph::Graph (double _im_x, double _im_y, double _im_size_x, double _im_size_y,
+           const Vector<Point2d>& _points, double _max_x, double _max_y) 
     
     : im_x (_im_x), im_y (_im_y), im_size_x (_im_size_x), im_size_y (_im_size_y), 
       points (_points), max_x (_max_x), max_y (_max_y) {}
 
 
-Graph::Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
+Graph::Graph (double _im_x, double _im_y, double _im_size_x, double _im_size_y,
            const Vector<Point2d>& _points) 
     
     : im_x (_im_x), im_y (_im_y), im_size_x (_im_size_x), im_size_y (_im_size_y), 
@@ -185,10 +185,10 @@ void Graph::draw () const {
     glEnd ();
 }
 
-void Graph::change_max_x (GLdouble _max_x) {
+void Graph::change_max_x (double _max_x) {
     max_x = _max_x;
 }
 
-void Graph::change_max_y (GLdouble _max_y) {
+void Graph::change_max_y (double _max_y) {
     max_y = _max_y;
 }

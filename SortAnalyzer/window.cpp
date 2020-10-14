@@ -47,11 +47,12 @@ bool AbstractWindowContainer::HandleEvent (AbstractEvent* event) {
 
 
 
+QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size)
+: x (_x), y (_y), x_size (_x_size), y_size (_y_size) {}
 
 
 
-
-bool AbstractWindow::CheckCoordinate (double pos_x, double pos_y) const {
+bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
     return pos_x > x && pos_y < y && pos_x < x + x_size && pos_y > y - y_size? true : false;
 }
 

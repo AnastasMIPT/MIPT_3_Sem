@@ -13,7 +13,7 @@
 //#define DEBUG
 #include "../MyLib/debug_info.h"
 
-const GLdouble DefaultMaxVal = -228;
+const double DefaultMaxVal = -228;
 
 
 double Len_of_vec (const glm::highp_vec2& vec);
@@ -22,10 +22,10 @@ double Len_of_vec (const glm::highp_vec2& vec);
 
 class Point2d {
 public:
-    GLdouble x;
-    GLdouble y;
+    double x;
+    double y;
 
-    Point2d (GLdouble _x, GLdouble _y);
+    Point2d (double _x, double _y);
 
     Point2d (const Point2d& other);
 
@@ -38,12 +38,12 @@ public:
 
 
 struct Color   {
-    GLdouble red   = 1.0;
-    GLdouble green = 1.0;
-    GLdouble blue  = 1.0;
+    double red   = 1.0;
+    double green = 1.0;
+    double blue  = 1.0;
 
     Color () = default;
-    Color (GLdouble _red, GLdouble _green, GLdouble _blue);
+    Color (double _red, double _green, double _blue);
     void draw () const;
 
     ~Color ()   = default;
@@ -51,14 +51,14 @@ struct Color   {
 
 
 class Arrow {
-    GLdouble x1;
-    GLdouble y1;
-    GLdouble x2;
-    GLdouble y2;
+    double x1;
+    double y1;
+    double x2;
+    double y2;
     static constexpr double tip_width = 0.010;
     static constexpr double tip_height = 0.05;
 public:
-    Arrow (GLdouble x1, GLdouble y1, GLdouble x2, GLdouble y2);
+    Arrow (double x1, double y1, double x2, double y2);
     void draw () const   ;
 
     ~Arrow ()   = default;
@@ -66,13 +66,14 @@ public:
 
 
 class Rect   {
-    GLdouble size_x;
-    GLdouble size_y;
-    Point2d coord;
+    double x;
+    double y;
+    double size_x;
+    double size_y;
     Color color;
 
 public:
-    Rect (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord, Color _color = Color ());
+    Rect (double _x, double _y, double _size_x, double _size_y, Color _color = Color ());
     void draw () const   ;
 
     ~Rect ()   = default;
@@ -89,51 +90,52 @@ public:
 
 
 class Graph   {
-    GLdouble im_x;
-    GLdouble im_y;
-    GLdouble im_size_x;
-    GLdouble im_size_y;
+    double im_x;
+    double im_y;
+    double im_size_x;
+    double im_size_y;
     
     Vector<Point2d> points;
 
-    GLdouble max_x;
-    GLdouble max_y;
+    double max_x;
+    double max_y;
     
 
 public:
-    Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
-           const Vector<Point2d>& _points, GLdouble _max_x , GLdouble _max_y);
+    Graph (double _im_x, double _im_y, double _im_size_x, double _im_size_y,
+           const Vector<Point2d>& _points, double _max_x , double _max_y);
 
-    Graph (GLdouble _im_x, GLdouble _im_y, GLdouble _im_size_x, GLdouble _im_size_y,
+    Graph (double _im_x, double _im_y, double _im_size_x, double _im_size_y,
            const Vector<Point2d>& _points);
 
 
-    void change_max_x (GLdouble _max_x);
-    void change_max_y (GLdouble _max_y);
+    void change_max_x (double _max_x);
+    void change_max_y (double _max_y);
     void draw () const     ;
     ~Graph ()   = default;
 };
 
 
-class CoordinatePlane   {
-    GLdouble size_x;
-    GLdouble size_y;
-    Point2d coord;
-    GLdouble im_size_x;
-    GLdouble im_size_y;
-    GLdouble im_x;
-    GLdouble im_y;
-    static constexpr GLdouble off_image = 0.03;
+class CoordinatePlane {
+    double x;
+    double y;
+    double size_x;
+    double size_y;
+    double im_size_x;
+    double im_size_y;
+    double im_x;
+    double im_y;
+    static constexpr double off_image = 0.03;
 
     Vector<Graph> graphs;
 
 public:
 
-    CoordinatePlane (GLdouble _size_x, GLdouble _size_y, const Point2d& _coord);
+    CoordinatePlane (double _x, double _y,double _size_x, double _size_y);
     //void add_graph (const Graph& graph);
     void add_graph_by_p_arr (const Vector<Point2d>& points);
     void draw_graphs () const;
-    void draw () const     ;
+    void draw () const;
 
     ~CoordinatePlane ()   = default;
 };

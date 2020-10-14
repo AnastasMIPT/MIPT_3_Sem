@@ -131,11 +131,11 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 void GraphicsMainLoop (GLFWwindow* window) {
 
         DEB_INFO
-        CoordinatePlane graph_of_assigns (1.0, 1.0, Point2d (-1.0, 0.0));
-        CoordinatePlane graph_of_comp    (1.0, 1.0, Point2d (0.0, 0.0));
+        CoordinatePlane graph_of_assigns (-1.0, 0.0, 1.0, 1.0);
+        CoordinatePlane graph_of_comp    (0.0, 0.0,1.0, 1.0);
         DEB_INFO
 
-        Button<SortDrawFunctor<Numeric<int>>> butBub (0.3, 0.3, Point2d (-0.5, -0.5), Color (1.0, 0.0, 0.0), 
+        Button<SortDrawFunctor<Numeric<int>>> butBub (-0.5, -0.5, 0.3, 0.3, Color (1.0, 0.0, 0.0), 
                                                       graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
                                                       
         DEB_INFO

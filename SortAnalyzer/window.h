@@ -28,7 +28,6 @@ public:
     CoordinatbleEvent (double _pos_x, double _pos_y) : pos_x (_pos_x), pos_y (_pos_y) {}
 };
 
-
 class MouseClickEvent : public CoordinatbleEvent {
 public:
     int button;
@@ -39,20 +38,39 @@ public:
     : CoordinatbleEvent (_pos_x, _pos_y), button (_button), action (_action), mods (_mods) {}
 };
 
+
+
+
+
 class AbstractWindow {
+public:
+    virtual void draw () const = 0;
+    virtual void onMouseClick (MouseClickEvent* event) = 0;
+    virtual bool CheckCoordinate (double pos_x, double pos_y) const = 0;
+    virtual bool HandleEvent (AbstractEvent* event);
+    
+    virtual ~AbstractWindow () = default;
+};
+
+
+
+class QuadWindow : public AbstractWindow {
+protected:
     double x;
     double y;
     double x_size;
     double y_size;
 public:
-    virtual void draw () const = 0;
-    virtual void onMouseClick (MouseClickEvent* event) = 0;
+    QuadWindow (double _x, double _y, double _x_size, double _y_size);
     bool CheckCoordinate (double pos_x, double pos_y) const;
-    virtual bool HandleEvent (AbstractEvent* event);
-    
+    void onMouseClick (MouseClickEvent* event) {}
+    void draw () const {}
 
-    virtual ~AbstractWindow () = default;
+    ~QuadWindow () = default;
 };
+
+
+
 
 
 
@@ -69,8 +87,8 @@ public:
     bool HandleEvent (AbstractEvent* event) override;
     void onMouseClick (MouseClickEvent* event) override {}
     void draw () const override {}
+    bool CheckCoordinate (double pos_x, double pos_y) const {return false;}
 
-    
 };
 
 
