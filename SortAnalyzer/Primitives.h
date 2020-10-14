@@ -13,6 +13,9 @@
 //#define DEBUG
 #include "../MyLib/debug_info.h"
 
+#include "window.h"
+
+
 const double DefaultMaxVal = -228;
 
 
@@ -116,11 +119,7 @@ public:
 };
 
 
-class CoordinatePlane {
-    double x;
-    double y;
-    double size_x;
-    double size_y;
+class CoordinatePlane : public QuadWindow {
     double im_size_x;
     double im_size_y;
     double im_x;

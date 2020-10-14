@@ -55,13 +55,13 @@ public:
 
 
 class QuadWindow : public AbstractWindow {
-protected:
+public:
     double x;
     double y;
-    double x_size;
-    double y_size;
+    double size_x;
+    double size_y;
 public:
-    QuadWindow (double _x, double _y, double _x_size, double _y_size);
+    QuadWindow (double _x, double _y, double _size_x, double _size_y);
     bool CheckCoordinate (double pos_x, double pos_y) const;
     void onMouseClick (MouseClickEvent* event) {}
     void draw () const {}

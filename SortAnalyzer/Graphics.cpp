@@ -89,7 +89,6 @@ static void mouse_callback (GLFWwindow* window, int button, int action, int mods
 
 int main  (void)
 {
-        //SortAnalyzer obj;
         DEB_INFO
         GLFWwindow* window;
         glfwSetErrorCallback (error_callback);
@@ -134,6 +133,8 @@ void GraphicsMainLoop (GLFWwindow* window) {
         CoordinatePlane graph_of_assigns (-1.0, 0.0, 1.0, 1.0);
         CoordinatePlane graph_of_comp    (0.0, 0.0,1.0, 1.0);
         DEB_INFO
+
+        
 
         Button<SortDrawFunctor<Numeric<int>>> butBub (-0.5, -0.5, 0.3, 0.3, Color (1.0, 0.0, 0.0), 
                                                       graph_of_assigns, graph_of_comp, BubbleSort<MyType>);

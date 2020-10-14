@@ -69,7 +69,7 @@ SortDrawFunctor<T>::SortDrawFunctor (CoordinatePlane& _coord_plane_ass, Coordina
 
 template <typename Functor_t>
 void Button<Functor_t>::draw () const {
-    Rect (x, y, x_size, y_size, color).draw ();
+    Rect (x, y, size_x, size_y, color).draw ();
 }
 
 

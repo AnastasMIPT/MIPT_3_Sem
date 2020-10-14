@@ -119,7 +119,7 @@ void Rect::draw () const {
 
 
 CoordinatePlane::CoordinatePlane (double _x, double _y, double _size_x, double _size_y) 
-    : x (_x), y (_y), size_x (_size_x), size_y (_size_y) {
+    : QuadWindow (_x, _y, _size_x, _size_y) {
         im_x = x + off_image * size_x;
         im_y = y + off_image * size_y;
         im_size_y = (1 - 2 * off_image) * size_y;
