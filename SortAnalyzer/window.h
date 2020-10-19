@@ -16,8 +16,11 @@ enum EventTypes {
 class AbstractEvent {
 public:
     unsigned int type;
-    bool coordinatble;
-    AbstractEvent (unsigned int _type) : type (_type) {}
+    bool is_coordinatble;
+    
+    AbstractEvent (unsigned int _type, bool _is_coordinatable)
+    : type (_type), is_coordinatble (_is_coordinatable) {}
+    
     virtual ~AbstractEvent () = default;
 };
 
@@ -26,7 +29,9 @@ class CoordinatbleEvent : public AbstractEvent{
 public:
     double pos_x;
     double pos_y;
-    CoordinatbleEvent (double _pos_x, double _pos_y, unsigned int _type) : AbstractEvent (_type), pos_x (_pos_x), pos_y (_pos_y) {}
+    
+    CoordinatbleEvent (double _pos_x, double _pos_y, unsigned int _type)
+    : AbstractEvent (_type, true), pos_x (_pos_x), pos_y (_pos_y) {}
 };
 
 class MouseClickEvent : public CoordinatbleEvent {
@@ -82,6 +87,18 @@ class AbstractWindowContainer : AbstractWindow {
 
     
 public:
+    typedef WindowList::iterator iterator;
+    typedef const    iterator const_iterator;
+    typedef std::reverse_iterator<iterator> reverse_iterator;
+
+    iterator begin () {
+        return subwindows.begin ();
+    }
+
+    iterator end () {
+        return subwindows.end ();
+    }
+
     void addWindow (AbstractWindow* window);
     
 
@@ -102,6 +119,7 @@ protected:
 public:
     virtual ~AbstractApplication () = default;
     void addObject (AbstractWindow* window);
+    void drawObjects () const;
 };
 
 

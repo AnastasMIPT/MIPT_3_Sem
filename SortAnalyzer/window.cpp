@@ -28,6 +28,11 @@ void AbstractApplication::addObject (AbstractWindow* window) {
     windows.addWindow (window);
 }
 
+void AbstractApplication::drawObjects () const {
+    for (auto window : windows) {
+        window->draw ();
+    }
+}
 
 void AbstractWindowContainer::addWindow (AbstractWindow* window) {
     subwindows.push_back (window);
@@ -38,7 +43,7 @@ bool AbstractWindowContainer::HandleEvent (AbstractEvent* event) {
     bool is_consumed = false;
     printf ("Принял событие\n");
 
-    if (event->coordinatble) {
+    if (event->is_coordinatble) {
         CoordinatbleEvent* temp_event = static_cast<CoordinatbleEvent*> (event);
         is_consumed = CheckCoordinate (temp_event->pos_x, temp_event->pos_y);
         if (!is_consumed) return false;
@@ -79,7 +84,7 @@ bool AbstractWindow::HandleEvent (AbstractEvent* event) {
     bool is_consumed = false;
      
     printf ("пытаюсь поглатить\n");
-    if (event->coordinatble) {
+    if (event->is_coordinatble) {
         CoordinatbleEvent* temp_event = dynamic_cast<CoordinatbleEvent*> (event);
         is_consumed = CheckCoordinate (temp_event->pos_x, temp_event->pos_y);
         if (!is_consumed) return false;

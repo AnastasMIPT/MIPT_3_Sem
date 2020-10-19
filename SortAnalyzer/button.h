@@ -11,12 +11,12 @@ using SortFunc_t = void (*) (T*, size_t, size_t);
 
 template <typename T>
 class SortDrawFunctor {
-    CoordinatePlane& coord_plane_ass;
-    CoordinatePlane& coord_plane_comp;
+    CoordinatePlane* coord_plane_ass;
+    CoordinatePlane* coord_plane_comp;
     SortFunc_t<T> func_sort;
     
 public:
-    SortDrawFunctor (CoordinatePlane& _coord_plane_ass, CoordinatePlane& _coord_plane_comp, SortFunc_t<T> _func_sort);
+    SortDrawFunctor (CoordinatePlane* _coord_plane_ass, CoordinatePlane* _coord_plane_comp, SortFunc_t<T> _func_sort);
 
     void operator() ();
 
@@ -57,12 +57,12 @@ void SortDrawFunctor<T>::operator() () {
                 points_comp[i].x = result[i][0];
                 points_comp[i].y = result[i][2];
         }
-        coord_plane_ass.add_graph_by_p_arr (points_assigns);
-        coord_plane_comp.add_graph_by_p_arr (points_comp);
+        coord_plane_ass->add_graph_by_p_arr (points_assigns);
+        coord_plane_comp->add_graph_by_p_arr (points_comp);
 }
 
 template<typename T>
-SortDrawFunctor<T>::SortDrawFunctor (CoordinatePlane& _coord_plane_ass, CoordinatePlane& _coord_plane_comp, SortFunc_t<T> _func_sort)
+SortDrawFunctor<T>::SortDrawFunctor (CoordinatePlane* _coord_plane_ass, CoordinatePlane* _coord_plane_comp, SortFunc_t<T> _func_sort)
     : coord_plane_ass (_coord_plane_ass), coord_plane_comp (_coord_plane_comp), func_sort (_func_sort) {}
 
 

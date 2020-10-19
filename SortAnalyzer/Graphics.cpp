@@ -30,62 +30,16 @@ std::queue <std::unique_ptr<AbstractEvent>> AbstractApplication::event_queue;
 AbstractWindowContainer::WindowList AbstractWindowContainer::subwindows;
 
 
-Vector<MyType> rand_vector (size_t size) {
-    Vector<MyType> vec (size);
-    for (size_t i = 0; i < size; ++i) {
-        vec[i] = rand () % 1024;
-    }
-    return vec;
-}
-
+Vector<MyType> rand_vector (size_t size);
 
 template <typename T>
-Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_size = 10, size_t delta = 10, size_t max_size = 100) {
-    size_t size = start_size;
-    Vector<Vector<size_t>> result;
-    while (size <= max_size)
-    {
-        Vector<MyType> arr (rand_vector (size));
-
-        func_sort (&arr[0], 0, size);
-
-        Vector<size_t> temp (3);
-        temp[0] = size;
-        temp[1] = MyType::num_of_comp ();
-        temp[2] = MyType::num_of_assigns ();
-        result.push_back (temp);
-        
-        MyType::num_of_comp_to_zero ();
-        MyType::num_of_assigns_to_zero ();
-        
-        size += delta;
-    }
-    
-    return result;
-}
-
+Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_size = 10, size_t delta = 10, size_t max_size = 100);
 
 
 
 static void error_callback (int error, const char* description);
 static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods);
 void GraphicsMainLoop (GLFWwindow* window);
-
-static void mouse_callback (GLFWwindow* window, int button, int action, int mods)
-{
-    bool lbutton_down = false;
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
-        if(GLFW_PRESS == action)
-            lbutton_down = true;
-         else if (GLFW_RELEASE == action)
-            lbutton_down = false;
-    }
-
-    if(lbutton_down) {
-        printf ("Hello\n");
-    }
-}
-
 
 int main  (void)
 {
@@ -129,42 +83,70 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 
 void GraphicsMainLoop (GLFWwindow* window) {
 
-        DEB_INFO
-        CoordinatePlane graph_of_assigns (-1.0, 0.0, 1.0, 1.0);
-        CoordinatePlane graph_of_comp    (0.0, 0.0,1.0, 1.0);
-        DEB_INFO
-
         SortAnalyzer app;
         
-        // Button<SortDrawFunctor<Numeric<int>>> butBub (-0.5, -0.5, 0.3, 0.3, Color (1.0, 0.0, 0.0), 
-                                                    //   graph_of_assigns, graph_of_comp, BubbleSort<MyType>);
-        std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> butt (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
-        Color (1.0, 0.0, 0.0), graph_of_assigns, graph_of_comp, BubbleSort<MyType>));
-        app.addObject (butt.get ());
+        std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
+        std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
 
-        DEB_INFO
-        // butBub.MouseClick (); 
-        //butt->MouseClick ();
-        //but.action ();
+
+        std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> butt (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
+        Color (1.0, 0.0, 0.0), graph_of_assigns.get (), graph_of_comp.get (), BubbleSort<MyType>));
+ 
+        app.addObject (butt.get ());
+        app.addObject (graph_of_assigns.get ());
+        app.addObject (graph_of_comp.get ());
+
 
         DEB_INFO
         while  (!glfwWindowShouldClose (window)) {
 
-                //DrawGraphByVertex (result);
                 glClear (GL_COLOR_BUFFER_BIT);
-                DEB_INFO
-                graph_of_assigns.draw ();
-                DEB_INFO
-                graph_of_comp.draw ();
-                //butBub.draw ();
-                butt->draw ();
                 
+                
+                
+                app.drawObjects ();
+
                 glfwSwapBuffers (window);
-                DEB_INFO
                 glfwPollEvents ();
                 app.run ();
-                DEB_INFO
         }
 
 }
 
+
+
+
+template <typename T>
+Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_size, size_t delta, size_t max_size) {
+    size_t size = start_size;
+    Vector<Vector<size_t>> result;
+    while (size <= max_size)
+    {
+        Vector<MyType> arr (rand_vector (size));
+
+        func_sort (&arr[0], 0, size);
+
+        Vector<size_t> temp (3);
+        temp[0] = size;
+        temp[1] = MyType::num_of_comp ();
+        temp[2] = MyType::num_of_assigns ();
+        result.push_back (temp);
+        
+        MyType::num_of_comp_to_zero ();
+        MyType::num_of_assigns_to_zero ();
+        
+        size += delta;
+    }
+    
+    return result;
+}
+
+
+
+Vector<MyType> rand_vector (size_t size) {
+    Vector<MyType> vec (size);
+    for (size_t i = 0; i < size; ++i) {
+        vec[i] = rand () % 1024;
+    }
+    return vec;
+}
