@@ -1,0 +1,2 @@
+0x564fc23770a0 Вызван оператор new[] из | FILE: my_vector.h | FUNC: Vector<T>::Vector(size_t, const T&) [with T = int; size_t = long unsigned int] | LINE: 100 |Запрашиваемый размер: 20 байт
+0x564fc23770a0 Вызван оператор delete[]
