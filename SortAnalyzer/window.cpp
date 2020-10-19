@@ -1,6 +1,25 @@
 #include "window.h"
 
+SortAnalyzer::SortAnalyzer (int width, int height, const char* name) {
+    if  (!glfwInit ()) exit (EXIT_FAILURE);
 
+    app_window = glfwCreateWindow (width, height, name, NULL, NULL);
+    if (!app_window) {
+        glfwTerminate ();
+        exit (EXIT_FAILURE);
+    }
+
+
+    glfwMakeContextCurrent (app_window);
+    SetCallbacks ();
+
+}
+
+void SortAnalyzer::SetCallbacks () {
+    glfwSetErrorCallback (SortAnalyzer::ErrorCallback);
+    glfwSetKeyCallback (app_window, SortAnalyzer::KeyCallback);
+    glfwSetMouseButtonCallback (app_window, SortAnalyzer::MouseClickCallback);
+}
 
 void SortAnalyzer::run () {
     if (!event_queue.empty ()) {
@@ -9,6 +28,11 @@ void SortAnalyzer::run () {
     }
 }
 
+SortAnalyzer::~SortAnalyzer () {
+    glfwDestroyWindow (app_window);
+    glfwTerminate ();
+    exit (EXIT_SUCCESS);
+}
 
 void SortAnalyzer::MouseClickCallback (GLFWwindow* window, int button, int action, int mods) {
     double x_pos (0), y_pos (0);
@@ -23,6 +47,16 @@ void SortAnalyzer::MouseClickCallback (GLFWwindow* window, int button, int actio
     event_queue.push (std::move (event));
     printf ("Пойман щелчок мыши\n");
 }
+
+void SortAnalyzer::KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if  (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose (window, GL_TRUE);
+}
+
+void SortAnalyzer::ErrorCallback (int error, const char* description) {
+    fputs (description, stderr);
+}
+
 
 void AbstractApplication::addObject (AbstractWindow* window) {
     windows.addWindow (window);

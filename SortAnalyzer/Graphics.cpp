@@ -37,79 +37,34 @@ Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_
 
 
 
-static void error_callback (int error, const char* description);
-static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods);
-void GraphicsMainLoop (GLFWwindow* window);
+void GraphicsMainLoop (GLFWwindow* window, SortAnalyzer& app);
 
 int main  (void)
 {
-        DEB_INFO
-        GLFWwindow* window;
-        glfwSetErrorCallback (error_callback);
-        
-        if  (!glfwInit ()) exit (EXIT_FAILURE);
-        
-        window = glfwCreateWindow (1200, 675, "Simple example", NULL, NULL);
-        DEB_INFO
-        if  (!window) {
-                glfwTerminate ();
-                exit (EXIT_FAILURE);
-        }
+    SortAnalyzer app (1200, 675, "SortAnalyzer");
+    
+    std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
+    std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
+    std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> butt (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
+    Color (1.0, 0.0, 0.0), graph_of_assigns.get (), graph_of_comp.get (), BubbleSort<MyType>));
 
-        glfwMakeContextCurrent (window);
-        glfwSetKeyCallback (window, key_callback);
-        glfwSetMouseButtonCallback (window, SortAnalyzer::MouseClickCallback);
-        DEB_INFO
-        GraphicsMainLoop (window);
-        DEB_INFO
-        glfwDestroyWindow (window);
-        glfwTerminate ();
-        exit (EXIT_SUCCESS);
+    app.addObject (butt.get ());
+    app.addObject (graph_of_assigns.get ());
+    app.addObject (graph_of_comp.get ());
+    GraphicsMainLoop (app.app_window, app);
 }
 
-static void error_callback (int error, const char* description)
-{
-    fputs (description, stderr);
-}
+void GraphicsMainLoop (GLFWwindow* window, SortAnalyzer& app) {
 
-static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if  (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose (window, GL_TRUE);
+    while  (!glfwWindowShouldClose (window)) {
 
-}
+        glClear (GL_COLOR_BUFFER_BIT);
+        app.drawObjects ();
 
-
-
-void GraphicsMainLoop (GLFWwindow* window) {
-
-        SortAnalyzer app;
-        
-        std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
-        std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
-
-
-        std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> butt (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
-        Color (1.0, 0.0, 0.0), graph_of_assigns.get (), graph_of_comp.get (), BubbleSort<MyType>));
- 
-        app.addObject (butt.get ());
-        app.addObject (graph_of_assigns.get ());
-        app.addObject (graph_of_comp.get ());
-
-
-        DEB_INFO
-        while  (!glfwWindowShouldClose (window)) {
-
-                glClear (GL_COLOR_BUFFER_BIT);
-                
-                
-                
-                app.drawObjects ();
-
-                glfwSwapBuffers (window);
-                glfwPollEvents ();
-                app.run ();
-        }
+        glfwSwapBuffers (window);
+        glfwPollEvents ();
+        app.run ();
+    }
 
 }
 
