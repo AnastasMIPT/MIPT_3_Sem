@@ -35,9 +35,7 @@ Vector<MyType> rand_vector (size_t size);
 template <typename T>
 Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_size = 10, size_t delta = 10, size_t max_size = 100);
 
-
-
-void GraphicsMainLoop (GLFWwindow* window, SortAnalyzer& app);
+void GraphicsMainLoop (SortAnalyzer& app);
 
 int main  (void)
 {
@@ -51,23 +49,17 @@ int main  (void)
     app.addObject (butt.get ());
     app.addObject (graph_of_assigns.get ());
     app.addObject (graph_of_comp.get ());
-    GraphicsMainLoop (app.app_window, app);
+    GraphicsMainLoop (app);
 }
 
-void GraphicsMainLoop (GLFWwindow* window, SortAnalyzer& app) {
+void GraphicsMainLoop (SortAnalyzer& app) {
 
-    while  (!glfwWindowShouldClose (window)) {
-
+    while  (!app.shouldCLose ()) {
         glClear (GL_COLOR_BUFFER_BIT);
-        app.drawObjects ();
-
-        glfwSwapBuffers (window);
-        glfwPollEvents ();
         app.run ();
     }
 
 }
-
 
 
 

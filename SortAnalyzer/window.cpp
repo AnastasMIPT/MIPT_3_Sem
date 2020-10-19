@@ -21,7 +21,7 @@ void SortAnalyzer::SetCallbacks () {
     glfwSetMouseButtonCallback (app_window, SortAnalyzer::MouseClickCallback);
 }
 
-void SortAnalyzer::run () {
+void SortAnalyzer::pollEvent () {
     if (!event_queue.empty ()) {
         if (windows.HandleEvent (event_queue.front ().get ())) printf ("Событие обработано\n");
         event_queue.pop ();
@@ -32,6 +32,17 @@ SortAnalyzer::~SortAnalyzer () {
     glfwDestroyWindow (app_window);
     glfwTerminate ();
     exit (EXIT_SUCCESS);
+}
+
+void SortAnalyzer::run () {
+    drawObjects ();
+    glfwSwapBuffers (app_window);
+    glfwPollEvents ();
+    pollEvent ();
+}
+
+bool SortAnalyzer::shouldCLose () {
+    return glfwWindowShouldClose (app_window);
 }
 
 void SortAnalyzer::MouseClickCallback (GLFWwindow* window, int button, int action, int mods) {

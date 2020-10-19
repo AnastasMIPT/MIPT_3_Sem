@@ -133,8 +133,9 @@ public:
     static void MouseClickCallback (GLFWwindow* , int, int, int);
     static void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods);
     static void ErrorCallback (int error, const char* description);
+    void pollEvent ();
     void run ();
-    
+    bool shouldCLose ();
 };
 
 
