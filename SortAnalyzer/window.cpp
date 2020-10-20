@@ -23,7 +23,17 @@ void SortAnalyzer::SetCallbacks () {
 
 void SortAnalyzer::pollEvent () {
     if (!event_queue.empty ()) {
-        if (windows.HandleEvent (event_queue.front ().get ())) printf ("Событие обработано\n");
+        Event* event = event_queue.front ().get ();
+        bool is_consumed = false;
+        switch (event->type)
+        {
+        case MOUSE_CLICK:
+            is_consumed = windows.onMouseClick (event->ev.mouse_click);
+            break;
+        default:
+            printf ("неизвестный тип события\n");
+        }
+        if (is_consumed) printf ("Событие обработано\n");
         event_queue.pop ();
     }
 }
@@ -54,7 +64,7 @@ void SortAnalyzer::MouseClickCallback (GLFWwindow* window, int button, int actio
     x_pos = x_pos * 2 / width  - 1;
     y_pos = -(y_pos * 2 / height - 1);
 
-    std::unique_ptr<MouseClickEvent> event (new MouseClickEvent (x_pos, y_pos, button, action, mods));
+    std::unique_ptr<Event> event (new Event (MouseClickEvent (x_pos, y_pos, button, action, mods)));
     event_queue.push (std::move (event));
     printf ("Пойман щелчок мыши\n");
 }
@@ -66,6 +76,13 @@ void SortAnalyzer::KeyCallback (GLFWwindow* window, int key, int scancode, int a
 
 void SortAnalyzer::ErrorCallback (int error, const char* description) {
     fputs (description, stderr);
+}
+
+
+
+
+Event::Event (const MouseClickEvent& _mouse_click) : type (MOUSE_CLICK) {
+    ev.mouse_click = _mouse_click;
 }
 
 
@@ -84,33 +101,21 @@ void AbstractWindowContainer::addWindow (AbstractWindow* window) {
 }
 
 
-bool AbstractWindowContainer::HandleEvent (AbstractEvent* event) {
-    bool is_consumed = false;
+bool AbstractWindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("Принял событие\n");
 
-    if (event->is_coordinatble) {
-        CoordinatbleEvent* temp_event = static_cast<CoordinatbleEvent*> (event);
-        is_consumed = CheckCoordinate (temp_event->pos_x, temp_event->pos_y);
-        if (!is_consumed) return false;
-    }
-
+    bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
+    if (!is_consumed) return false;
+  
     printf ("у события нужные координаты\n");
     for (auto window : subwindows) {
-        is_consumed = window->HandleEvent (event);
+        is_consumed = window->onMouseClick (event);
         if (is_consumed) return true;
     }
     printf ("событие не поглащено\n");
-    switch (event->type)
-    {
-    case MOUSE_CLICK:
-        onMouseClick (dynamic_cast<MouseClickEvent*> (event));
-        break;
-    
-    }
 
-    return true;
+
 }
-
 
 
 QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size)
@@ -123,26 +128,4 @@ bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
     pos_x, pos_y, x, y, size_x, size_y);
    if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
     return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
-}
-
-bool AbstractWindow::HandleEvent (AbstractEvent* event) {
-    bool is_consumed = false;
-     
-    printf ("пытаюсь поглатить\n");
-    if (event->is_coordinatble) {
-        CoordinatbleEvent* temp_event = dynamic_cast<CoordinatbleEvent*> (event);
-        is_consumed = CheckCoordinate (temp_event->pos_x, temp_event->pos_y);
-        if (!is_consumed) return false;
-    }
-    printf ("поглатил\n");
-    switch (event->type)
-    {
-    case MOUSE_CLICK:
-        printf ("Запустил onMouseClick\n");
-        onMouseClick (dynamic_cast<MouseClickEvent*> (event));
-        break;
-    }
-
-    return true;
-
 }

@@ -52,7 +52,7 @@ public:
     : QuadWindow (_x, _y, _size_x, _size_y), color (_color), MouseClick (std::forward<Args_t> (args)...) {}
 
     void draw () const override;
-    void onMouseClick (MouseClickEvent* event) override;
+    bool onMouseClick (const MouseClickEvent& event) override;
     ~Button () final = default;
 };
 
@@ -93,14 +93,22 @@ void Button<Functor_t>::draw () const {
 
 
 template <typename Functor_t>
-void Button<Functor_t>::onMouseClick (MouseClickEvent* event) {
+bool Button<Functor_t>::onMouseClick (const MouseClickEvent& event) {
 
     printf ("Зашел в onClick кнопки\n");
+    bool is_consumed = false;
+     
+    printf ("пытаюсь поглатить\n");
+        
+    is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
+    if (!is_consumed) return false;
+    printf ("поглатил\n");
+
     bool lbutton_down = false;
-    if (event->button == GLFW_MOUSE_BUTTON_LEFT) {
-        if(GLFW_PRESS == event->action)
+    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
+        if(GLFW_PRESS == event.action)
             lbutton_down = true;
-         else if (GLFW_RELEASE == event->action)
+         else if (GLFW_RELEASE == event.action)
             lbutton_down = false;
     }
 

@@ -2,8 +2,6 @@
 #define DEBUG_ASSERT
 #include "../MyLib/debug_assert.h"
 
-
-
 //#define DEBUG
 #include "../MyLib/debug_info.h"
 
