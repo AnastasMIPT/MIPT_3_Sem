@@ -411,3 +411,76 @@ python3 -c
 1. нужен fork чтобы скомпилровать
 
 2. формат cgi можно почитать в docs python org
+
+
+Ошибки:
+
+Лишние инклюды - плохо, нужно использовать snprintf вместо sprintf.
+
+
+...........................................................................
+
+Межпроцессные взаимодействия
+
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+
+int main (int argc, char** argv) {
+    int fd = atoi (argv[1]);
+    const char String[] = "Hello\n";
+
+    write (fd, String, sizeof(String) - 1);
+}
+
+dup2 (fd, 1) // ??? 1->fd
+
+man dup2
+man 2 pipe
+
+7-1
+
+#include <unistd.h>
+#include <sys/wait.h>
+
+pid_t launch (char* cmd, char* arg, int in_fd, int out_fd) {
+    pid_t pid fork ();
+
+    if (0 == pid) {
+        if (0 != in_fd)  dup2 (in_fd, 0);
+        if (1 != out_fd) dup2 (out_fd, 1);
+        close (in_fd); close (out_fd);
+        execlp (cmd, cmd, arg, NULL);
+        _exit (0);
+    }
+}
+
+int main () {
+
+    int pipe_fds[2];
+    pipe (pipe_fds);
+
+    pid_t ls = launch ("ls", "-a", 0, pipe_fds[1]);
+    pid_t grep = launch ("grep", "1", pipe_fds[0], 1);
+
+    close (pipe_fds[0]); close (pipe_fds[1]);
+    
+    wait (0); wait (0);
+
+}
+
+<-|0    1|<-
+
+
+1. dup2 (IN, 0)
+IN>CMD|read
+
+2. gcc | 
+eer - поток
+
+3. 1*3
+
+4. 

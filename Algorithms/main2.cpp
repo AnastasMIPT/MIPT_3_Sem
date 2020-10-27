@@ -1,147 +1,95 @@
-#include<iostream>
-#include<vector>
-#include<queue>
-struct Edge {
-    int from;
-    int to;
-    long long cap;
-    long long flow;
+#include <iostream>
+#include <vector>
+#include <cstdio>
+#include <cstring>
+#include <array>
+using std::vector;
+
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma,sse2,sse3,sse4")
+
+
+constexpr unsigned int MaxLen = 1e6 + 1;
+constexpr unsigned int Hash_p = 27644437;
+constexpr unsigned int Hash_m = 1073676287;
+
+
+constexpr unsigned int LoopLimit = 262140 + 2;
+
+void print_cubes (int * cubes, int n) {
+    for (int i = 0; i < n; ++i) {
+        printf ("%d ", cubes[i]);
+    }
+}
+
+constexpr unsigned int mod_pow (unsigned int base, unsigned int exp, unsigned int mod) noexcept {
+    auto result = 1;
+    for (int i = 0; i < exp; ++i) result = (result * base) % mod;
+    return result;
+}
+
+
+template<unsigned int N, unsigned int base, unsigned int mod>
+struct Mod_Pow_Arr {
+    unsigned int vals[N];
+    constexpr Mod_Pow_Arr() : vals() {
+        auto result = 1;
+        for (auto i = 0; i != N; ++i) {
+            vals[i] = result;
+            result = (result * base) % mod;
+            }
+    }
 };
 
-int N = 0, M = 0;
-const long long INF = 1e10;
+// static constexpr std::array<int, MaxLen> mod_pow_arr (int base, int mod) {
+//     std::array<int, MaxLen> result {};
+//     for (int i = 0; i < MaxLen; ++i) {
+//         result[i] = mod_pow (base, i, mod);
+//     }
+//     return result;
+// }
 
-using std::vector;
-using std::queue;
+//static constexpr std::array<int, MaxLen> (mod_pow_arr (Hash_p, Hash_m));
 
-vector<char> chars;
-vector<Edge> edges;
-vector<vector<int>> graph;
-vector<int> ptr;
-vector<int> d;
+inline constexpr unsigned int mod_mul (unsigned int a, unsigned int b, unsigned int mod) {
+    return (a * b) % mod;
+}
 
-int edge_counter = 0;
-int s = 0, t = 0;
-
-void add_edge (int from, int to, long long cap) {
-    graph[from].push_back (edge_counter);
-    graph[to].push_back (edge_counter + 1);
-    edges[edge_counter++] = {from, to, cap, 0};
-    edges[edge_counter++] = {to, from, 0, 0};
+inline constexpr unsigned int mod_sum (unsigned int a, unsigned int b, unsigned int mod) {
+    return a + b > mod? a + b - mod: a + b;
 }
 
 
-bool bfs_dinic () {
-    queue<int> que;
-    d.assign (N * M * 2 + 3, -1);
 
-    d[s] = 0;
-    que.push (s);
-    while  (!que.empty ()) {
-        int v = que.front ();
-        que.pop ();
-    
-        for  (int i: graph[v]) {
-            int to = edges[i].to;
-            long long cap = edges[i].cap - edges[i].flow;
-            if  (d[to] == -1 && cap > 0) {
-                d[to] = d[v] + 1;
-                que.push (to);
-            }
-        }
+unsigned int hash_pref (unsigned int* str, unsigned int right, const unsigned int* arr) {
+    unsigned int hash_sum = 0;
+    for (unsigned int i = 0; i < right; ++i) {
+        hash_sum += (str[i] * arr[i]) % Hash_m;
     }
-    return d[t] != -1;
+    return hash_sum;
 }
 
-long long dfs_dinic (int v, long long flow) {
-    if  (v == t) return flow;
-    while  (ptr[v] < graph[v].size ()) {
-        int e = graph[v][ptr[v]];
-
-        if  (edges[e].cap > edges[e].flow && d[edges[e].to] == d[v] + 1) {
-            long long cur_flow = dfs_dinic (edges[e].to, std::min (flow, edges[e].cap - edges[e].flow));
-            if  (cur_flow > 0) {
-                edges[e].flow += cur_flow;
-                edges[e^1].flow -= cur_flow;
-                return cur_flow;
-            }
-        }
-        ++ptr[v];
+unsigned int hash_pref_rev (unsigned int* str, unsigned int left, unsigned int len, const unsigned int* arr) {
+    unsigned int hash_sum = 0;
+    unsigned int ind = 0;
+    for (unsigned int i = len - 1; i > left; --i, ++ind) {
+        hash_sum += (str[i] * arr[ind]) % Hash_m;
     }
-    return 0;
-}
-
-long long dinic () {
-    long long flow = 0;
-    while  (bfs_dinic ()) {
-        ptr.assign (2 * N * M + 3, 0);
-        while  (long long cur_flow = dfs_dinic (s, INF))
-            flow += cur_flow;
-    }
-    return flow;
-}
-
-
-void calculate () {
-    int dx[] = {-1, 0, 1, 0};
-    int dy[] = {0, -1, 0, 1};
-
-    long long source_sum = 0;
-    for  (int i = 0; i < N; ++i)
-        for  (int j = 0; j < M; ++j) {
-            if  (chars[i * M + j] == '.')
-                continue;
-            
-            add_edge (s, i * M + j, chars[i * M + j]);
-            add_edge (N * M + i * M + j, t, chars[i * M + j]);
-            source_sum += chars[i * M + j];
-
-
-
-            for  (int k = 0; k < 4; ++k) {
-                if  (i+dx[k] < N && j+dy[k] < M && i + dx[k] >= 0 && j+dy[k] >= 0 && chars[ (i + dx[k]) * M + j + dy[k]] != '.') 
-                    add_edge (i * M + j, N * M +  ( (i + dx[k]) * M + j + dy[k]), 1);
-            }
-        }
-    if (dinic () == source_sum && source_sum != 0) {
-        printf ("Valid\n");
-    } else {
-        printf ("Invalid\n");
-    }
-}
-
-
-void read_data () {
-    char cur_char = 0;
-    chars.resize (N * M);
-    for  (int i = 0; i < N; ++i)
-        for  (int j = 0; j < M; ++j) {
-            std::cin >> cur_char;
-            switch (cur_char) {
-                case 'H': chars[i * M + j] = 1;
-                    break;
-                case 'O': chars[i * M + j] = 2;
-                    break;
-                case 'N': chars[i * M + j] = 3;
-                    break;
-                case 'C': chars[i * M + j] = 4;
-                    break;
-                case '.': chars[i * M + j] = '.';
-                    break;
-                
-            }
-        }
+    return hash_sum;
 }
 
 int main () {
-
-    scanf ("%d%d", &N, &M);
-    s = 2 * N * M + 1;
-    t = 2 * N * M + 2;
-
-    graph.resize (N * M * 2 + 3);
-    edges.resize (N * M * 12);
+    constexpr auto p_arr = Mod_Pow_Arr<LoopLimit, Hash_p, Hash_m> ();
     
-    read_data ();
-    calculate ();
+    // printf ("%u\n", p_arr.vals[1000]);
+    // printf ("\n");
+    int n (0), m (0);
+    scanf ("%d%d", &n, &m);
+    unsigned int cubes[n];
+    for (int i = 0; i < n; ++i) {
+        scanf ("%d", &cubes[i]);
+    }
+    printf ("%u\n%u\n", hash_pref (cubes, 2, p_arr.vals), hash_pref_rev (cubes, 1, n, p_arr.vals));
+    return 0;
 }
+

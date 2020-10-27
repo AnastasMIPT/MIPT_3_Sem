@@ -27,7 +27,7 @@ void SortAnalyzer::pollEvent () {
         bool is_consumed = false;
         switch (event->type)
         {
-        case MOUSE_CLICK:
+        case Event::EventTypes::MOUSE_CLICK:
             is_consumed = windows.onMouseClick (event->ev.mouse_click);
             break;
         default:

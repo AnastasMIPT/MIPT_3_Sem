@@ -8,9 +8,6 @@
 #include <queue>
 #include <memory>
 
-enum EventTypes {
-    MOUSE_CLICK
-};
 
 class MouseClickEvent {
 public:
@@ -29,7 +26,9 @@ public:
 
 
 struct Event {
-    unsigned int type;
+    enum EventTypes {
+        MOUSE_CLICK
+    } type;
     union {
         MouseClickEvent mouse_click;
     } ev;
