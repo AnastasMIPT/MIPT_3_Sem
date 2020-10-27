@@ -31,13 +31,9 @@ public:
     double y;
 
     Point2d (double _x, double _y);
-
     Point2d (const Point2d& other);
-
     Point2d () = default;
-
     void draw () const;
-
    ~Point2d ()   = default;
 };
 
