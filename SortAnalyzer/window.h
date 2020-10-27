@@ -41,40 +41,19 @@ struct Event {
 
 
 
-class AbstractWindow {
+class IWindow {
 public:
     virtual void draw () const = 0;
     virtual bool onMouseClick (const MouseClickEvent& event) = 0;
     virtual bool CheckCoordinate (double pos_x, double pos_y) const = 0;
     
     
-    virtual ~AbstractWindow () = default;
+    virtual ~IWindow () = default;
 };
 
 
-
-class QuadWindow : public AbstractWindow {
-public:
-    double x;
-    double y;
-    double size_x;
-    double size_y;
-public:
-    QuadWindow (double _x, double _y, double _size_x, double _size_y);
-    bool CheckCoordinate (double pos_x, double pos_y) const;
-    bool onMouseClick (const MouseClickEvent& event) {}
-    void draw () const {}
-
-    ~QuadWindow () = default;
-};
-
-
-
-
-
-
-class AbstractWindowContainer : AbstractWindow {
-    using WindowList = std::list<AbstractWindow*>;
+class WindowContainer : IWindow {
+    using WindowList = std::list<IWindow*>;
     static WindowList subwindows;
 
 
@@ -92,7 +71,7 @@ public:
         return subwindows.end ();
     }
 
-    void addWindow (AbstractWindow* window);
+    void addWindow (IWindow* window);
     
 
     bool onMouseClick (const MouseClickEvent& event) override;
@@ -105,12 +84,12 @@ public:
 
 class AbstractApplication {
 protected:
-    static AbstractWindowContainer windows;
+    static WindowContainer windows;
     static std::queue <std::unique_ptr<Event>> event_queue;
     
 public:
     virtual ~AbstractApplication () = default;
-    void addObject (AbstractWindow* window);
+    void addObject (IWindow* window);
     void drawObjects () const;
 };
 

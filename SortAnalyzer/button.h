@@ -42,6 +42,7 @@ public:
 };
 
 
+
 template <typename Functor_t>
 class Button : public QuadWindow {
 public:

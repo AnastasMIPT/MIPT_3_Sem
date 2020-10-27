@@ -188,5 +188,21 @@ void Graph::change_max_x (double _max_x) {
 }
 
 void Graph::change_max_y (double _max_y) {
+
     max_y = _max_y;
+}
+
+
+
+
+QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size)
+: x (_x), y (_y), size_x (_x_size), size_y (_y_size) {}
+
+
+
+bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
+    printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",
+    pos_x, pos_y, x, y, size_x, size_y);
+   if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
+    return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
 }

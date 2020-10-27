@@ -13,6 +13,8 @@
 //#define DEBUG
 #include "../MyLib/debug_info.h"
 
+
+
 #include "window.h"
 
 
@@ -119,6 +121,32 @@ public:
 };
 
 
+class QuadWindow : public IWindow {
+public:
+    double x;
+    double y;
+    double size_x;
+    double size_y;
+    Color color;
+public:
+    QuadWindow (double _x, double _y, double _size_x, double _size_y);
+    bool CheckCoordinate (double pos_x, double pos_y) const;
+    bool onMouseClick (const MouseClickEvent& event) {}
+    void draw () const {
+        glBegin (GL_QUADS);
+            color.draw ();
+            Point2d (x, y).draw ();
+            Point2d (x, y + size_y).draw ();
+            Point2d (x + size_x, y + size_y).draw ();
+            Point2d (x + size_x, y).draw ();
+        glEnd ();
+    }
+
+    ~QuadWindow () = default;
+};
+
+
+
 class CoordinatePlane : public QuadWindow {
     double im_size_x;
     double im_size_y;
@@ -131,7 +159,7 @@ class CoordinatePlane : public QuadWindow {
 public:
 
     CoordinatePlane (double _x, double _y,double _size_x, double _size_y);
-    //void add_graph (const Graph& graph);
+    
     void add_graph_by_p_arr (const Vector<Point2d>& points);
     void draw_graphs () const;
     void draw () const;

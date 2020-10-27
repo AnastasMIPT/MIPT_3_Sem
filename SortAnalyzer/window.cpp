@@ -86,7 +86,7 @@ Event::Event (const MouseClickEvent& _mouse_click) : type (MOUSE_CLICK) {
 }
 
 
-void AbstractApplication::addObject (AbstractWindow* window) {
+void AbstractApplication::addObject (IWindow* window) {
     windows.addWindow (window);
 }
 
@@ -96,12 +96,12 @@ void AbstractApplication::drawObjects () const {
     }
 }
 
-void AbstractWindowContainer::addWindow (AbstractWindow* window) {
+void WindowContainer::addWindow (IWindow* window) {
     subwindows.push_back (window);
 }
 
 
-bool AbstractWindowContainer::onMouseClick (const MouseClickEvent& event) {
+bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("Принял событие\n");
 
     bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
@@ -115,17 +115,4 @@ bool AbstractWindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("событие не поглащено\n");
 
 
-}
-
-
-QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size)
-: x (_x), y (_y), size_x (_x_size), size_y (_y_size) {}
-
-
-
-bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
-    printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",
-    pos_x, pos_y, x, y, size_x, size_y);
-   if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
-    return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
 }
