@@ -1,6 +1,6 @@
 #include "window.h"
 
-SortAnalyzer::SortAnalyzer (int width, int height, const char* name) {
+Application::Application (int width, int height, const char* name) {
     if  (!glfwInit ()) exit (EXIT_FAILURE);
 
     app_window = glfwCreateWindow (width, height, name, NULL, NULL);
@@ -15,13 +15,13 @@ SortAnalyzer::SortAnalyzer (int width, int height, const char* name) {
 
 }
 
-void SortAnalyzer::SetCallbacks () {
-    glfwSetErrorCallback (SortAnalyzer::ErrorCallback);
-    glfwSetKeyCallback (app_window, SortAnalyzer::KeyCallback);
-    glfwSetMouseButtonCallback (app_window, SortAnalyzer::MouseClickCallback);
+void Application::SetCallbacks () {
+    glfwSetErrorCallback (Application::ErrorCallback);
+    glfwSetKeyCallback (app_window, Application::KeyCallback);
+    glfwSetMouseButtonCallback (app_window, Application::MouseClickCallback);
 }
 
-void SortAnalyzer::pollEvent () {
+void Application::pollEvent () {
     if (!event_queue.empty ()) {
         Event* event = event_queue.front ().get ();
         bool is_consumed = false;
@@ -38,24 +38,24 @@ void SortAnalyzer::pollEvent () {
     }
 }
 
-SortAnalyzer::~SortAnalyzer () {
+Application::~Application () {
     glfwDestroyWindow (app_window);
     glfwTerminate ();
     exit (EXIT_SUCCESS);
 }
 
-void SortAnalyzer::run () {
+void Application::run () {
     drawObjects ();
     glfwSwapBuffers (app_window);
     glfwPollEvents ();
     pollEvent ();
 }
 
-bool SortAnalyzer::shouldCLose () {
+bool Application::shouldCLose () {
     return glfwWindowShouldClose (app_window);
 }
 
-void SortAnalyzer::MouseClickCallback (GLFWwindow* window, int button, int action, int mods) {
+void Application::MouseClickCallback (GLFWwindow* window, int button, int action, int mods) {
     double x_pos (0), y_pos (0);
     glfwGetCursorPos (window, &x_pos, &y_pos);
     int width, height;
@@ -69,12 +69,12 @@ void SortAnalyzer::MouseClickCallback (GLFWwindow* window, int button, int actio
     printf ("Пойман щелчок мыши\n");
 }
 
-void SortAnalyzer::KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
+void Application::KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
     if  (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose (window, GL_TRUE);
 }
 
-void SortAnalyzer::ErrorCallback (int error, const char* description) {
+void Application::ErrorCallback (int error, const char* description) {
     fputs (description, stderr);
 }
 

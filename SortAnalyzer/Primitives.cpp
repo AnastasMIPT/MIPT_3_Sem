@@ -195,10 +195,12 @@ void Graph::change_max_y (double _max_y) {
 
 
 
-QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size)
-: x (_x), y (_y), size_x (_x_size), size_y (_y_size) {}
+QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size, const Color& _color)
+: x (_x), y (_y), size_x (_x_size), size_y (_y_size), color (_color) {}
 
-
+void QuadWindow::draw () const {
+    Rect (x, y, size_x, size_y, color).draw ();
+}
 
 bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
     printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",

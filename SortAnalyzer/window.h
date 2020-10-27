@@ -94,12 +94,12 @@ public:
 
 
 
-class SortAnalyzer : public AbstractApplication {
+class Application : public AbstractApplication {
     void SetCallbacks ();
 public:
     GLFWwindow* app_window;
-    SortAnalyzer (int width, int height, const char* name);
-    ~SortAnalyzer ();
+    Application (int width, int height, const char* name);
+    ~Application ();
     static void MouseClickCallback (GLFWwindow* , int, int, int);
     static void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods);
     static void ErrorCallback (int error, const char* description);

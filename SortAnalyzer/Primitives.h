@@ -129,19 +129,10 @@ public:
     double size_y;
     Color color;
 public:
-    QuadWindow (double _x, double _y, double _size_x, double _size_y);
+    QuadWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
     bool CheckCoordinate (double pos_x, double pos_y) const;
     bool onMouseClick (const MouseClickEvent& event) {}
-    void draw () const {
-        glBegin (GL_QUADS);
-            color.draw ();
-            Point2d (x, y).draw ();
-            Point2d (x, y + size_y).draw ();
-            Point2d (x + size_x, y + size_y).draw ();
-            Point2d (x + size_x, y).draw ();
-        glEnd ();
-    }
-
+    void draw () const;
     ~QuadWindow () = default;
 };
 

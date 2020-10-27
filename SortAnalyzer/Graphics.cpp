@@ -16,11 +16,11 @@ std::queue <std::unique_ptr<Event>> AbstractApplication::event_queue;
 WindowContainer::WindowList WindowContainer::subwindows;
 
 
-void GraphicsMainLoop (SortAnalyzer& app);
+void GraphicsMainLoop (Application& app);
 
 int main  (void)
 {
-    SortAnalyzer app (1200, 675, "SortAnalyzer");
+    Application app (1200, 675, "TextReader");
     
     std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
     std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
@@ -46,7 +46,7 @@ int main  (void)
     GraphicsMainLoop (app);
 }
 
-void GraphicsMainLoop (SortAnalyzer& app) {
+void GraphicsMainLoop (Application& app) {
 
     while  (!app.shouldCLose ()) {
         glClear (GL_COLOR_BUFFER_BIT);
