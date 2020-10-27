@@ -1,7 +1,7 @@
 #include "window.h"
 
 Application::Application (int width, int height, const char* name) {
-    if  (!glfwInit ()) exit (EXIT_FAILURE);
+    //if  (!glfwInit ()) exit (EXIT_FAILURE);
 
     app_window = glfwCreateWindow (width, height, name, NULL, NULL);
     if (!app_window) {
@@ -40,8 +40,8 @@ void Application::pollEvent () {
 
 Application::~Application () {
     glfwDestroyWindow (app_window);
-    glfwTerminate ();
-    exit (EXIT_SUCCESS);
+    // glfwTerminate ();
+    // exit (EXIT_SUCCESS);
 }
 
 void Application::run () {

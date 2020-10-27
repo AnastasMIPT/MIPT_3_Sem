@@ -10,16 +10,20 @@
 //#define DEBUG
 #include "../MyLib/debug_info.h"
 
+#include "MyOpenGL.h"
 
 WindowContainer AbstractApplication::windows;
 std::queue <std::unique_ptr<Event>> AbstractApplication::event_queue;
 WindowContainer::WindowList WindowContainer::subwindows;
 
+template <typename IEngineImpl>
+IEngineImpl Engine<IEngineImpl>::system;
 
 void GraphicsMainLoop (Application& app);
 
 int main  (void)
 {
+    Engine<OpenGL>::system.drawRect ();
     Application app (1200, 675, "TextReader");
     
     std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
