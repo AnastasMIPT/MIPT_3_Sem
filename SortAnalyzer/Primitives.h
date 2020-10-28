@@ -3,7 +3,6 @@
 #define PRIMITIVES_H
 
 #include <cstdio>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -21,8 +20,6 @@
 const double DefaultMaxVal = -228;
 
 
-double Len_of_vec (const glm::highp_vec2& vec);
-
 class Arrow {
     double x1;
     double y1;
@@ -36,16 +33,6 @@ public:
 
     ~Arrow ()   = default;
 };
-
-class LineStrip   {
-    const Vector<Point2d>& points;
-public:
-    LineStrip (const Vector<Point2d>& _points);
-    void draw () const   ;
-
-    ~LineStrip ()   = default;
-}; 
-
 
 class Graph   {
     double im_x;
@@ -115,6 +102,8 @@ public:
 
 size_t Ind_of_point_with_max_x (const Vector<Point2d>& points);
 size_t Ind_of_point_with_max_y (const Vector<Point2d>& points);
+
+double Len_of_vec (const glm::highp_vec2& vec);
 
 
 #endif // PRIMITIVES_H

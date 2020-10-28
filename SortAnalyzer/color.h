@@ -1,7 +1,6 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-
 struct Color   {
     double red   = 1.0;
     double green = 1.0;
@@ -14,6 +13,14 @@ struct Point2d
     double y;
 };
 
+struct Line
+{
+    Point2d first_p;
+    Point2d second_p;
+    Color color;
+};
+
+
 struct Triangle {
     Point2d first_p;
     Point2d second_p;
@@ -24,8 +31,8 @@ struct Triangle {
 struct Rect
 {
     Point2d coords;
-    double height;
     double width;
+    double height;
     Color color;
 };
 

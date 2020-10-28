@@ -81,3 +81,20 @@ void OpenGL::drawTriangle (const Triangle& triangele) {
         glVertex2d (triangele.third_p.x, triangele.third_p.y);
     glEnd ();
 }
+
+void OpenGL::drawLine (const Line& line) {
+    glBegin (GL_LINE_STRIP);
+            glColor3f (line.color.red, line.color.green, line.color.blue);
+            glVertex2d (line.first_p.x, line.first_p.y);
+            glVertex2d (line.second_p.x, line.second_p.y);
+    glEnd ();
+}
+
+void OpenGL::drawLineStrip (const Vector<Point2d>& points, const Color& color) {
+    glBegin (GL_LINE_STRIP);
+        glColor3f (color.red, color.green, color.blue);
+        for (size_t i = 0; i < points.size (); ++i) {
+            glVertex2d (points[i].x, points[i].y);
+        }
+    glEnd ();
+}

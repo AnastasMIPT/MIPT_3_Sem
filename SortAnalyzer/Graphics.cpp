@@ -23,8 +23,8 @@ int main  (void)
     
     Application app;
     
-    std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
-    std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
+    std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-0.7, 0.0, 0.4, 0.9)); 
+    std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0, 0.4, 0.9)); 
     std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> bubble_but (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
     {1.0, 0.0, 0.0}, graph_of_assigns.get (), graph_of_comp.get (), BubbleSort<MyType>));
 
@@ -48,12 +48,8 @@ int main  (void)
 }
 
 void GraphicsMainLoop (Application& app) {
-
     while  (!app.shouldCLose ()) {
-        glClear (GL_COLOR_BUFFER_BIT);
         app.run ();
-        
     }
-
 }
 

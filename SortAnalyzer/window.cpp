@@ -18,6 +18,7 @@ void Application::pollEvent () {
 }
 
 void Application::run () {
+    glClear (GL_COLOR_BUFFER_BIT);
     drawObjects ();
     std::unique_ptr<Event> event = std::move (GEngine::system.pollEvent ());
     if (event->type != Event::EventTypes::DEFAULT_EVENT) event_queue.push (std::move (event));

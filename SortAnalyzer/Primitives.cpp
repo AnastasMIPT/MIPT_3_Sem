@@ -36,20 +36,6 @@ size_t Ind_of_point_with_max_y (const Vector<Point2d>& points) {
 }
 
 
-LineStrip::LineStrip (const Vector<Point2d>& _points) : points (_points) {}
-
-void LineStrip::draw () const {
-
-    glBegin (GL_LINE_STRIP);
-    glColor3f (0.0, 1.0, 0.0);
-
-    for (size_t i = 0; i < points.size (); ++i) {
-        glVertex2d (points[i].x, points[i].y);
-        //points[i].draw ();
-    }
-}
-
-
 Arrow::Arrow (double _x1, double _y1, double _x2, double _y2) : x1 (_x1), y1 (_y1), x2 (_x2), y2 (_y2) {}
 
 void Arrow::draw () const {
@@ -65,20 +51,8 @@ void Arrow::draw () const {
     double l_x = x1 + base[0] - right[0];
     double l_y = y1 + base[1] - right[1];
 
-    // printf ("%lf\n", sqrt (right[0] * right[0] + right[1] * right[1]));
-
-    glBegin (GL_TRIANGLES);
-            glColor3f (0.0, 0.0, 0.0);
-            glVertex2d (l_x, l_y);
-            glVertex2d (r_x, r_y);
-            glVertex2d (x2, y2);
-    glEnd ();
-
-    glBegin (GL_LINE_STRIP);
-            glColor3f (0.0, 0.0, 0.0);
-            glVertex2d (x1, y1);
-            glVertex2d (x2, y2);
-    glEnd ();
+    GEngine::system.drawTriangle ({{l_x, l_y}, {r_x, r_y}, {x2, y2}, {0, 0, 0}});
+    GEngine::system.drawLine ({{x1, y1}, {x2, y2}, {0, 0, 0}});
 }
 
 
@@ -102,10 +76,7 @@ void CoordinatePlane::draw_graphs () const {
 
 
 void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
-    DEB_INFO
     graphs.push_back (Graph (im_x, im_y, im_size_x, im_size_y, points));
-    DEB_INFO
-    DEB_INFO
 }
 
 void CoordinatePlane::draw () const {
@@ -143,13 +114,12 @@ Graph::Graph (double _im_x, double _im_y, double _im_size_x, double _im_size_y,
 
 
 void Graph::draw () const {
-
-    glBegin (GL_LINE_STRIP);
-    glColor3d (0.0, 1.0, 0.0);
-    for (size_t i = 0; i < points.size (); ++i) {
-        glVertex2d (im_x + points[i].x * im_size_x / max_x, im_y + points[i].y * im_size_y / max_y);
-    }   
-    glEnd ();
+    Vector<Point2d> temp_points (points);
+    for (int i = 0; i < temp_points.size (); ++i) {
+        temp_points[i].x = im_x + points[i].x * im_size_x / max_x;
+        temp_points[i].y = im_y + points[i].y * im_size_y / max_y;
+    }
+    GEngine::system.drawLineStrip (temp_points, {0, 1, 0});
 }
 
 void Graph::change_max_x (double _max_x) {
@@ -169,7 +139,6 @@ QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size, co
 
 void QuadWindow::draw () const {
     GEngine::system.drawRect ({{x, y}, size_x, size_y, color});
-    //Rect (x, y, size_x, size_y, color).draw ();
 }
 
 bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
