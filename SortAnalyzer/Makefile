@@ -1,7 +1,7 @@
 EXECUTABLE   = Graphics
 second       = backend_x86
-LIBS         = Sorts.h Primitives.h button.h window.h MyOpenGL.h engine.h
-SOURCEFILES  = Graphics.cpp Primitives.cpp window.cpp MyOpenGL.cpp
+LIBS         = Sorts.h Primitives.h button.h window.h MyOpenGL.h engine.h events.h
+SOURCEFILES  = Graphics.cpp Primitives.cpp window.cpp MyOpenGL.cpp events.cpp
 OBJFILES     = $(SOURCEFILES:.cpp=.o)
 CFlags       = --std=c++17 -msse4 -O3
 LINKFlags	 = -lGL -lGLU -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lGLEW

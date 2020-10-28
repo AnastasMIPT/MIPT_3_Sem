@@ -1,5 +1,3 @@
-//#define GLFW_INCLUDE_GLU
-//#include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -17,14 +15,14 @@ std::queue <std::unique_ptr<Event>> AbstractApplication::event_queue;
 WindowContainer::WindowList WindowContainer::subwindows;
 
 template <typename IEngineImpl>
-IEngineImpl Engine<IEngineImpl>::system;
+IEngineImpl Engine<IEngineImpl>::system (1200, 675, "TextReader");
 
 void GraphicsMainLoop (Application& app);
 
 int main  (void)
 {
     Engine<OpenGL>::system.drawRect ();
-    Application app (1200, 675, "TextReader");
+    Application app;
     
     std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
     std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
@@ -55,6 +53,7 @@ void GraphicsMainLoop (Application& app) {
     while  (!app.shouldCLose ()) {
         glClear (GL_COLOR_BUFFER_BIT);
         app.run ();
+        
     }
 
 }
