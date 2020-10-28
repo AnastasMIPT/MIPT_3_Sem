@@ -16,7 +16,7 @@ public:
 
 
 template <typename IEngineImpl>
-class Engine : IEngineImpl {
+class Engine {
 public:
     static IEngineImpl system;
 };
