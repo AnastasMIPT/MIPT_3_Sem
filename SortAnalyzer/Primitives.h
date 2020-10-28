@@ -12,7 +12,7 @@
 
 //#define DEBUG
 #include "../MyLib/debug_info.h"
-
+#include "color.h"
 
 
 #include "window.h"
@@ -37,20 +37,6 @@ struct Point2d {
    ~Point2d ()   = default;
 };
 
-
-struct Color   {
-    double red   = 1.0;
-    double green = 1.0;
-    double blue  = 1.0;
-
-    Color () = default;
-    Color (double _red, double _green, double _blue);
-    void draw () const;
-
-    ~Color ()   = default;
-};
-
-
 class Arrow {
     double x1;
     double y1;
@@ -74,7 +60,7 @@ class Rect   {
     Color color;
 
 public:
-    Rect (double _x, double _y, double _size_x, double _size_y, Color _color = Color ());
+    Rect (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
     void draw () const   ;
 
     ~Rect ()   = default;

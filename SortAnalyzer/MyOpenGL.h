@@ -21,7 +21,7 @@ public:
     static void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods);
     static void ErrorCallback (int error, const char* description);
 
-    //void drawRect (double x, double y, double width, double height) override;
+    void drawRect (double x, double y, double width, double height, const Color& color) override;
     std::unique_ptr<Event> pollEvent () override;
     bool shouldClose () override;
 

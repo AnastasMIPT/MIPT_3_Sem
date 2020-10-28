@@ -63,12 +63,12 @@ void OpenGL::ErrorCallback (int error, const char* description) {
     fputs (description, stderr);
 }
 
-// void OpenGL::drawRect (double x, double y, double width, double height) {
-//     glBegin (GL_QUADS);
-//         //color.draw ();
-//         glVertex2d (x, y);
-//         glVertex2d (x, y + height);
-//         glVertex2d (x + width, y + height);
-//         glVertex2d (x + width, y);
-//     glEnd ();
-// }
+void OpenGL::drawRect (double x, double y, double width, double height, const Color& color) {
+    glBegin (GL_QUADS);
+        glColor3f (color.red, color.green, color.blue);
+        glVertex2d (x, y);
+        glVertex2d (x, y + height);
+        glVertex2d (x + width, y + height);
+        glVertex2d (x + width, y);
+    glEnd ();
+}

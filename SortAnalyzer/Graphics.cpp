@@ -26,10 +26,10 @@ int main  (void)
     std::unique_ptr<CoordinatePlane> graph_of_assigns (new CoordinatePlane (-1.0, 0.0, 1.0, 1.0)); 
     std::unique_ptr<CoordinatePlane> graph_of_comp (new CoordinatePlane (0.0, 0.0,1.0, 1.0)); 
     std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> bubble_but (new Button<SortDrawFunctor<Numeric<int>>> (-0.5, -0.5, 0.3, 0.3, 
-    Color (1.0, 0.0, 0.0), graph_of_assigns.get (), graph_of_comp.get (), BubbleSort<MyType>));
+    {1.0, 0.0, 0.0}, graph_of_assigns.get (), graph_of_comp.get (), BubbleSort<MyType>));
 
     std::unique_ptr<Button<SortDrawFunctor<Numeric<int>>>> merge_but (new Button<SortDrawFunctor<Numeric<int>>> (0.5, -0.5, 0.3, 0.3, 
-    Color (0.0, 1.0, 0.0), graph_of_assigns.get (), graph_of_comp.get (), MergeSortRecursive<MyType>));
+    {0.0, 1.0, 0.0}, graph_of_assigns.get (), graph_of_comp.get (), MergeSortRecursive<MyType>));
 
     // std::unique_ptr<QuadWindow> arrow_up (new QuadWindow (0.7, 0, 0.1, 0.200));
     // std::unique_ptr<QuadWindow> arrow_down (new QuadWindow (0.7, 0.8, 0.1, 0.200));

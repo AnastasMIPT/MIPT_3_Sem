@@ -36,13 +36,6 @@ size_t Ind_of_point_with_max_y (const Vector<Point2d>& points) {
     return ind;
 }
 
-
-void Color::draw () const {
-    glColor3d (red, green, blue);
-}
-
-Color::Color (double _red, double _green, double _blue) : red (_red), green (_green), blue (_blue) {}
-
 Point2d::Point2d (double _x, double _y)
     : x (_x), y (_y) {}
 
@@ -85,7 +78,7 @@ void Arrow::draw () const {
     // printf ("%lf\n", sqrt (right[0] * right[0] + right[1] * right[1]));
 
     glBegin (GL_TRIANGLES);
-            glColor3i (128, 255, 100);
+            glColor3f (0.0, 0.0, 0.0);
             glVertex2d (l_x, l_y);
             glVertex2d (r_x, r_y);
             glVertex2d (x2, y2);
@@ -100,17 +93,11 @@ void Arrow::draw () const {
 
 
 
-Rect::Rect (double _x, double _y, double _size_x, double _size_y, Color _color) 
+Rect::Rect (double _x, double _y, double _size_x, double _size_y, const Color& _color) 
     : x (_x), y (_y), size_x (_size_x), size_y (_size_y), color (_color) {}
 
 void Rect::draw () const {
-    glBegin (GL_QUADS);
-        color.draw ();
-        Point2d (x, y).draw ();
-        Point2d (x, y + size_y).draw ();
-        Point2d (x + size_x, y + size_y).draw ();
-        Point2d (x + size_x, y).draw ();
-    glEnd ();
+    GEngine::system.drawRect (x, y, size_x, size_y, color);
 }
 
 
