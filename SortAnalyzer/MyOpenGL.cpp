@@ -24,11 +24,6 @@ OpenGL::~OpenGL () {
     exit (EXIT_SUCCESS);
 }
 
-void OpenGL::createAppWindow (int width, int height, const char* name) {
-    app_window = glfwCreateWindow (width, height, name, NULL, NULL);
-    if (!app_window) exit (EXIT_FAILURE);
-    glfwMakeContextCurrent (app_window);
-}
 
 std::unique_ptr<Event> OpenGL::pollEvent () {
     glfwSwapBuffers (app_window);
@@ -67,3 +62,13 @@ void OpenGL::KeyCallback (GLFWwindow* window, int key, int scancode, int action,
 void OpenGL::ErrorCallback (int error, const char* description) {
     fputs (description, stderr);
 }
+
+// void OpenGL::drawRect (double x, double y, double width, double height) {
+//     glBegin (GL_QUADS);
+//         //color.draw ();
+//         glVertex2d (x, y);
+//         glVertex2d (x, y + height);
+//         glVertex2d (x + width, y + height);
+//         glVertex2d (x + width, y);
+//     glEnd ();
+// }

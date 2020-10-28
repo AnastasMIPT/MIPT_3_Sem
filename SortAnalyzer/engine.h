@@ -6,8 +6,7 @@
 
 class IEngine {
 public:
-    virtual void drawRect () = 0;
-    virtual void createAppWindow (int width, int height, const char* name) = 0;
+    //virtual void drawRect (double x, double y, double width, double height) = 0;
     virtual std::unique_ptr<Event> pollEvent () = 0;
     virtual bool shouldClose () = 0;
 
@@ -26,7 +25,7 @@ public:
 class SFML : IEngine {
     SFML () = default;
 public:
-    void drawRect () {printf ("SFML rect\n");}
+    //void drawRect (double x, double y, double width, double height) override {printf ("SFML rect\n");}
 
     friend Engine<SFML>;
 };

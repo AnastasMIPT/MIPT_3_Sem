@@ -85,7 +85,7 @@ void Arrow::draw () const {
     // printf ("%lf\n", sqrt (right[0] * right[0] + right[1] * right[1]));
 
     glBegin (GL_TRIANGLES);
-            glColor3f (0.0, 0.0, 0.0);
+            glColor3i (128, 255, 100);
             glVertex2d (l_x, l_y);
             glVertex2d (r_x, r_y);
             glVertex2d (x2, y2);

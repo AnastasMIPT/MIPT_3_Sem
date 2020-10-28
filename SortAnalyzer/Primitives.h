@@ -25,8 +25,8 @@ double Len_of_vec (const glm::highp_vec2& vec);
 
 
 
-class Point2d {
-public:
+struct Point2d {
+
     double x;
     double y;
 
@@ -60,7 +60,7 @@ class Arrow {
     static constexpr double tip_height = 0.05;
 public:
     Arrow (double x1, double y1, double x2, double y2);
-    void draw () const   ;
+    void draw () const;
 
     ~Arrow ()   = default;
 };
@@ -126,9 +126,9 @@ public:
     Color color;
 public:
     QuadWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
-    bool CheckCoordinate (double pos_x, double pos_y) const;
-    bool onMouseClick (const MouseClickEvent& event) {}
-    void draw () const;
+    bool CheckCoordinate (double pos_x, double pos_y) const override;
+    bool onMouseClick (const MouseClickEvent& event) override {}
+    void draw () const override;
     ~QuadWindow () = default;
 };
 
@@ -149,7 +149,7 @@ public:
     
     void add_graph_by_p_arr (const Vector<Point2d>& points);
     void draw_graphs () const;
-    void draw () const;
+    void draw () const override;
 
     ~CoordinatePlane ()   = default;
 };

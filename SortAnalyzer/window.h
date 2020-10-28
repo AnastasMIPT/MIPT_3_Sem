@@ -42,7 +42,7 @@ public:
 
     bool onMouseClick (const MouseClickEvent& event) override;
     void draw () const override {}
-    bool CheckCoordinate (double pos_x, double pos_y) const {return true;}
+    bool CheckCoordinate (double pos_x, double pos_y) const override {return true;}
 
 };
 

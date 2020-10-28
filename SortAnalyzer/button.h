@@ -69,11 +69,11 @@ void SortDrawFunctor<T>::operator() () {
         Vector <Point2d> points_comp (result.size ());
         
         for (size_t i = 0; i < result.size (); ++i) {
-                points_assigns[i].x = result[i][0];
-                points_assigns[i].y = result[i][1];
+                points_assigns[i].x = static_cast <double> (result[i][0]);
+                points_assigns[i].y = static_cast <double> (result[i][1]);
 
-                points_comp[i].x = result[i][0];
-                points_comp[i].y = result[i][2];
+                points_comp[i].x = static_cast <double> (result[i][0]);
+                points_comp[i].y = static_cast <double> (result[i][2]);
         }
         coord_plane_ass->add_graph_by_p_arr (points_assigns);
         coord_plane_comp->add_graph_by_p_arr (points_comp);
@@ -109,6 +109,8 @@ bool Button<Functor_t>::onMouseClick (const MouseClickEvent& event) {
         printf ("Hello\n");
         MouseClick ();
     }
+
+    return true;
 }
 
 
