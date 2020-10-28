@@ -7,7 +7,8 @@
 
 class IEngine {
 public:
-    virtual void drawRect (double x, double y, double width, double height, const Color& color) = 0;
+    virtual void drawRect (const Rect& rect) = 0;
+    virtual void drawTriangle (const Triangle& triangele) = 0;
     virtual std::unique_ptr<Event> pollEvent () = 0;
     virtual bool shouldClose () = 0;
 
@@ -26,7 +27,7 @@ public:
 class SFML : IEngine {
     SFML () = default;
 public:
-    void drawRect (double x, double y, double width, double height, const Color& color) override {printf ("SFML rect\n");}
+    void drawRect (const Rect& rect) override {printf ("SFML rect\n");}
 
     friend Engine<SFML>;
 };

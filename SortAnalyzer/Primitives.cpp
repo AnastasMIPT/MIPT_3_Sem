@@ -7,7 +7,6 @@
 
 #include "Primitives.h"
 
-
 double Len_of_vec (const glm::highp_vec2& vec) {
     return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 }
@@ -36,16 +35,6 @@ size_t Ind_of_point_with_max_y (const Vector<Point2d>& points) {
     return ind;
 }
 
-Point2d::Point2d (double _x, double _y)
-    : x (_x), y (_y) {}
-
-Point2d::Point2d (const Point2d& other) 
-    : x (other.x), y (other.y) {}
-
-void Point2d::draw () const {
-    glVertex2d (x, y);
-}
-
 
 LineStrip::LineStrip (const Vector<Point2d>& _points) : points (_points) {}
 
@@ -55,7 +44,8 @@ void LineStrip::draw () const {
     glColor3f (0.0, 1.0, 0.0);
 
     for (size_t i = 0; i < points.size (); ++i) {
-        points[i].draw ();
+        glVertex2d (points[i].x, points[i].y);
+        //points[i].draw ();
     }
 }
 
@@ -93,15 +83,6 @@ void Arrow::draw () const {
 
 
 
-Rect::Rect (double _x, double _y, double _size_x, double _size_y, const Color& _color) 
-    : x (_x), y (_y), size_x (_size_x), size_y (_size_y), color (_color) {}
-
-void Rect::draw () const {
-    GEngine::system.drawRect (x, y, size_x, size_y, color);
-}
-
-
-
 
 CoordinatePlane::CoordinatePlane (double _x, double _y, double _size_x, double _size_y) 
     : QuadWindow (_x, _y, _size_x, _size_y) {
@@ -114,6 +95,7 @@ CoordinatePlane::CoordinatePlane (double _x, double _y, double _size_x, double _
 
 void CoordinatePlane::draw_graphs () const {
     for (size_t i = 0; i < graphs.size (); ++i) {
+        
         graphs[i].draw ();
     }
 }
@@ -128,8 +110,8 @@ void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
 
 void CoordinatePlane::draw () const {
 
-    Rect (x, y, size_x, size_y).draw ();
-
+    GEngine::system.drawRect ({{x, y}, size_x, size_y});
+    
     Arrow OY (im_x, im_y, im_x, im_y + im_size_y);
     OY.draw ();
 
@@ -186,7 +168,8 @@ QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size, co
 : x (_x), y (_y), size_x (_x_size), size_y (_y_size), color (_color) {}
 
 void QuadWindow::draw () const {
-    Rect (x, y, size_x, size_y, color).draw ();
+    GEngine::system.drawRect ({{x, y}, size_x, size_y, color});
+    //Rect (x, y, size_x, size_y, color).draw ();
 }
 
 bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {

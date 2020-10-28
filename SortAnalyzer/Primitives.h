@@ -23,20 +23,6 @@ const double DefaultMaxVal = -228;
 
 double Len_of_vec (const glm::highp_vec2& vec);
 
-
-
-struct Point2d {
-
-    double x;
-    double y;
-
-    Point2d (double _x, double _y);
-    Point2d (const Point2d& other);
-    Point2d () = default;
-    void draw () const;
-   ~Point2d ()   = default;
-};
-
 class Arrow {
     double x1;
     double y1;
@@ -49,21 +35,6 @@ public:
     void draw () const;
 
     ~Arrow ()   = default;
-};
-
-
-class Rect   {
-    double x;
-    double y;
-    double size_x;
-    double size_y;
-    Color color;
-
-public:
-    Rect (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
-    void draw () const   ;
-
-    ~Rect ()   = default;
 };
 
 class LineStrip   {

@@ -63,12 +63,21 @@ void OpenGL::ErrorCallback (int error, const char* description) {
     fputs (description, stderr);
 }
 
-void OpenGL::drawRect (double x, double y, double width, double height, const Color& color) {
+void OpenGL::drawRect (const Rect& rect) {
     glBegin (GL_QUADS);
-        glColor3f (color.red, color.green, color.blue);
-        glVertex2d (x, y);
-        glVertex2d (x, y + height);
-        glVertex2d (x + width, y + height);
-        glVertex2d (x + width, y);
+        glColor3f (rect.color.red, rect.color.green, rect.color.blue);
+        glVertex2d (rect.coords.x, rect.coords.y);
+        glVertex2d (rect.coords.x, rect.coords.y + rect.height);
+        glVertex2d (rect.coords.x + rect.width, rect.coords.y + rect.height);
+        glVertex2d (rect.coords.x + rect.width, rect.coords.y);
+    glEnd ();
+}
+
+void OpenGL::drawTriangle (const Triangle& triangele) {
+    glBegin (GL_TRIANGLES);
+        glColor3f (triangele.color.red, triangele.color.green, triangele.color.blue);
+        glVertex2d (triangele.first_p.x, triangele.first_p.y);
+        glVertex2d (triangele.second_p.x, triangele.second_p.y);
+        glVertex2d (triangele.third_p.x, triangele.third_p.y);
     glEnd ();
 }
