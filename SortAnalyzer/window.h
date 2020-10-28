@@ -5,7 +5,7 @@
 #include <queue>
 #include <memory>
 #include "events.h"
-#include "MyOpenGL.h"
+#include "config.h"
 
 class IWindow {
 public:

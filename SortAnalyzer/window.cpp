@@ -19,13 +19,13 @@ void Application::pollEvent () {
 
 void Application::run () {
     drawObjects ();
-    std::unique_ptr<Event> event = std::move (Engine<OpenGL>::system.pollEvent ());
+    std::unique_ptr<Event> event = std::move (GEngine::system.pollEvent ());
     if (event->type != Event::EventTypes::DEFAULT_EVENT) event_queue.push (std::move (event));
     pollEvent ();
 }
 
 bool Application::shouldCLose () {
-    return Engine<OpenGL>::system.shouldClose ();
+    return GEngine::system.shouldClose ();
 }
 
 
