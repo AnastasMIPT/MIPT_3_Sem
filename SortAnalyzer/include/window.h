@@ -17,13 +17,28 @@ public:
     virtual ~IWindow () = default;
 };
 
+class QuadWindow : public IWindow {
+public:
+    double x;
+    double y;
+    double size_x;
+    double size_y;
+    Color color;
+public:
+    QuadWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    bool CheckCoordinate (double pos_x, double pos_y) const override;
+    bool onMouseClick (const MouseClickEvent& event) override;
+    void draw () const override;
+    ~QuadWindow () = default;
+};
 
-class WindowContainer : IWindow {
+
+
+class WindowContainer : public QuadWindow {
+protected:
     using WindowList = std::list<IWindow*>;
-    static WindowList subwindows;
+    WindowList subwindows;
 
-
-    
 public:
     typedef WindowList::iterator iterator;
     typedef const    iterator const_iterator;
@@ -37,13 +52,13 @@ public:
         return subwindows.end ();
     }
 
+    WindowContainer (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+
     void addWindow (IWindow* window);
     
 
     bool onMouseClick (const MouseClickEvent& event) override;
-    void draw () const override {}
-    bool CheckCoordinate (double pos_x, double pos_y) const override {return true;}
-
+    void draw () const override;
 };
 
 
@@ -73,4 +88,3 @@ public:
 
 
 #endif //WINDOW_H
-

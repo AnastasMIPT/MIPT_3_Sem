@@ -20,6 +20,26 @@
 const double DefaultMaxVal = -228;
 
 
+
+
+
+
+class ScrollBar : public WindowContainer {
+    std::unique_ptr<::QuadWindow> arrow_up;
+    std::unique_ptr<::QuadWindow> slider;
+    std::unique_ptr<::QuadWindow> arrow_down;
+    
+public:
+    ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+
+    bool onMouseClick (const MouseClickEvent& event) override;
+};
+
+
+
+
+
+
 class Arrow {
     double x1;
     double y1;
@@ -61,21 +81,6 @@ public:
 };
 
 
-class QuadWindow : public IWindow {
-public:
-    double x;
-    double y;
-    double size_x;
-    double size_y;
-    Color color;
-public:
-    QuadWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
-    bool CheckCoordinate (double pos_x, double pos_y) const override;
-    bool onMouseClick (const MouseClickEvent& event) override {}
-    void draw () const override;
-    ~QuadWindow () = default;
-};
-
 
 
 class CoordinatePlane : public QuadWindow {
@@ -97,6 +102,11 @@ public:
 
     ~CoordinatePlane ()   = default;
 };
+
+
+
+
+
 
 
 

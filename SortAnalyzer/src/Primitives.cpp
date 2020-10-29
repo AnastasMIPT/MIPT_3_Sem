@@ -2,7 +2,7 @@
 #define DEBUG_ASSERT
 #include "../MyLib/debug_assert.h"
 
-//#define DEBUG
+#define DEBUG
 #include "../MyLib/debug_info.h"
 
 #include "Primitives.h"
@@ -131,19 +131,27 @@ void Graph::change_max_y (double _max_y) {
     max_y = _max_y;
 }
 
-
-
-
-QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size, const Color& _color)
-: x (_x), y (_y), size_x (_x_size), size_y (_y_size), color (_color) {}
-
-void QuadWindow::draw () const {
-    GEngine::system.drawRect ({{x, y}, size_x, size_y, color});
+bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
+    DEB_INFO
+    bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
+    if (!is_consumed) return false; 
+    DEB_INFO
+    is_consumed = WindowContainer::onMouseClick (event);
+    if (is_consumed) printf ("&& передал подокну");
+    if (!is_consumed) {
+        printf ("Hello\n");
+    }
+    //
+    //
+    return true;
 }
 
-bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
-    printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",
-    pos_x, pos_y, x, y, size_x, size_y);
-   if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
-    return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
+ScrollBar::ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color)
+: WindowContainer (_x, _y, _size_x, _size_y, _color), 
+  arrow_up (new ::QuadWindow (_x, _y + _size_y - 0.1, _size_x, 0.1, {0, 0.5, 1})),
+  slider (new ::QuadWindow (_x, _y + 0.1, _size_x, 0.2, {0.6, 0.5, 1})),
+  arrow_down (new ::QuadWindow (_x, _y, _size_x, 0.1, {0, 0.5, 1})) {
+    subwindows.push_back (arrow_up.get ());
+    subwindows.push_back (slider.get ()); 
+    subwindows.push_back (arrow_down.get ());
 }

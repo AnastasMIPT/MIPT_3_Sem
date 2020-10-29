@@ -1,34 +1,50 @@
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <string.h>
 #include <stdlib.h>
-#include <limits.h>
+#include <string.h>
+#include <unistd.h>
 
-int main () {
-    char* line = NULL;
-    size_t len = 0;
-    int read = 0;
-    char buf[PATH_MAX];
-    while ((read = getline (&line, &len, stdin)) != -1)
-    {
-        line[read - 1] = '\0';
-        if (line[0] == '\0' || line[0] == '\n') continue;
-        struct stat stats = {};
-        lstat (line, &stats);
-        if (S_ISREG (stats.st_mode)) {
-            buf[0] = '\0';
-            strcat (buf, "link_to_");
-            strcat (buf, line);
-            symlink (line, buf);
-        } else if (S_ISLNK (stats.st_mode)) {
-            char real_path[PATH_MAX];
-            realpath (line, real_path);
-            printf ("%s\n", real_path);
-        }
-            
+int main()
+{
+    char buf[BUFSIZ];
+    char path[BUFSIZ];
+    char protocol[BUFSIZ];
+
+    scanf("%s", buf);
+    scanf("%s", buf);
+    scanf("%s", protocol);
+
+    char* lexeme_p = strtok(buf, "?");
+    strcpy(path, lexeme_p + 1);
+    lexeme_p = strtok(NULL, "");
+
+    if (access(path, F_OK) == -1) {
+        printf("%s 404 ERROR\n\n", protocol);
+        return 0;
+    } else if (access(path, X_OK) == -1) {
+        printf("%s 403 ERROR\n\n", protocol);
+        return 0;
+    } else {
+        printf("%s 200 OK\n", protocol);
+        fflush(stdout);
     }
-    if (line) free (line);
+
+    if (lexeme_p != NULL) {
+        setenv("QUERY_STRING", lexeme_p, 1);
+    } else {
+        setenv("QUERY_STRING", "", 1);
+    }
+
+    while (fgets(buf, BUFSIZ, stdin) != NULL) {
+        if (strstr(buf, "Host") != NULL) {
+            strtok(buf, " \n\t");
+            lexeme_p = strtok(NULL, " \n\t");
+            setenv("HTTP_HOST", lexeme_p, 1);
+        }
+    }
+
+    setenv("REQUEST_METHOD", "GET", 1);
+    setenv("SCRIPT_NAME", path, 1);
+
+    execl(path, path, NULL);
+    return -1;
 }
