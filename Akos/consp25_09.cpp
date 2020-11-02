@@ -484,3 +484,107 @@ eer - поток
 3. 1*3
 
 4. 
+
+
+
+
+
+#include <stdio.h>
+#include <unistd.h>
+
+int main () {
+
+}
+
+
+#include <signal.h>
+
+ps aux -A | grep a.out
+
+^Z - ставит на паузу
+fg - снимает с паузы
+
+^C - останавливает процесс
+
+abort () - аналог команды kill = kill (getpid(), SIGABRT);
+
+Ctrl + \ - завершение процесса и ...
+Это нужно для тестировщиков.
+
+SIGHUB - обрыв соедения (перечитать config)
+SIGINT - Ctrl + C
+SIGQUIT - Ctrl + \
+
+/usr/sbin/sysctl kernel.core_pattern ...
+
+SIGKILL - убийство
+SIGTERM - завершение работы
+SIGSTOP - 
+
+системный вызов signal
+
+gcc -g abc.c
+
+gdbserver  :1234 a.out
+
+
+в другой вкладке 
+gdb
+file a.out
+target remote localhost:1234
+
+#include <signal.h>
+
+void handler (int signum) {
+    printf ("Get signal %d\n", signum);
+}
+
+void handler_with_three_arg (int signum, siginfo_t* info, void* context) {
+
+}
+
+int main () 
+{
+    struct sigaction sa {
+        .__sigaction_handler.sa_sigaction =handler_with_three_arg;
+        .sa_flags = SA_RESTART | SA_SIGINFO;
+    };
+    sigaction (SIGINT, &sa, NULL);
+    while (1) {
+        pause ();
+    }
+
+}
+
+SA_NODEFER
+
+
+killall -SIGKILL a.out
+
+#define _D_DEFAULT_SOURSE
+#define _GNU_SOURCE
+
+
+sigaction () вместо signal ()
+
+
+man 7 signal-safety    !!!!!!!!!!!!!!!  - функции которые можно использовать внутри обработчика 
+_POSIX_REALTIME_SIGNALS
+
+Более правильно в функции обработке синалов делать все очень быстро. 
+
+
+sigatomic_t signum_recived = -1;
+
+маски сигналов
+
+sigprocmask
+pause
+sigsaspend
+signalfd
+sigqueue
+
+0. fflush сразу после вывода
+1. проставлять только флаги в обр-ке сигналов
+2. 
+3. обработчик с тремя арг sigqueue 

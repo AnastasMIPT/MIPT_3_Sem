@@ -39,7 +39,7 @@ void AbstractApplication::addObject (IWindow* window) {
     windows.addWindow (window);
 }
 
-void AbstractApplication::drawObjects () const {
+void AbstractApplication::drawObjects () {
     windows.draw ();
 }
 

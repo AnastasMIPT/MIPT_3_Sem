@@ -16,7 +16,6 @@
 
 #include "window.h"
 
-
 const double DefaultMaxVal = -228;
 
 
@@ -29,6 +28,12 @@ class ScrollBar : public WindowContainer {
     std::unique_ptr<::QuadWindow> slider;
     std::unique_ptr<::QuadWindow> arrow_down;
     
+    static constexpr Color but_color = {0.7, 0.7, 0.7};
+    static constexpr Color slider_color = {0.6, 0.6, 0.6};
+
+    void ArrowUpMouseClick (const MouseClickEvent& event);
+    void ArrowDownMouseClick (const MouseClickEvent& event);
+
 public:
     ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
 

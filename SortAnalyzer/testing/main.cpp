@@ -23,10 +23,6 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Расскоментировать строчку в случае использования MacOS X
-#endif
-
     // glfw создание окна
     // --------------------
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL for Ravesli.com", NULL, NULL);
@@ -37,7 +33,7 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // glad: загрузка всех указателей на OpenGL-функции
     // ---------------------------------------
@@ -163,7 +159,7 @@ void processInput(GLFWwindow* window)
 
 // glfw: всякий раз, когда изменяются размеры окна (пользователем или опер. системой), вызывается данная функция
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void    framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // убеждаемся, что вьюпорт соответствует новым размерам окна; обратите внимание,
     // что ширина и высота будут значительно больше, чем указано на retina -дисплеях.

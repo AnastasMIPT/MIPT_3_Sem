@@ -6,7 +6,7 @@
 #include "../MyLib/debug_info.h"
 
 #include "Primitives.h"
-
+#include "button.h"
 double Len_of_vec (const glm::highp_vec2& vec) {
     return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 }
@@ -137,6 +137,11 @@ bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
     if (!is_consumed) return false; 
     DEB_INFO
     is_consumed = WindowContainer::onMouseClick (event);
+    // if (arrow_up->CheckCoordinate (event.pos_x, event.pos_y)) {
+    //     ArrowUpMouseClick (event);
+    // } else if (arrow_down->CheckCoordinate (event.pos_x, event.pos_y)) {
+    //     ArrowDownMouseClick (event);
+    // }
     if (is_consumed) printf ("&& передал подокну");
     if (!is_consumed) {
         printf ("Hello\n");
@@ -146,11 +151,47 @@ bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
     return true;
 }
 
+void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
+    bool lbutton_down = false;
+    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
+        if(GLFW_PRESS == event.action)
+            lbutton_down = true;
+         else if (GLFW_RELEASE == event.action)
+            lbutton_down = false;
+    }
+
+    Color temp = arrow_up->color;
+    if (lbutton_down) {
+        arrow_up->color = {0, 0, 0};
+    } else {
+        arrow_up->color = but_color;
+    }
+}
+
+void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
+    bool lbutton_down = false;
+    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
+        if(GLFW_PRESS == event.action)
+            lbutton_down = true;
+         else if (GLFW_RELEASE == event.action)
+            lbutton_down = false;
+    }
+
+    
+    if (lbutton_down) {
+        arrow_down->color = {0, 0, 0};
+    } else {
+        arrow_down->color = but_color;
+    }
+}
+
+
+
 ScrollBar::ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color)
 : WindowContainer (_x, _y, _size_x, _size_y, _color), 
-  arrow_up (new ::QuadWindow (_x, _y + _size_y - 0.1, _size_x, 0.1, {0, 0.5, 1})),
-  slider (new ::QuadWindow (_x, _y + 0.1, _size_x, 0.2, {0.6, 0.5, 1})),
-  arrow_down (new ::QuadWindow (_x, _y, _size_x, 0.1, {0, 0.5, 1})) {
+  arrow_up (new Button<ScrollFunctor> (_x, _y + _size_y - 0.1, _size_x, 0.1, but_color, /*NULL, */ but_color)),
+  slider (new ::QuadWindow (_x, _y + _size_y - 0.3, _size_x, 0.2, slider_color)),
+  arrow_down (new ::QuadWindow (_x, _y, _size_x, 0.1, but_color)) {
     subwindows.push_back (arrow_up.get ());
     subwindows.push_back (slider.get ()); 
     subwindows.push_back (arrow_down.get ());

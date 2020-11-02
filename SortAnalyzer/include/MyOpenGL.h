@@ -18,6 +18,7 @@ public:
     static std::queue<std::unique_ptr<Event>> event_que;
 
     static void MouseClickCallback (GLFWwindow* window, int button, int action, int mods);
+    //static void MouseMoveCallback (GLFWwindow* window, double xpos, double ypos);
     static void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods);
     static void ErrorCallback (int error, const char* description);
 

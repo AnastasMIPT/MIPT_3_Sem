@@ -10,24 +10,24 @@
 
 WindowContainer AbstractApplication::windows (-1.0, -1.0, 2.0, 2.0, {0, 1, 0.5});
 std::queue <std::unique_ptr<Event>> AbstractApplication::event_queue;
+IWindow* AbstractApplication::active_window = NULL;
 
 template <>
 GSystem GEngine::system;
 
-void GraphicsMainLoop (Application& app);
+void GraphicsMainLoop ();
 
 int main  (void)
 {
-    Application app;
-    
-    std::unique_ptr<ScrollBar> s_bar (new ScrollBar (0.95, -1.0, 0.05, 2.0, {0.1, 0.3, 0.4}));
-    app.addObject (s_bar.get ());
-    GraphicsMainLoop (app);
+   
+    std::unique_ptr<ScrollBar> s_bar (new ScrollBar (0.95, -1.0, 0.05, 2.0, {0.9, 0.9, 0.9}));
+    Application::addObject (s_bar.get ());
+    GraphicsMainLoop ();
 }
 
-void GraphicsMainLoop (Application& app) {
-    while  (!app.shouldCLose ()) {
-        app.run ();
+void GraphicsMainLoop () {
+    while  (!Application::shouldCLose ()) {
+        Application::run ();
     }
 }
 
