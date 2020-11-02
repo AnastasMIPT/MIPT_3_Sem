@@ -21,7 +21,11 @@ const double DefaultMaxVal = -228;
 
 
 
-
+class Slider : public AbstractDragableWindow {
+public:
+    Slider (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    void move (double xpos, double ypos);
+};
 
 class ScrollBar : public WindowContainer {
     std::unique_ptr<::QuadWindow> arrow_up;

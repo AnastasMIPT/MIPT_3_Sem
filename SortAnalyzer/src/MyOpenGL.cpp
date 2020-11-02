@@ -15,7 +15,7 @@ OpenGL::OpenGL (int width, int height, const char* name) {
     glfwSetMouseButtonCallback (app_window, MouseClickCallback);
     glfwSetKeyCallback (app_window, KeyCallback);
     glfwSetErrorCallback (ErrorCallback);
-    //glfwSetCursorPosCallback (app_window, MouseMoveCallback);
+    glfwSetCursorPosCallback (app_window, MouseMoveCallback);
 
 }
 
@@ -51,10 +51,14 @@ void OpenGL::MouseClickCallback (GLFWwindow* window, int button, int action, int
     printf ("Пойман щелчок мыши\n");
 }
 
-// void OpenGL::MouseMoveCallback (GLFWwindow* window, double xpos, double ypos) {
-//     std::unique_ptr<Event> event (new Event (MouseMoveEvent (xpos, ypos)));
-//     event_que.push (std::move (event));
-// }
+void OpenGL::MouseMoveCallback (GLFWwindow* window, double xpos, double ypos) {
+    int width, height;
+    glfwGetWindowSize (window, &width, &height);
+    xpos = xpos * 2 / width  - 1;
+    ypos = -(ypos * 2 / height - 1);
+    std::unique_ptr<Event> event (new Event (MouseMoveEvent (xpos, ypos)));
+    event_que.push (std::move (event));
+}
 
 bool OpenGL::shouldClose () {
     return glfwWindowShouldClose (app_window);

@@ -190,9 +190,19 @@ void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
 ScrollBar::ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color)
 : WindowContainer (_x, _y, _size_x, _size_y, _color), 
   arrow_up (new Button<ScrollFunctor> (_x, _y + _size_y - 0.1, _size_x, 0.1, but_color, /*NULL, */ but_color)),
-  slider (new ::QuadWindow (_x, _y + _size_y - 0.3, _size_x, 0.2, slider_color)),
+  slider (new Slider (_x, _y + _size_y - 0.3, _size_x, 0.2, slider_color)),
   arrow_down (new ::QuadWindow (_x, _y, _size_x, 0.1, but_color)) {
     subwindows.push_back (arrow_up.get ());
     subwindows.push_back (slider.get ()); 
     subwindows.push_back (arrow_down.get ());
+}
+
+
+Slider::Slider (double _x, double _y, double _size_x, double _size_y, const Color& _color)
+    : AbstractDragableWindow (_x, _y, _size_x, _size_y, _color) {}
+
+void Slider::move (double posx, double posy) {
+    if (-0.8 < posy && posy < 0.6) {
+        y = posy;
+    }
 }

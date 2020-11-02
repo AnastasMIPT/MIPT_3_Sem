@@ -11,7 +11,7 @@ class IWindow {
 public:
     virtual void draw () const = 0;
     virtual bool onMouseClick (const MouseClickEvent& event) = 0;
-    //virtual void onMouseMove (const MouseMoveEvent& event) = 0;
+    virtual void onMouseMove (const MouseMoveEvent& event) = 0;
     virtual bool CheckCoordinate (double pos_x, double pos_y) const = 0;
     
     
@@ -29,7 +29,7 @@ public:
     QuadWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
     bool CheckCoordinate (double pos_x, double pos_y) const override;
     bool onMouseClick (const MouseClickEvent& event) override;
-    //void onMouseMove (const MouseMoveEvent& event) override {}
+    void onMouseMove (const MouseMoveEvent& event) override {}
     void draw () const override;
     ~QuadWindow () = default;
 };
@@ -73,13 +73,7 @@ public:
     virtual ~IScrollableWindow () = default;
 };
 
-class IDragableWindow {
-    
-public:
-    virtual void drag () = 0;
-    virtual bool isDraging () const = 0;
-    virtual ~IDragableWindow () = default;
-};
+
 
 
 
@@ -107,27 +101,17 @@ public:
 
 
 
-class AbstractDragableWindow : QuadWindow, IDragableWindow {
+class AbstractDragableWindow : public QuadWindow {
     bool is_drag = false;
 public:
-    bool isDraging () const override {return is_drag;}
-    bool onMouseClick (const MouseClickEvent& event) override {
-
-        if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
-            if(GLFW_PRESS == event.action && CheckCoordinate (event.pos_x, event.pos_y)) {
-                is_drag = true;
-                Application::setActiveWindow (this); 
-            }
-            else if (GLFW_RELEASE == event.action) {
-                is_drag = false;
-                Application::setActiveWindow (NULL);
-            }
-        }
-    }
-
-
-    void drag ();
+    AbstractDragableWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ())
+    : QuadWindow (_x, _y, _size_x, _size_y, _color) {}
+    bool onMouseClick (const MouseClickEvent& event) override;
+    void onMouseMove (const MouseMoveEvent& event) override;
+    virtual void move (double xpos, double ypos) = 0;
 };
+
+
 
 
 #endif //WINDOW_H

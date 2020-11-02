@@ -12,7 +12,15 @@ void Application::pollEvent () {
         switch (event->type)
         {
         case Event::EventTypes::MOUSE_CLICK:
-            is_consumed = windows.onMouseClick (event->ev.mouse_click);
+            if (active_window != NULL) {
+                active_window->onMouseClick (event->ev.mouse_click);
+            } else
+                is_consumed = windows.onMouseClick (event->ev.mouse_click);
+            break;
+        case Event::EventTypes::MOUSE_MOVE:
+            if (active_window != NULL) {
+                active_window->onMouseMove (event->ev.mouse_move);
+            }
             break;
         default:
             printf ("неизвестный тип события\n");
@@ -43,6 +51,10 @@ void AbstractApplication::drawObjects () {
     windows.draw ();
 }
 
+void AbstractApplication::setActiveWindow (IWindow* window) {
+    active_window = window;
+}
+
 void WindowContainer::addWindow (IWindow* window) {
     subwindows.push_back (window);
 }
@@ -58,7 +70,12 @@ bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("Принял событие\n");
     DEB_INFO
     bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
-    if (!is_consumed) return false;
+    printf ("is_consumed = %d\n", is_consumed);
+    if (!is_consumed) {
+        printf ("у события неверные координаты: %lf, %lf\n", event.pos_x, event.pos_y);
+        printf ("Координаты контейнера %lf, %lf, размеры: %lf, %lf\n", x, y, size_x, size_y);
+        return false;
+    }
     DEB_INFO
     printf ("у события нужные координаты\n");
     printf ("Координаты контейнера %lf, %lf\n", x, y);
@@ -87,14 +104,37 @@ void QuadWindow::draw () const {
 bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
     printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",
     pos_x, pos_y, x, y, size_x, size_y);
-   if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
+    fflush (stdin);
+    if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
     return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
 }
 
 bool QuadWindow::onMouseClick (const MouseClickEvent& event) {
+    DEB_INFO
     bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
     if (!is_consumed) return false;
     DEB_INFO
     printf ("Я квадратное окно, на меня нажали, мои координаты: %lf, %lf, col_r = %lf, col_g = %lf, col_b = %lf\n", x, y, color.red, color.green, color.blue);
     return true;
+}
+
+
+bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
+    DEB_INFO
+    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
+        if(GLFW_PRESS == event.action && CheckCoordinate (event.pos_x, event.pos_y)) {
+            is_drag = true;
+            Application::setActiveWindow (this); 
+        }
+        else if (GLFW_RELEASE == event.action) {
+            DEB_INFO
+            is_drag = false;
+            Application::setActiveWindow (NULL);
+        }
+    }
+}
+
+void AbstractDragableWindow::onMouseMove (const MouseMoveEvent& event) {
+    DEB_INFO
+    move (event.pos_x, event.pos_y);
 }
