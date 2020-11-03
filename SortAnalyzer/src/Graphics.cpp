@@ -19,8 +19,8 @@ void GraphicsMainLoop ();
 
 int main  (void)
 {
-   
-    std::unique_ptr<ScrollBar> s_bar (new ScrollBar (0.95, -1.0, 0.05, 2.0, {0.9, 0.9, 0.9}));
+    std::unique_ptr<AbstractScrollableWindow> scroll_w (new AbstractScrollableWindow (50, 30));
+    std::unique_ptr<ScrollBar> s_bar (new ScrollBar (scroll_w.get (), 0.95, -1.0, 0.05, 2.0, {0.9, 0.9, 0.9}));
     Application::addObject (s_bar.get ());
     GraphicsMainLoop ();
 }

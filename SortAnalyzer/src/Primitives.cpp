@@ -59,7 +59,7 @@ void Arrow::draw () const {
 
 
 CoordinatePlane::CoordinatePlane (double _x, double _y, double _size_x, double _size_y) 
-    : QuadWindow (_x, _y, _size_x, _size_y) {
+    : AbstractWindow (_x, _y, _size_x, _size_y) {
         im_x = x + off_image * size_x;
         im_y = y + off_image * size_y;
         im_size_y = (1 - 2 * off_image) * size_y;
@@ -187,11 +187,21 @@ void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
 
 
 
-ScrollBar::ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color)
-: WindowContainer (_x, _y, _size_x, _size_y, _color), 
-  arrow_up (new Button<ScrollFunctor> (_x, _y + _size_y - 0.1, _size_x, 0.1, but_color, /*NULL, */ but_color)),
-  slider (new Slider (_x, _y + _size_y - 0.3, _size_x, 0.2,  _y + _size_y - 0.1, _y + 0.1, slider_color)),
-  arrow_down (new ::Button<ScrollFunctor>  (_x, _y, _size_x, 0.1, but_color, but_color)) {
+ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, double _x, double _y,
+                      double _size_x, double _size_y, const Color& _color)
+: WindowContainer (_x, _y, _size_x, _size_y, _color),
+  scroll_window (_scroll_window),
+  arrow_up (new Button<ScrollFunctor> (_x,      _y + _size_y - but_size, 
+                                       _size_x, but_size, but_color, 
+                                       _scroll_window, but_color, true)),
+
+  slider (new Slider (_x,                  _y + _size_y - slider_size - but_size, 
+                      _size_x, /*(size_x - 2 * but_size) * scroll_window->getRatio ()*/slider_size, 
+                       _y + _size_y - but_size, _y + but_size, slider_color)),
+
+  arrow_down (new ::Button<ScrollFunctor>  (_x, _y, _size_x, but_size, but_color,
+                                             _scroll_window, but_color, false)) {
+
     subwindows.push_back (arrow_up.get ());
     subwindows.push_back (slider.get ()); 
     subwindows.push_back (arrow_down.get ());

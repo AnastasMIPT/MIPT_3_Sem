@@ -18,7 +18,8 @@ $(EXECUTABLE): $(OBJFILES)
 	@g++ $(OBJFILES) -o $@ $(LINKFlags)
 
 $(OBJ_D)/%.o: src/%.cpp
-	@g++ $(CFlags) $(Warnings) $(NoWarnings) -c $< -o $@
+	#@g++ $(CFlags) $(Warnings) $(NoWarnings) -c $< -o $@
+	@g++ $(CFlags) $(NoWarnings) -c $< -o $@
 
 test:
 	@g++ -c ./testing/main.cpp -o ./testing/main.o

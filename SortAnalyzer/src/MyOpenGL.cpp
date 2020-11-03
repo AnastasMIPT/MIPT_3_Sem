@@ -12,6 +12,7 @@ OpenGL::OpenGL (int width, int height, const char* name) {
 
 
     glfwMakeContextCurrent (app_window);
+   
     glfwSetMouseButtonCallback (app_window, MouseClickCallback);
     glfwSetKeyCallback (app_window, KeyCallback);
     glfwSetErrorCallback (ErrorCallback);
@@ -27,6 +28,16 @@ OpenGL::~OpenGL () {
 
 
 std::unique_ptr<Event> OpenGL::pollEvent () {
+
+    glViewport (0, 0, 400, 400);
+    glBegin (GL_TRIANGLES);
+        glColor3f (1, 0, 0);
+        glVertex2d (-1.2, -0.5);
+        glVertex2d (0.0, 0.5);
+        glVertex2d (0.5, -0.5);
+    glEnd ();
+    glViewport (0, 0, 600, 675);
+
     glfwSwapBuffers (app_window);
     glfwPollEvents ();
     std::unique_ptr<Event> res = std::make_unique<Event>();

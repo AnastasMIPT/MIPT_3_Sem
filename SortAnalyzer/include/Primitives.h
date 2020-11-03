@@ -30,18 +30,23 @@ public:
 };
 
 class ScrollBar : public WindowContainer {
-    std::unique_ptr<::QuadWindow> arrow_up;
-    std::unique_ptr<::QuadWindow> slider;
-    std::unique_ptr<::QuadWindow> arrow_down;
+    IScrollableWindow* scroll_window;
+    std::unique_ptr<::AbstractWindow> arrow_up;
+    std::unique_ptr<::AbstractWindow> slider;
+    std::unique_ptr<::AbstractWindow> arrow_down;
     
+
     static constexpr Color but_color = {0.7, 0.7, 0.7};
     static constexpr Color slider_color = {0.6, 0.6, 0.6};
+    static constexpr double but_size = 0.1;
+    static constexpr double slider_size = 0.2;
 
     void ArrowUpMouseClick (const MouseClickEvent& event);
     void ArrowDownMouseClick (const MouseClickEvent& event);
 
 public:
-    ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    ScrollBar (IScrollableWindow* _scroll_window, double _x, double _y,
+               double _size_x, double _size_y, const Color& _color = Color ());
 
     bool onMouseClick (const MouseClickEvent& event) override;
 };
@@ -94,7 +99,7 @@ public:
 
 
 
-class CoordinatePlane : public QuadWindow {
+class CoordinatePlane : public AbstractWindow {
     double im_size_x;
     double im_size_y;
     double im_x;

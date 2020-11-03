@@ -61,12 +61,12 @@ public:
 
 
 template <typename ButtonFunctor_t>
-class Button : public QuadWindow {
+class Button : public AbstractWindow {
 public:
     ButtonFunctor_t MousePress;
     template <typename ...Args_t>
     Button (double _x, double _y, double _size_x, double _size_y, const Color& _color, Args_t&&... args) 
-    : QuadWindow (_x, _y, _size_x, _size_y, _color), MousePress (std::forward<Args_t> (args)...) {}
+    : AbstractWindow (_x, _y, _size_x, _size_y, _color), MousePress (std::forward<Args_t> (args)...) {}
 
     bool onMouseClick (const MouseClickEvent& event) override;
     ~Button () final = default;
@@ -94,12 +94,12 @@ public:
 
 
 class ScrollFunctor {
-    //IScrollableWindow* scroll_window;
+    IScrollableWindow* scroll_window;
     Color color;
-
+    bool scroll_up;
 public:
-    ScrollFunctor (/*IScrollableWindow* _scroll_window,*/ const Color& _color)
-    : /*scroll_window (_scroll_window),*/ color (_color) {}
+    ScrollFunctor (IScrollableWindow* _scroll_window, const Color& _color, bool _scroll_up)
+    : scroll_window (_scroll_window), color (_color), scroll_up (_scroll_up) {}
     void operator() (Button<ScrollFunctor>* _but, const MouseClickEvent& event);
 };
 

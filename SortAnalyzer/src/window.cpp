@@ -81,27 +81,27 @@ bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("Координаты контейнера %lf, %lf\n", x, y);
     for (auto window : subwindows) {
         is_consumed = window->onMouseClick (event);
-        if (is_consumed) printf ("Приянло подокно с координатами y = %lf\n", dynamic_cast<QuadWindow*> (window)->y);
+        if (is_consumed) printf ("Приняло подокно с координатами y = %lf\n", dynamic_cast<AbstractWindow*> (window)->y);
         if (is_consumed) return true;
     }
 
-    printf ("событие не поглащено\n");
+    printf ("событие не поглощено\n");
 
     return false;
 }
 
 
 WindowContainer::WindowContainer (double _x, double _y, double _x_size, double _y_size, const Color& _color)
-: QuadWindow (_x, _y, _x_size, _y_size, _color) {}
+: AbstractWindow (_x, _y, _x_size, _y_size, _color) {}
 
-QuadWindow::QuadWindow (double _x, double _y, double _x_size, double _y_size, const Color& _color)
+AbstractWindow::AbstractWindow (double _x, double _y, double _x_size, double _y_size, const Color& _color)
 : x (_x), y (_y), size_x (_x_size), size_y (_y_size), color (_color) {}
 
-void QuadWindow::draw () const {
+void AbstractWindow::draw () const {
     GEngine::system.drawRect ({{x, y}, size_x, size_y, color});
 }
 
-bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
+bool AbstractWindow::CheckCoordinate (double pos_x, double pos_y) const {
     printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",
     pos_x, pos_y, x, y, size_x, size_y);
     fflush (stdin);
@@ -109,7 +109,7 @@ bool QuadWindow::CheckCoordinate (double pos_x, double pos_y) const {
     return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
 }
 
-bool QuadWindow::onMouseClick (const MouseClickEvent& event) {
+bool AbstractWindow::onMouseClick (const MouseClickEvent& event) {
     DEB_INFO
     bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
     if (!is_consumed) return false;
@@ -147,4 +147,26 @@ bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
 void AbstractDragableWindow::onMouseMove (const MouseMoveEvent& event) {
     //DEB_INFO
     move (event.pos_x, event.pos_y);
+}
+
+
+AbstractScrollableWindow::AbstractScrollableWindow (int _num_of_units, int _num_of_visable_units)
+: num_of_units (_num_of_units), num_of_visable_units (_num_of_visable_units) {}
+
+
+double AbstractScrollableWindow::getRatio () {
+    return static_cast<double> (num_of_visable_units) / num_of_units;
+}
+
+
+void AbstractScrollableWindow::scrollOnceUp () {
+    if (num_of_first_unit - 1 >= 0) num_of_first_unit--;
+    printf ("nunit = %d\n", num_of_first_unit);
+
+}
+
+
+void AbstractScrollableWindow::scrollOnceDown () {
+    if (num_of_first_unit + 1 < num_of_units - num_of_visable_units) num_of_first_unit++;
+    printf ("nunit = %d\n", num_of_first_unit);
 }

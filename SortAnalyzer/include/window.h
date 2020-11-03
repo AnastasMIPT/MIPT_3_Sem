@@ -18,7 +18,9 @@ public:
     virtual ~IWindow () = default;
 };
 
-class QuadWindow : public IWindow {
+
+
+class AbstractWindow : public IWindow {
 public:
     double x;
     double y;
@@ -26,17 +28,17 @@ public:
     double size_y;
     Color color;
 public:
-    QuadWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    AbstractWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
     bool CheckCoordinate (double pos_x, double pos_y) const override;
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override {}
     void draw () const override;
-    ~QuadWindow () = default;
+    ~AbstractWindow () = default;
 };
 
 
 
-class WindowContainer : public QuadWindow {
+class WindowContainer : public AbstractWindow {
 protected:
     using WindowList = std::list<IWindow*>;
     WindowList subwindows;
@@ -65,8 +67,9 @@ public:
 };
 
 
-class IScrollableWindow {
+class IScrollableWindow : IWindow {
 public:
+    virtual double getRatio () = 0;
     virtual void scrollOnceUp () = 0;
     virtual void scrollOnceDown () = 0;
 
@@ -74,6 +77,21 @@ public:
 };
 
 
+class AbstractScrollableWindow : public IScrollableWindow {
+    int num_of_first_unit = 0;
+    int num_of_units;
+    int num_of_visable_units;
+public:
+    AbstractScrollableWindow (int _num_of_units, int _num_of_visable_units);
+    double getRatio () override;
+    void scrollOnceUp   () override;
+    void scrollOnceDown () override;
+    void draw () const {}
+    bool onMouseClick (const MouseClickEvent& event)   {return false;}
+    void onMouseMove  (const MouseMoveEvent&  event)   {}
+    bool CheckCoordinate (double pos_x, double pos_y) const override {return false;}
+
+};
 
 
 
@@ -101,14 +119,14 @@ public:
 
 
 
-class AbstractDragableWindow : public QuadWindow {
+class AbstractDragableWindow : public AbstractWindow {
 protected:
     bool is_drag = false;
     double off_x = 0;
     double off_y = 0;
 public:
     AbstractDragableWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ())
-    : QuadWindow (_x, _y, _size_x, _size_y, _color) {}
+    : AbstractWindow (_x, _y, _size_x, _size_y, _color) {}
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override;
     virtual void move (double xpos, double ypos) = 0;
