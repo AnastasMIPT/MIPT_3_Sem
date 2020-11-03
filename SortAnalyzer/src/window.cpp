@@ -124,17 +124,27 @@ bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
     if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
         if(GLFW_PRESS == event.action && CheckCoordinate (event.pos_x, event.pos_y)) {
             is_drag = true;
+            off_x = event.pos_x - x;
+            off_y = event.pos_y - y;
+            color.red -= 0.2;
+            color.green -= 0.2;
+            color.blue -= 0.2;
             Application::setActiveWindow (this); 
+            return true;
         }
-        else if (GLFW_RELEASE == event.action) {
+        else if (GLFW_RELEASE == event.action && is_drag) {
             DEB_INFO
             is_drag = false;
+            color.red += 0.2;
+            color.green += 0.2;
+            color.blue += 0.2;
             Application::setActiveWindow (NULL);
         }
     }
+    return false;
 }
 
 void AbstractDragableWindow::onMouseMove (const MouseMoveEvent& event) {
-    DEB_INFO
+    //DEB_INFO
     move (event.pos_x, event.pos_y);
 }

@@ -102,7 +102,10 @@ public:
 
 
 class AbstractDragableWindow : public QuadWindow {
+protected:
     bool is_drag = false;
+    double off_x = 0;
+    double off_y = 0;
 public:
     AbstractDragableWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ())
     : QuadWindow (_x, _y, _size_x, _size_y, _color) {}

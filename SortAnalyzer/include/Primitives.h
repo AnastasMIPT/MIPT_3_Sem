@@ -22,8 +22,10 @@ const double DefaultMaxVal = -228;
 
 
 class Slider : public AbstractDragableWindow {
+    double limit_up;
+    double limit_down;
 public:
-    Slider (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    Slider (double _x, double _y, double _size_x, double _size_y, double _limit_up, double _limit_down,  const Color& _color = Color ());
     void move (double xpos, double ypos);
 };
 

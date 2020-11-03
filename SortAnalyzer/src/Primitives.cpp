@@ -190,19 +190,22 @@ void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
 ScrollBar::ScrollBar (double _x, double _y, double _size_x, double _size_y, const Color& _color)
 : WindowContainer (_x, _y, _size_x, _size_y, _color), 
   arrow_up (new Button<ScrollFunctor> (_x, _y + _size_y - 0.1, _size_x, 0.1, but_color, /*NULL, */ but_color)),
-  slider (new Slider (_x, _y + _size_y - 0.3, _size_x, 0.2, slider_color)),
-  arrow_down (new ::QuadWindow (_x, _y, _size_x, 0.1, but_color)) {
+  slider (new Slider (_x, _y + _size_y - 0.3, _size_x, 0.2,  _y + _size_y - 0.1, _y + 0.1, slider_color)),
+  arrow_down (new ::Button<ScrollFunctor>  (_x, _y, _size_x, 0.1, but_color, but_color)) {
     subwindows.push_back (arrow_up.get ());
     subwindows.push_back (slider.get ()); 
     subwindows.push_back (arrow_down.get ());
 }
 
 
-Slider::Slider (double _x, double _y, double _size_x, double _size_y, const Color& _color)
-    : AbstractDragableWindow (_x, _y, _size_x, _size_y, _color) {}
+Slider::Slider (double _x, double _y, double _size_x, double _size_y, double _limit_up, 
+                double _limit_down, const Color& _color)
+    : AbstractDragableWindow (_x, _y, _size_x, _size_y, _color),
+      limit_up (_limit_up), limit_down (_limit_down) {}
 
 void Slider::move (double posx, double posy) {
-    if (-0.8 < posy && posy < 0.6) {
-        y = posy;
+    double new_y = posy - off_y;
+    if (limit_down < new_y && new_y + size_y < limit_up) {
+        y = new_y;
     }
 }
