@@ -65,8 +65,8 @@ class Button : public AbstractWindow {
 public:
     ButtonFunctor_t MousePress;
     template <typename ...Args_t>
-    Button (double _x, double _y, double _size_x, double _size_y, const Color& _color, Args_t&&... args) 
-    : AbstractWindow (_x, _y, _size_x, _size_y, _color), MousePress (std::forward<Args_t> (args)...) {}
+    Button (const Rect& _trappings, Args_t&&... args) 
+    : AbstractWindow (_trappings), MousePress (std::forward<Args_t> (args)...) {}
 
     bool onMouseClick (const MouseClickEvent& event) override;
     ~Button () final = default;

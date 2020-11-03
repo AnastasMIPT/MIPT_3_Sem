@@ -60,7 +60,7 @@ void WindowContainer::addWindow (IWindow* window) {
 }
 
 void WindowContainer::draw () const {
-    GEngine::system.drawRect ({{x, y}, size_x, size_y, color});
+    GEngine::system.drawRect (trappings);
     for (auto window : subwindows) {
         window->draw ();
     }
@@ -73,15 +73,17 @@ bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("is_consumed = %d\n", is_consumed);
     if (!is_consumed) {
         printf ("у события неверные координаты: %lf, %lf\n", event.pos_x, event.pos_y);
-        printf ("Координаты контейнера %lf, %lf, размеры: %lf, %lf\n", x, y, size_x, size_y);
+        printf ("Координаты контейнера %lf, %lf, размеры: %lf, %lf\n", trappings.coords.x, trappings.coords.y,
+        trappings.width, trappings.height);
         return false;
     }
     DEB_INFO
     printf ("у события нужные координаты\n");
-    printf ("Координаты контейнера %lf, %lf\n", x, y);
+    printf ("Координаты контейнера %lf, %lf\n", trappings.coords.x, trappings.coords.y);
     for (auto window : subwindows) {
         is_consumed = window->onMouseClick (event);
-        if (is_consumed) printf ("Приняло подокно с координатами y = %lf\n", dynamic_cast<AbstractWindow*> (window)->y);
+        if (is_consumed) printf ("Приняло подокно с координатами y = %lf\n",
+                                 dynamic_cast<AbstractWindow*> (window)->trappings.coords.y);
         if (is_consumed) return true;
     }
 
@@ -91,22 +93,26 @@ bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
 }
 
 
-WindowContainer::WindowContainer (double _x, double _y, double _x_size, double _y_size, const Color& _color)
-: AbstractWindow (_x, _y, _x_size, _y_size, _color) {}
+WindowContainer::WindowContainer (const Rect& _trappings)
+: AbstractWindow (_trappings) {}
 
-AbstractWindow::AbstractWindow (double _x, double _y, double _x_size, double _y_size, const Color& _color)
-: x (_x), y (_y), size_x (_x_size), size_y (_y_size), color (_color) {}
+AbstractWindow::AbstractWindow (const Rect& _trappings)
+: trappings (_trappings) {}
+
 
 void AbstractWindow::draw () const {
-    GEngine::system.drawRect ({{x, y}, size_x, size_y, color});
+    GEngine::system.drawRect (trappings);
 }
 
 bool AbstractWindow::CheckCoordinate (double pos_x, double pos_y) const {
+    double w_x = trappings.coords.x;
+    double w_y = trappings.coords.y;
+    
     printf ("Проверяю координаты входящие: %lf, %lf. Координаты кнопки %lf, %lf размеы: %lf, %lf\n",
-    pos_x, pos_y, x, y, size_x, size_y);
+    pos_x, pos_y, w_x, w_y, trappings.width, trappings.height);
     fflush (stdin);
-    if (!((pos_x > x) && (pos_y > y) && (pos_x < x + size_x) && (pos_y < y + size_y))) printf ("Координаты не подходят\n");
-    return pos_x > x && pos_y > y && pos_x < x + size_x && pos_y < y + size_y? true : false;
+    if (!((pos_x > w_x) && (pos_y > w_y) && (pos_x < w_x + trappings.width) && (pos_y < w_y + trappings.height))) printf ("Координаты не подходят\n");
+    return pos_x > w_x && pos_y > w_y && pos_x < w_x + trappings.width && pos_y < w_y + trappings.height? true : false;
 }
 
 bool AbstractWindow::onMouseClick (const MouseClickEvent& event) {
@@ -114,7 +120,10 @@ bool AbstractWindow::onMouseClick (const MouseClickEvent& event) {
     bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
     if (!is_consumed) return false;
     DEB_INFO
-    printf ("Я квадратное окно, на меня нажали, мои координаты: %lf, %lf, col_r = %lf, col_g = %lf, col_b = %lf\n", x, y, color.red, color.green, color.blue);
+    printf ("Я квадратное окно, на меня нажали, мои координаты:" 
+            "%lf, %lf, col_r = %lf, col_g = %lf, col_b = %lf\n", 
+            trappings.coords.x, trappings.coords.y, 
+            trappings.color.red, trappings.color.green, trappings.color.blue);
     return true;
 }
 
@@ -124,20 +133,20 @@ bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
     if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
         if(GLFW_PRESS == event.action && CheckCoordinate (event.pos_x, event.pos_y)) {
             is_drag = true;
-            off_x = event.pos_x - x;
-            off_y = event.pos_y - y;
-            color.red -= 0.2;
-            color.green -= 0.2;
-            color.blue -= 0.2;
+            off_x = event.pos_x - trappings.coords.x;
+            off_y = event.pos_y - trappings.coords.y;
+            trappings.color.red -= 0.2;
+            trappings.color.green -= 0.2;
+            trappings.color.blue -= 0.2;
             Application::setActiveWindow (this); 
             return true;
         }
         else if (GLFW_RELEASE == event.action && is_drag) {
             DEB_INFO
             is_drag = false;
-            color.red += 0.2;
-            color.green += 0.2;
-            color.blue += 0.2;
+            trappings.color.red += 0.2;
+            trappings.color.green += 0.2;
+            trappings.color.blue += 0.2;
             Application::setActiveWindow (NULL);
         }
     }

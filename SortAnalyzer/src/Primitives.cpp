@@ -58,12 +58,12 @@ void Arrow::draw () const {
 
 
 
-CoordinatePlane::CoordinatePlane (double _x, double _y, double _size_x, double _size_y) 
-    : AbstractWindow (_x, _y, _size_x, _size_y) {
-        im_x = x + off_image * size_x;
-        im_y = y + off_image * size_y;
-        im_size_y = (1 - 2 * off_image) * size_y;
-        im_size_x = (1 - 2 * off_image) * size_x;
+CoordinatePlane::CoordinatePlane (const Rect& _trappings) 
+    : AbstractWindow (_trappings) {
+        im_x = _trappings.coords.x + off_image * _trappings.width;
+        im_y = _trappings.coords.y + off_image * _trappings.height;
+        im_size_y = (1 - 2 * off_image) * _trappings.height;
+        im_size_x = (1 - 2 * off_image) * _trappings.width;
         
 }
 
@@ -81,7 +81,7 @@ void CoordinatePlane::add_graph_by_p_arr (const Vector<Point2d>& points) {
 
 void CoordinatePlane::draw () const {
 
-    GEngine::system.drawRect ({{x, y}, size_x, size_y});
+    GEngine::system.drawRect (trappings);
     
     Arrow OY (im_x, im_y, im_x, im_y + im_size_y);
     OY.draw ();
@@ -160,11 +160,11 @@ void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
             lbutton_down = false;
     }
 
-    Color temp = arrow_up->color;
+    Color temp = arrow_up->trappings.color;
     if (lbutton_down) {
-        arrow_up->color = {0, 0, 0};
+        arrow_up->trappings.color = {0, 0, 0};
     } else {
-        arrow_up->color = but_color;
+        arrow_up->trappings.color = but_color;
     }
 }
 
@@ -179,27 +179,26 @@ void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
 
     
     if (lbutton_down) {
-        arrow_down->color = {0, 0, 0};
+        arrow_down->trappings.color = {0, 0, 0};
     } else {
-        arrow_down->color = but_color;
+        arrow_down->trappings.color = but_color;
     }
 }
 
 
 
-ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, double _x, double _y,
-                      double _size_x, double _size_y, const Color& _color)
-: WindowContainer (_x, _y, _size_x, _size_y, _color),
+ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
+: WindowContainer (_trappings),
   scroll_window (_scroll_window),
-  arrow_up (new Button<ScrollFunctor> (_x,      _y + _size_y - but_size, 
-                                       _size_x, but_size, but_color, 
+  arrow_up (new Button<ScrollFunctor> ({{_trappings.coords.x, _trappings.coords.y + _trappings.height - but_size}, 
+                                       _trappings.width, but_size, but_color}, 
                                        _scroll_window, but_color, true)),
 
-  slider (new Slider (_x,                  _y + _size_y - slider_size - but_size, 
-                      _size_x, /*(size_x - 2 * but_size) * scroll_window->getRatio ()*/slider_size, 
-                       _y + _size_y - but_size, _y + but_size, slider_color)),
+  slider (new Slider ({{_trappings.coords.x, _trappings.coords.y + _trappings.height - slider_size - but_size}, 
+                      _trappings.width, /*(size_x - 2 * but_size) * scroll_window->getRatio ()*/slider_size, slider_color}, 
+                       _trappings.coords.y + _trappings.height - but_size, _trappings.coords.y + but_size)),
 
-  arrow_down (new ::Button<ScrollFunctor>  (_x, _y, _size_x, but_size, but_color,
+  arrow_down (new ::Button<ScrollFunctor>  ({{_trappings.coords.x, _trappings.coords.y}, _trappings.width, but_size, but_color},
                                              _scroll_window, but_color, false)) {
 
     subwindows.push_back (arrow_up.get ());
@@ -208,14 +207,14 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, double _x, double _y,
 }
 
 
-Slider::Slider (double _x, double _y, double _size_x, double _size_y, double _limit_up, 
-                double _limit_down, const Color& _color)
-    : AbstractDragableWindow (_x, _y, _size_x, _size_y, _color),
+Slider::Slider (const Rect& _trappings, double _limit_up, 
+                double _limit_down)
+    : AbstractDragableWindow (_trappings),
       limit_up (_limit_up), limit_down (_limit_down) {}
 
 void Slider::move (double posx, double posy) {
     double new_y = posy - off_y;
-    if (limit_down < new_y && new_y + size_y < limit_up) {
-        y = new_y;
+    if (limit_down < new_y && new_y + trappings.height < limit_up) {
+        trappings.coords.y = new_y;
     }
 }

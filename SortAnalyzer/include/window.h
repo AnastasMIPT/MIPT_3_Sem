@@ -22,13 +22,9 @@ public:
 
 class AbstractWindow : public IWindow {
 public:
-    double x;
-    double y;
-    double size_x;
-    double size_y;
-    Color color;
+    Rect trappings;
 public:
-    AbstractWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    AbstractWindow (const Rect& _trappings);
     bool CheckCoordinate (double pos_x, double pos_y) const override;
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override {}
@@ -56,7 +52,7 @@ public:
         return subwindows.end ();
     }
 
-    WindowContainer (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ());
+    WindowContainer (const Rect& _trappings);
 
     void addWindow (IWindow* window);
     
@@ -125,8 +121,8 @@ protected:
     double off_x = 0;
     double off_y = 0;
 public:
-    AbstractDragableWindow (double _x, double _y, double _size_x, double _size_y, const Color& _color = Color ())
-    : AbstractWindow (_x, _y, _size_x, _size_y, _color) {}
+    AbstractDragableWindow (const Rect& _trappings)
+    : AbstractWindow (_trappings) {}
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override;
     virtual void move (double xpos, double ypos) = 0;

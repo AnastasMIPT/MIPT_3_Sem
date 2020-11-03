@@ -25,7 +25,7 @@ class Slider : public AbstractDragableWindow {
     double limit_up;
     double limit_down;
 public:
-    Slider (double _x, double _y, double _size_x, double _size_y, double _limit_up, double _limit_down,  const Color& _color = Color ());
+    Slider (const Rect& _trappings, double _limit_up, double _limit_down);
     void move (double xpos, double ypos);
 };
 
@@ -45,8 +45,7 @@ class ScrollBar : public WindowContainer {
     void ArrowDownMouseClick (const MouseClickEvent& event);
 
 public:
-    ScrollBar (IScrollableWindow* _scroll_window, double _x, double _y,
-               double _size_x, double _size_y, const Color& _color = Color ());
+    ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings);
 
     bool onMouseClick (const MouseClickEvent& event) override;
 };
@@ -110,7 +109,7 @@ class CoordinatePlane : public AbstractWindow {
 
 public:
 
-    CoordinatePlane (double _x, double _y,double _size_x, double _size_y);
+    CoordinatePlane (const Rect& _trappings);
     
     void add_graph_by_p_arr (const Vector<Point2d>& points);
     void draw_graphs () const;
