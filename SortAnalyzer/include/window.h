@@ -7,6 +7,31 @@
 #include "events.h"
 #include "config.h"
 
+
+class IComponent {
+public:
+    virtual void attach () = 0; // ==> subscribe to events
+    virtual void handleEvent () = 0;
+    virtual void disattach () = 0;
+
+    virtual ~IComponent ();
+};
+
+class Dragable : IComponent {
+
+};
+
+class IsContainer : IComponent {
+
+};
+
+
+class Scrollable : IComponent {
+
+};
+
+
+
 class IWindow {
 public:
     virtual void draw () const = 0;
@@ -23,6 +48,7 @@ public:
 class AbstractWindow : public IWindow {
 public:
     Rect trappings;
+    /* vector <IComponent*> properties;*/
 public:
     AbstractWindow (const Rect& _trappings);
     bool CheckCoordinate (double pos_x, double pos_y) const override;
