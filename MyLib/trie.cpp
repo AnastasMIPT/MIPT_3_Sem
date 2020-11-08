@@ -37,6 +37,20 @@ bool Trie::has (const char* string) const {
 }
 
 
+void Trie::remove (const char* string) {
+    TrieNode* ptr = root.get ();
+
+    for (char* str_p = const_cast<char*> (string); *str_p != '\0'; ++str_p) {
+        auto next_node_it = ptr->go.find (*str_p);
+        if (next_node_it ==  ptr->go.end ()) {
+            return;
+        } else {
+            ptr = (*next_node_it).second.get ();
+        } 
+    }
+    ptr->terminal = false;
+}
+
 
 
 
