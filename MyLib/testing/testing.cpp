@@ -6,7 +6,8 @@ int main () {
     trie.add ("hello");
     trie.add ("helko");
     trie.add ("hey");
-    trie.dump ();
+    printf ("%d, %d, %d, %d\n", trie.has ("heyg"), trie.has ("hey"), trie.has ("hello"), trie.has ("h"));
+    //trie.dump ();
 
 
     fclose (f_dot);

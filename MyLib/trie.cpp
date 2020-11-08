@@ -5,7 +5,7 @@ void Trie::add (const char* string) {
     TrieNode* ptr = root.get ();
 
     for (char* str_p = const_cast<char*> (string); *str_p != '\0'; ++str_p) {
-        auto next_node_it = ptr->go.find(*str_p);
+        auto next_node_it = ptr->go.find (*str_p);
         if (next_node_it != ptr->go.end ()) {
             ptr = (*next_node_it).second.get ();
         } else {
@@ -17,6 +17,40 @@ void Trie::add (const char* string) {
     }
     
 }
+
+bool Trie::has (const char* string) const {
+    TrieNode* ptr = root.get ();
+
+    for (char* str_p = const_cast<char*> (string); *str_p != '\0'; ++str_p) {
+        auto next_node_it = ptr->go.find (*str_p);
+        if (next_node_it ==  ptr->go.end ()) {
+            return false;
+        } else {
+            ptr = (*next_node_it).second.get ();
+        } 
+    }
+    if (ptr->terminal) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void Trie::dump () {
