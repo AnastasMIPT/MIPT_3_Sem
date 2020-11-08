@@ -1,0 +1,19 @@
+digraph {
+node0x55577adfe0a0 [ shape=box];
+node0x55577adfe0f0 [ shape=box];
+node0x55577adfe0a0 -> node0x55577adfe0f0 [color="red", label="h"];
+node0x55577adfe180 [ shape=box];
+node0x55577adfe0f0 -> node0x55577adfe180 [color="red", label="e"];
+node0x55577adfe4c0 [ shape=box];
+node0x55577adfe180 -> node0x55577adfe4c0 [color="red", label="y"];
+node0x55577adfe210 [ shape=box];
+node0x55577adfe180 -> node0x55577adfe210 [color="red", label="l"];
+node0x55577adfe3c0 [ shape=box];
+node0x55577adfe210 -> node0x55577adfe3c0 [color="red", label="k"];
+node0x55577adfe430 [ shape=box];
+node0x55577adfe3c0 -> node0x55577adfe430 [color="red", label="o"];
+node0x55577adfe2a0 [ shape=box];
+node0x55577adfe210 -> node0x55577adfe2a0 [color="red", label="l"];
+node0x55577adfe330 [ shape=box];
+node0x55577adfe2a0 -> node0x55577adfe330 [color="red", label="o"];
+}
