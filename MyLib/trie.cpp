@@ -10,12 +10,12 @@ void Trie::add (const char* string) {
             ptr = (*next_node_it).second.get ();
         } else {
             ptr->go[*str_p] = 
-            std::unique_ptr<TrieNode> (new  TrieNode (*(str_p + 1) == '\0'));
+            std::unique_ptr<TrieNode> (new  TrieNode ());
 
             ptr = ptr->go[*str_p].get ();
         }
     }
-    
+    ptr->terminal++;
 }
 
 bool Trie::has (const char* string) const {
@@ -48,7 +48,7 @@ void Trie::remove (const char* string) {
             ptr = (*next_node_it).second.get ();
         } 
     }
-    ptr->terminal = false;
+    ptr->terminal--;
 }
 
 

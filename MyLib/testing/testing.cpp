@@ -6,6 +6,7 @@ int main () {
     trie.add ("hello");
     trie.add ("helko");
     trie.add ("hey");
+    trie.add ("hey");
     printf ("%d, %d, %d, %d\n", trie.has ("heyg"), trie.has ("hey"), trie.has ("hello"), trie.has ("h"));
     trie.remove ("hey");
     printf ("%d, %d, %d, %d\n", trie.has ("heyg"), trie.has ("hey"), trie.has ("hello"), trie.has ("h"));
