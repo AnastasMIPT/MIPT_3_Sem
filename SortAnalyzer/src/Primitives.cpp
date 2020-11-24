@@ -153,10 +153,10 @@ bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
 
 void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
     bool lbutton_down = false;
-    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
-        if(GLFW_PRESS == event.action)
+    if (event.button == MouseButtonTypes::LEFT) {
+        if(MouseButtonActions::PRESS == event.action)
             lbutton_down = true;
-         else if (GLFW_RELEASE == event.action)
+         else if (MouseButtonActions::RELEASE == event.action)
             lbutton_down = false;
     }
 
@@ -170,10 +170,10 @@ void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
 
 void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
     bool lbutton_down = false;
-    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
-        if(GLFW_PRESS == event.action)
+    if (event.button == MouseButtonTypes::LEFT) {
+        if(MouseButtonActions::PRESS == event.action)
             lbutton_down = true;
-         else if (GLFW_RELEASE == event.action)
+         else if (MouseButtonActions::RELEASE == event.action)
             lbutton_down = false;
     }
 

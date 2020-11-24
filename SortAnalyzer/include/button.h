@@ -109,10 +109,10 @@ template <typename T>
 void SortDrawFunctor<T>::operator() (Button<SortDrawFunctor<T>>* but, const MouseClickEvent& event) {
         
     bool lbutton_down = false;
-    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
-        if(GLFW_PRESS == event.action)
+    if (event.button == MouseButtonTypes::LEFT) {
+        if(MouseButtonActions::PRESS == event.action)
             lbutton_down = true;
-        else if (GLFW_RELEASE == event.action)
+        else if (MouseButtonActions::RELEASE == event.action)
             lbutton_down = false;
     }
     printf ("Hello I'm functor\n");

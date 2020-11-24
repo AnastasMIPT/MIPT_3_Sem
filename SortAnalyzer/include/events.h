@@ -1,6 +1,17 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
+enum MouseButtonTypes {
+    LEFT,
+    RIGHT,
+    MIDDLE
+};
+
+enum MouseButtonActions {
+    RELEASE,
+    PRESS
+};
+
 class MouseClickEvent {
 public:
     double pos_x;
