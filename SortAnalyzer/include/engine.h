@@ -26,12 +26,4 @@ public:
 };
 
 
-
-class SFML : IEngine {
-    SFML () = default;
-public:
-    void drawRect (const Rect& rect) override {printf ("SFML rect\n");}
-
-    friend Engine<SFML>;
-};
 #endif // ENGINE_H

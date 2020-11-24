@@ -1,95 +1,95 @@
+#include <stdio.h>
+#include <map>
+#include <string>
 #include <iostream>
+#include <string.h>
 #include <vector>
-#include <cstdio>
-#include <cstring>
-#include <array>
+#include <algorithm>
+
 using std::vector;
 
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma,sse2,sse3,sse4")
+const int StrMaxLen = 4e5 + 2;
 
 
-constexpr unsigned int MaxLen = 1e6 + 1;
-constexpr unsigned int Hash_p = 27644437;
-constexpr unsigned int Hash_m = 1073676287;
-
-
-constexpr unsigned int LoopLimit = 262140 + 2;
-
-void print_cubes (int * cubes, int n) {
-    for (int i = 0; i < n; ++i) {
-        printf ("%d ", cubes[i]);
-    }
-}
-
-constexpr unsigned int mod_pow (unsigned int base, unsigned int exp, unsigned int mod) noexcept {
-    auto result = 1;
-    for (int i = 0; i < exp; ++i) result = (result * base) % mod;
-    return result;
-}
-
-
-template<unsigned int N, unsigned int base, unsigned int mod>
-struct Mod_Pow_Arr {
-    unsigned int vals[N];
-    constexpr Mod_Pow_Arr() : vals() {
-        auto result = 1;
-        for (auto i = 0; i != N; ++i) {
-            vals[i] = result;
-            result = (result * base) % mod;
-            }
-    }
-};
-
-// static constexpr std::array<int, MaxLen> mod_pow_arr (int base, int mod) {
-//     std::array<int, MaxLen> result {};
-//     for (int i = 0; i < MaxLen; ++i) {
-//         result[i] = mod_pow (base, i, mod);
-//     }
-//     return result;
-// }
-
-//static constexpr std::array<int, MaxLen> (mod_pow_arr (Hash_p, Hash_m));
-
-inline constexpr unsigned int mod_mul (unsigned int a, unsigned int b, unsigned int mod) {
-    return (a * b) % mod;
-}
-
-inline constexpr unsigned int mod_sum (unsigned int a, unsigned int b, unsigned int mod) {
-    return a + b > mod? a + b - mod: a + b;
-}
-
-
-
-unsigned int hash_pref (unsigned int* str, unsigned int right, const unsigned int* arr) {
-    unsigned int hash_sum = 0;
-    for (unsigned int i = 0; i < right; ++i) {
-        hash_sum += (str[i] * arr[i]) % Hash_m;
-    }
-    return hash_sum;
-}
-
-unsigned int hash_pref_rev (unsigned int* str, unsigned int left, unsigned int len, const unsigned int* arr) {
-    unsigned int hash_sum = 0;
-    unsigned int ind = 0;
-    for (unsigned int i = len - 1; i > left; --i, ++ind) {
-        hash_sum += (str[i] * arr[ind]) % Hash_m;
-    }
-    return hash_sum;
-}
-
+vector<int> suf_arr (vector<int> &str);
 int main () {
-    constexpr auto p_arr = Mod_Pow_Arr<LoopLimit, Hash_p, Hash_m> ();
-    
-    // printf ("%u\n", p_arr.vals[1000]);
-    // printf ("\n");
-    int n (0), m (0);
-    scanf ("%d%d", &n, &m);
-    unsigned int cubes[n];
-    for (int i = 0; i < n; ++i) {
-        scanf ("%d", &cubes[i]);
+    char str[StrMaxLen];
+    scanf ("%s", str);
+    vector<int> int_str;
+    for (int i = 0; str[i] != '\0'; i++) {
+        int_str.push_back (str[i] - 'a' + 1);
     }
-    printf ("%u\n%u\n", hash_pref (cubes, 2, p_arr.vals), hash_pref_rev (cubes, 1, n, p_arr.vals));
+
+    vector<int> suff_arr = suf_arr (int_str);
+
+    for (int i = 0; i < suff_arr.size(); i++) {
+        printf ("%d ", suff_arr[i] + 1);
+    }
+    printf ("\n");
+    
     return 0;
 }
 
+vector<int> suf_arr (vector<int>& str)  {
+    str.push_back (0);
+
+    int n = static_cast<int> (str.size ());
+    vector <int> p (n), c (n);
+
+    int eclass_num = 0;
+    int cnt = 0;
+
+    //k = 0
+    std::map <int, vector<int>> sufs_starts_by_symb;
+    for (int i = 0; i < n; i++) {
+        sufs_starts_by_symb[str[i]].push_back (i);
+    }
+    for (auto pair : sufs_starts_by_symb) {
+        for (int suf : pair.second) {
+            c[suf] = eclass_num;
+            p[cnt] = suf;
+            cnt++;
+        }
+        eclass_num++;
+    }
+
+    for (int l = 1; eclass_num < n; l++) {
+        vector<vector<int>> a (eclass_num); 
+        
+        int d = (1 << l) / 2;
+        int new_eclass_num = 0;
+        cnt = 0;
+
+        vector<int> new_c (n);
+
+        for (int i = 0; i < n; i++) {
+            int k = (p[i] - d + n) % n;
+            a[c[k]].push_back (k);
+        }
+
+        for (int i = 0; i < eclass_num; i++) {
+            for (size_t j = 0; j < a[i].size (); j++) {
+                if (j == 0 || c[(a[i][j] + d) % n] != c[(a[i][j - 1] + d) % n])
+                    new_eclass_num++;
+                new_c[a[i][j]] = new_eclass_num - 1;
+                p[cnt] = a[i][j];
+                cnt++;
+            }
+        }
+
+        eclass_num = new_eclass_num;
+        c = new_c;
+    }
+    printf ("p:\n");
+    for (int x : p) {
+        printf ("%d ", x);
+    }
+    printf ("\nc:\n");
+    for (int x : c) {
+        printf ("%d ", x);
+    }
+    printf ("\n");
+    return vector<int> (p.begin () + 1, p.end ());
+
+
+}

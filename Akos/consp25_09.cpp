@@ -464,7 +464,7 @@ int main () {
     pipe (pipe_fds);
 
     pid_t ls = launch ("ls", "-a", 0, pipe_fds[1]);
-    pid_t grep = launch ("grep", "1", pipe_fds[0], 1);
+    pid_t grep = launch ("grep", "m", pipe_fds[0], 1);
 
     close (pipe_fds[0]); close (pipe_fds[1]);
     

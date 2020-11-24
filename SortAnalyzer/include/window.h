@@ -8,27 +8,27 @@
 #include "config.h"
 
 
-class IComponent {
-public:
-    virtual void attach () = 0; // ==> subscribe to events
-    virtual void handleEvent () = 0;
-    virtual void disattach () = 0;
+// class IComponent {
+// public:
+//     virtual void attach () = 0; // ==> subscribe to events
+//     virtual void handleEvent () = 0;
+//     virtual void disattach () = 0;
 
-    virtual ~IComponent ();
-};
+//     virtual ~IComponent ();
+// };
 
-class Dragable : IComponent {
+// class Dragable : IComponent {
 
-};
+// };
 
-class IsContainer : IComponent {
+// class IsContainer : IComponent {
 
-};
+// };
 
 
-class Scrollable : IComponent {
+// class Scrollable : IComponent {
 
-};
+// };
 
 
 

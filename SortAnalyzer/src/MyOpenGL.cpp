@@ -29,14 +29,17 @@ OpenGL::~OpenGL () {
 
 std::unique_ptr<Event> OpenGL::pollEvent () {
 
-    glViewport (0, 0, 400, 400);
-    glBegin (GL_TRIANGLES);
-        glColor3f (1, 0, 0);
-        glVertex2d (-1.2, -0.5);
-        glVertex2d (0.0, 0.5);
-        glVertex2d (0.5, -0.5);
-    glEnd ();
-    glViewport (0, 0, 600, 675);
+    // glViewport (100, 0, 400, 500);
+    // glBegin (GL_TRIANGLES);
+    //     glColor3f (1, 0, 0);
+    //     //glVertex2d (-1.2, -0.5);
+    //     //glVertex2d (0.0, 0.5);
+    //     //glVertex2d (0.5, -0.5);
+    //     // glVertex2i (300, 300);
+    //     // glVertex2i (300, 400);
+    //     // glVertex2i (00, 400);
+    // glEnd ();
+    // glViewport (0, 0, 600, 675);
 
     glfwSwapBuffers (app_window);
     glfwPollEvents ();

@@ -52,34 +52,19 @@ void Trie::remove (const char* string) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+TrieNode* Trie::get_root () const {
+    return root.get ();
+}
 
 
 void Trie::dump () {
     assert(root);
     assert(logs);
-
-
     fprintf (logs, "digraph {\n");
-
     root->dump (logs);
     printNodes (root.get());
-
     fprintf(logs, "}\n");
 }
-
 
 void TrieNode::dump (FILE* logs) {
     fprintf (logs, "node%p [ shape=box];\n", this);
@@ -93,4 +78,32 @@ void Trie::printNodes (TrieNode* node) {
         fprintf (logs, "node%p -> node%p [color=\"red\", label=\"%c\"];\n", node, ptr, el.first);
         printNodes (ptr);
     }
+}
+
+
+void Trie::dfs (TrieNode* cur, std::vector<std::string>& words, std::string& word) {
+    cur->used = true;
+    if (cur->terminal) {
+        for (int i = 0; i < cur->terminal; ++i)
+            words.push_back (word);
+        
+    }
+    for (int i = 0; i < 26; ++i) {
+        auto it = cur->go.find ('a'+ i);
+        if (it == cur->go.end ()) continue;
+        auto elem = it->second.get ();
+        if (!elem->used) {
+            word.push_back('a' + i);
+            dfs (elem, words, word);
+        }
+    }
+    if (word.size ()) word.pop_back ();
+}
+
+std::vector<std::string> Trie::getWords () {
+    std::vector<std::string> words;
+    std::string word ("");
+
+    dfs (root.get (), words, word);
+    return words;
 }
