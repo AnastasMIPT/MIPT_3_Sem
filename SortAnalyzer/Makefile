@@ -16,7 +16,7 @@ all: $(SOURCEFILES) $(HEADERS) $(EXECUTABLE)
 	@./$(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJFILES)
-	@g++ $(OBJFILES) -o $@ $(LINKFlags) $(LINKFlagsGL)
+	@g++ $(OBJFILES) -o $@ $(LINKFlags) $(LINKFlagsSF) $(LINKFlagsGL)
 
 $(OBJ_D)/%.o: src/%.cpp
 	#@g++ $(CFlags) $(Warnings) $(NoWarnings) -c $< -o $@

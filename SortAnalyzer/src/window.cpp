@@ -31,7 +31,8 @@ void Application::pollEvent () {
 }
 
 void Application::run () {
-    glClear (GL_COLOR_BUFFER_BIT);
+    GEngine::system.clear ();
+    
     drawObjects ();
     std::unique_ptr<Event> event = std::move (GEngine::system.pollEvent ());
     if (event->type != Event::EventTypes::DEFAULT_EVENT) event_queue.push (std::move (event));
@@ -130,8 +131,8 @@ bool AbstractWindow::onMouseClick (const MouseClickEvent& event) {
 
 bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
     DEB_INFO
-    if (event.button == GLFW_MOUSE_BUTTON_LEFT) {
-        if(GLFW_PRESS == event.action && CheckCoordinate (event.pos_x, event.pos_y)) {
+    if (event.button == MouseButtonTypes::LEFT) {
+        if(MouseButtonActions::PRESS == event.action && CheckCoordinate (event.pos_x, event.pos_y)) {
             is_drag = true;
             off_x = event.pos_x - trappings.coords.x;
             off_y = event.pos_y - trappings.coords.y;
@@ -141,7 +142,7 @@ bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
             Application::setActiveWindow (this); 
             return true;
         }
-        else if (GLFW_RELEASE == event.action && is_drag) {
+        else if (MouseButtonActions::RELEASE == event.action && is_drag) {
             DEB_INFO
             is_drag = false;
             trappings.color.red += 0.2;

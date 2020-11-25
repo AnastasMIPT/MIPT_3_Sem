@@ -26,6 +26,7 @@ public:
     void drawTriangle (const Triangle& triangele) override;
     void drawLine (const Line& line) override;
     void drawLineStrip (const Vector<Point2d>& points, const Color& color) override;
+    void clear ();
 
     std::unique_ptr<Event> pollEvent () override;
     bool shouldClose () override;

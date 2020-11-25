@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include "MyOpenGL.h"
+#include "MySFML.h"
 using GSystem = OpenGL;
 
 
