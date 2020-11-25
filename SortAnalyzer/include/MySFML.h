@@ -32,7 +32,7 @@ public:
 
 
     friend Engine<SFML>;
-    ~SFML () = default;
+    ~SFML ();
 };
 
 #endif // MYSFML_H
