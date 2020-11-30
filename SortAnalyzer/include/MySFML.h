@@ -9,9 +9,12 @@
 #include "engine.h"
 #include "events.h"
 
+
 class SFML : IEngine {
 private:
     sf::RenderWindow window;
+    int width  = 0;
+    int height = 0;
     SFML (int width, int height, const char* name);
 public:
 
@@ -19,17 +22,25 @@ public:
 
 
     void drawRect (const Rect& rect) override;
-    void drawTriangle (const Triangle& triangele) override;
     void drawLine (const Line& line) override;
+    void drawTriangle (const Triangle& triangele) override;
     void drawLineStrip (const Vector<Point2d>& points, const Color& color) override;
-    void clear ();
+    
+
+    Point2d convertAbstrToRealCoords (const Point2d& abstract_coords);
+    Point2d convertRealToAbstrCoords (const Point2d& real_coords);
+    Rect convertAbstrToRealRect (const Rect& abstract_rect);
+    Rect convertRealToAbstrRect (const Rect& real_rect);
+
+    bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);
 
     std::unique_ptr<Event> pollEvent () override;
     bool shouldClose () override;
+    void clear ();
 
     void EventConvert (sf::Event& sf_event, Event& my_event);
     int  ButtonConvert (sf::Mouse::Button button);
-
+    sf::Color ConvertColor (const Color& color);
 
     friend Engine<SFML>;
     ~SFML ();

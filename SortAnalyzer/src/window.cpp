@@ -62,6 +62,7 @@ bool AbstractWindow::CheckCoordinate (double pos_x, double pos_y) const {
     fflush (stdin);
     if (!((pos_x > w_x) && (pos_y > w_y) && (pos_x < w_x + trappings.width) && (pos_y < w_y + trappings.height))) printf ("Координаты не подходят\n");
     return pos_x > w_x && pos_y > w_y && pos_x < w_x + trappings.width && pos_y < w_y + trappings.height? true : false;
+    //return GEngine::system.checkCoordsInRect (pos_x, pos_y, trappings);
 }
 
 bool AbstractWindow::onMouseClick (const MouseClickEvent& event) {
@@ -104,6 +105,7 @@ bool AbstractDragableWindow::onMouseClick (const MouseClickEvent& event) {
 
 void AbstractDragableWindow::onMouseMove (const MouseMoveEvent& event) {
     //DEB_INFO
+    printf ("event.pos_y = %lf\n", event.pos_y);
     move (event.pos_x, event.pos_y);
 }
 

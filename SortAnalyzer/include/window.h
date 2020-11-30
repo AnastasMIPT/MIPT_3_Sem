@@ -31,6 +31,10 @@
 // };
 
 
+class Object {
+    
+};
+
 
 class IWindow {
 public:

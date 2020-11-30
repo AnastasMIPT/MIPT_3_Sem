@@ -36,8 +36,8 @@ class ScrollBar : public WindowContainer {
     std::unique_ptr<::AbstractWindow> arrow_down;
     
 
-    static constexpr Color but_color = {0.7, 0.7, 0.7};
-    static constexpr Color slider_color = {0.6, 0.6, 0.6};
+    static constexpr Color but_color = COLORS::DEFAULT_BUTTON;
+    static constexpr Color slider_color = COLORS::DEFAULT_SLIDER;
     static constexpr double but_size = 0.1;
     static constexpr double slider_size = 0.2;
 

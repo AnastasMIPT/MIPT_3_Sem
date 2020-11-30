@@ -162,7 +162,7 @@ void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
 
     Color temp = arrow_up->trappings.color;
     if (lbutton_down) {
-        arrow_up->trappings.color = {0, 0, 0};
+        arrow_up->trappings.color = COLORS::BLACK;
     } else {
         arrow_up->trappings.color = but_color;
     }
@@ -179,7 +179,7 @@ void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
 
     
     if (lbutton_down) {
-        arrow_down->trappings.color = {0, 0, 0};
+        arrow_down->trappings.color = COLORS::BLACK;
     } else {
         arrow_down->trappings.color = but_color;
     }
@@ -214,7 +214,9 @@ Slider::Slider (const Rect& _trappings, double _limit_up,
 
 void Slider::move (double posx, double posy) {
     double new_y = posy - off_y;
+    printf ("move: pos_x = %lf, pos_y = %lf, new_y = %lf\n", posx, posy, new_y);
     if (limit_down < new_y && new_y + trappings.height < limit_up) {
+        printf ("yes\n");
         trappings.coords.y = new_y;
     }
 }

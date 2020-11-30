@@ -2,12 +2,17 @@
 #define CONFIG_H
 #include "MyOpenGL.h"
 #include "MySFML.h"
-using GSystem = OpenGL;
+using GSystem = SFML;
 
 
 using GEngine = Engine<GSystem>;
 
-template<typename T >
-extern T Engine<T>::system (600, 675, "TextReader");
+
+constexpr int WindowWidth = 600;
+constexpr int WindowHeight = 675;
+
+
+template<typename T>
+extern T Engine<T>::system (WindowWidth, WindowHeight, "TextReader");
 
 #endif // CONFIG_H

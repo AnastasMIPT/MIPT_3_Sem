@@ -23,13 +23,24 @@ public:
     static void ErrorCallback (int error, const char* description);
 
     void drawRect (const Rect& rect) override;
-    void drawTriangle (const Triangle& triangele) override;
     void drawLine (const Line& line) override;
+    void drawTriangle (const Triangle& triangele) override;
     void drawLineStrip (const Vector<Point2d>& points, const Color& color) override;
-    void clear ();
+
+    static Point2d convertAbstrToRealCoords (const Point2d& abstract_coords);
+    static Point2d convertRealToAbstrCoords (const Point2d& real_coords);
+
+    static Rect convertAbstrToRealRect (const Rect& abstract_rect);
+    static Rect convertRealToAbstrRect (const Rect& real_rect);
+
+
+    bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);
 
     std::unique_ptr<Event> pollEvent () override;
     bool shouldClose () override;
+    void clear ();
+
+
 
     friend Engine<OpenGL>;
     ~OpenGL ();

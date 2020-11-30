@@ -51,7 +51,8 @@ void OpenGL::MouseClickCallback (GLFWwindow* window, int button, int action, int
     x_pos = x_pos * 2 / width  - 1;
     y_pos = -(y_pos * 2 / height - 1);
 
-    std::unique_ptr<Event> event (new Event (MouseClickEvent (x_pos, y_pos, button, action, mods)));
+    Point2d abstr_coords = convertRealToAbstrCoords ({x_pos, y_pos});
+    std::unique_ptr<Event> event (new Event (MouseClickEvent (abstr_coords.x, abstr_coords.y, button, action, mods)));
     event_que.push (std::move (event));
     printf ("Пойман щелчок мыши\n");
 }
@@ -61,7 +62,8 @@ void OpenGL::MouseMoveCallback (GLFWwindow* window, double xpos, double ypos) {
     glfwGetWindowSize (window, &width, &height);
     xpos = xpos * 2 / width  - 1;
     ypos = -(ypos * 2 / height - 1);
-    std::unique_ptr<Event> event (new Event (MouseMoveEvent (xpos, ypos)));
+    Point2d abstr_coords = convertRealToAbstrCoords ({xpos, ypos});
+    std::unique_ptr<Event> event (new Event (MouseMoveEvent (abstr_coords.x, abstr_coords.y)));
     event_que.push (std::move (event));
 }
 
@@ -78,7 +80,8 @@ void OpenGL::ErrorCallback (int error, const char* description) {
     fputs (description, stderr);
 }
 
-void OpenGL::drawRect (const Rect& rect) {
+void OpenGL::drawRect (const Rect& _rect) {
+    Rect rect = convertAbstrToRealRect (_rect);
     glBegin (GL_QUADS);
         glColor3f (rect.color.red, rect.color.green, rect.color.blue);
         glVertex2d (rect.coords.x, rect.coords.y);
@@ -112,4 +115,32 @@ void OpenGL::drawLineStrip (const Vector<Point2d>& points, const Color& color) {
             glVertex2d (points[i].x, points[i].y);
         }
     glEnd ();
+}
+
+
+Point2d OpenGL::convertAbstrToRealCoords (const Point2d& abstract_coords) {
+    return Point2d {abstract_coords.x * 2 - 1.0, abstract_coords.y * 2 - 1.0};
+}
+
+Point2d OpenGL::convertRealToAbstrCoords (const Point2d& real_coords) {
+    return Point2d {real_coords.x * 0.5 + 0.5, real_coords.y * 0.5 + 0.5};
+}
+
+Rect OpenGL::convertAbstrToRealRect (const Rect& abstract_rect) {
+    return {abstract_rect.coords.x * 2 - 1.0, abstract_rect.coords.y * 2 - 1.0,
+            abstract_rect.width * 2, abstract_rect.height * 2, abstract_rect.color};
+}
+    
+Rect OpenGL::convertRealToAbstrRect (const Rect& real_rect) {
+    return {};
+}
+
+
+bool OpenGL::checkCoordsInRect (double pos_x, double pos_y, const Rect& rect) {
+    double rec_x = rect.coords.x;
+    double rec_y = rect.coords.y;
+    return pos_x > rec_x && 
+           pos_y > rec_y && 
+           pos_x < rec_x + rect.width && 
+           pos_y < rec_y + rect.height?  true : false;
 }

@@ -15,6 +15,7 @@ void Application::pollEvent () {
             break;
         case Event::EventTypes::MOUSE_MOVE:
             if (active_window != NULL) {
+                printf ("передал mouse_move активному окну, y = %lf\n", event->ev.mouse_move.pos_y);
                 active_window->onMouseMove (event->ev.mouse_move);
             }
             break;
