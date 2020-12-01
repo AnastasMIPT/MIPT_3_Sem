@@ -17,6 +17,8 @@ public:
 
     virtual bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect) = 0;
 
+    // virtual unsigned int constructRectForFastDraw (const Rect& rect) = 0;
+    // virtual void drawRectFast (unsigned int id) = 0;
 
     virtual std::unique_ptr<Event> pollEvent () = 0;
     virtual bool shouldClose () = 0;

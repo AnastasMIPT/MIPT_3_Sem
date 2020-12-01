@@ -131,25 +131,6 @@ void Graph::change_max_y (double _max_y) {
     max_y = _max_y;
 }
 
-bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
-    DEB_INFO
-    bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
-    if (!is_consumed) return false; 
-    DEB_INFO
-    is_consumed = WindowContainer::onMouseClick (event);
-    // if (arrow_up->CheckCoordinate (event.pos_x, event.pos_y)) {
-    //     ArrowUpMouseClick (event);
-    // } else if (arrow_down->CheckCoordinate (event.pos_x, event.pos_y)) {
-    //     ArrowDownMouseClick (event);
-    // }
-    if (is_consumed) printf ("&& передал подокну");
-    if (!is_consumed) {
-        printf ("Hello\n");
-    }
-    //
-    //
-    return true;
-}
 
 void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
     bool lbutton_down = false;

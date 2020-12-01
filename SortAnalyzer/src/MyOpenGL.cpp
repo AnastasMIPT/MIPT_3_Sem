@@ -2,6 +2,7 @@
 
 std::queue <std::unique_ptr<Event>> OpenGL::event_que;
 
+
 OpenGL::OpenGL (int width, int height, const char* name) {
     if  (!glfwInit ()) exit (EXIT_FAILURE);
     app_window = glfwCreateWindow (width, height, name, NULL, NULL);
@@ -90,6 +91,20 @@ void OpenGL::drawRect (const Rect& _rect) {
         glVertex2d (rect.coords.x + rect.width, rect.coords.y);
     glEnd ();
 }
+
+// unsigned int OpenGL::constructRectForFastDraw (const Rect& _rect) {
+//     printf ("smth\n");
+    
+//     rects.push_back (_rect);
+//     printf ("allow\n");
+//     cur_id++;
+//     return (cur_id - 1);
+// }
+
+// void OpenGL::drawRectFast (unsigned int id) {
+//     drawRect (rects[id]);
+// }
+
 
 void OpenGL::drawTriangle (const Triangle& triangele) {
     glBegin (GL_TRIANGLES);

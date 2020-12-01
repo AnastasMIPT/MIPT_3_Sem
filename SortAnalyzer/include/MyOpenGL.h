@@ -8,14 +8,19 @@
 #include <memory>
 #include "engine.h"
 #include "events.h"
+#include <map>
 
 class OpenGL : IEngine {
 private:
     GLFWwindow* app_window;
+    //std::vector<ab::Rect> rects;
+    
+    //unsigned int cur_id = 0;
     OpenGL (int width, int height, const char* name);
 public:
 
     static std::queue<std::unique_ptr<Event>> event_que;
+
 
     static void MouseClickCallback (GLFWwindow* window, int button, int action, int mods);
     static void MouseMoveCallback (GLFWwindow* window, double xpos, double ypos);
@@ -33,6 +38,9 @@ public:
     static Rect convertAbstrToRealRect (const Rect& abstract_rect);
     static Rect convertRealToAbstrRect (const Rect& real_rect);
 
+
+    // unsigned int constructRectForFastDraw (const Rect& rect);
+    // void drawRectFast (unsigned int id);
 
     bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);
 

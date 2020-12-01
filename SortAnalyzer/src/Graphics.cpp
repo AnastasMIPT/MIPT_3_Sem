@@ -16,6 +16,7 @@ IWindow* AbstractApplication::active_window = NULL;
 template <>
 GSystem GEngine::system;
 
+
 WindowContainer AbstractApplication::windows ({0.0, 0.0, 1.0, 1.0, COLORS::DEFAULT_BACKGROUND});
 
 
@@ -29,7 +30,7 @@ int main  (void)
     );    
         
     std::unique_ptr<ScrollBar> s_bar (
-        new ScrollBar (scroll_w.get (), {0.975, 0.0, 0.025, 1.0, ab::COLORS::LIGHT_GRAY})
+        new ScrollBar (scroll_w.get (), {0.975, 0.0, 0.02, 1.0, ab::COLORS::LIGHT_GRAY})
     );
 
     std::unique_ptr<LabelWindow> label (

@@ -1,7 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-
+#include <algorithm>
 
 
 namespace ab {
@@ -11,6 +11,13 @@ namespace ab {
         double green = 1.0;
         double blue  = 1.0;
         double alpha = 1.0;
+
+
+        void operator-= (const Color& other) {
+            red   = std::max (0.0, red   - other.red);
+            green = std::max (0.0, green - other.green);
+            blue  = std::max (0.0, blue  - other.blue);
+        }
     };
 
     namespace COLORS {
@@ -25,6 +32,7 @@ namespace ab {
         constexpr Color BLACK              {0.0, 0.0, 0.0};
         constexpr Color TRANSPARENT        {0.0, 0.0, 0.0, 0.0};
         
+        constexpr Color DEFAULT_BLACOUT    {0.2, 0.2, 0.2};
     };
 
 
@@ -56,9 +64,6 @@ namespace ab {
         double height;
         Color color;
     };
-
-    
-    
 
 };
 

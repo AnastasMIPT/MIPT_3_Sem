@@ -48,7 +48,7 @@ class ScrollBar : public WindowContainer {
 public:
     ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings);
 
-    bool onMouseClick (const MouseClickEvent& event) override;
+    //bool onMouseClick (const MouseClickEvent& event) override;
 };
 
 

@@ -17,18 +17,19 @@ void WindowContainer::draw () const {
 
 bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
     printf ("Принял событие\n");
-    DEB_INFO
-    bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
-    printf ("is_consumed = %d\n", is_consumed);
-    if (!is_consumed) {
-        printf ("у события неверные координаты: %lf, %lf\n", event.pos_x, event.pos_y);
-        printf ("Координаты контейнера %lf, %lf, размеры: %lf, %lf\n", trappings.coords.x, trappings.coords.y,
-        trappings.width, trappings.height);
-        return false;
-    }
-    DEB_INFO
-    printf ("у события нужные координаты\n");
-    printf ("Координаты контейнера %lf, %lf\n", trappings.coords.x, trappings.coords.y);
+    bool is_consumed = false;
+    // DEB_INFO
+    // bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
+    // printf ("is_consumed = %d\n", is_consumed);
+    // if (!is_consumed) {
+    //     printf ("у события неверные координаты: %lf, %lf\n", event.pos_x, event.pos_y);
+    //     printf ("Координаты контейнера %lf, %lf, размеры: %lf, %lf\n", trappings.coords.x, trappings.coords.y,
+    //     trappings.width, trappings.height);
+    //     return false;
+    // }
+    // DEB_INFO
+    // printf ("у события нужные координаты\n");
+    // printf ("Координаты контейнера %lf, %lf\n", trappings.coords.x, trappings.coords.y);
     for (auto window : subwindows) {
         is_consumed = window->onMouseClick (event);
         if (is_consumed) printf ("Приняло подокно с координатами y = %lf\n",
@@ -36,7 +37,7 @@ bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
         if (is_consumed) return true;
     }
 
-    printf ("событие не поглощено\n");
+    //printf ("событие не поглощено\n");
 
     return false;
 }
@@ -45,6 +46,7 @@ bool WindowContainer::onMouseClick (const MouseClickEvent& event) {
 WindowContainer::WindowContainer (const Rect& _trappings)
 : AbstractWindow (_trappings) {}
 
+
 AbstractWindow::AbstractWindow (const Rect& _trappings)
 : trappings (_trappings) {}
 
@@ -52,6 +54,7 @@ AbstractWindow::AbstractWindow (const Rect& _trappings)
 void AbstractWindow::draw () const {
     GEngine::system.drawRect (trappings);
 }
+
 
 bool AbstractWindow::CheckCoordinate (double pos_x, double pos_y) const {
     double w_x = trappings.coords.x;
@@ -67,6 +70,10 @@ bool AbstractWindow::CheckCoordinate (double pos_x, double pos_y) const {
 
 bool AbstractWindow::onMouseClick (const MouseClickEvent& event) {
     DEB_INFO
+    printf ("Я квадратное окно,мне попробовали передать событие, мои координаты:" 
+        "%lf, %lf, col_r = %lf, col_g = %lf, col_b = %lf\n", 
+        trappings.coords.x, trappings.coords.y, 
+        trappings.color.red, trappings.color.green, trappings.color.blue);
     bool is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
     if (!is_consumed) return false;
     DEB_INFO

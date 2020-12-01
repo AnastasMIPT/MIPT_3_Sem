@@ -62,11 +62,13 @@ public:
 
 template <typename ButtonFunctor_t>
 class Button : public AbstractWindow {
+    bool lbutton_down = false;
+    Color default_color;
 public:
     ButtonFunctor_t MousePress;
     template <typename ...Args_t>
     Button (const Rect& _trappings, Args_t&&... args) 
-    : AbstractWindow (_trappings), MousePress (std::forward<Args_t> (args)...) {}
+    : AbstractWindow (_trappings), default_color (trappings.color), MousePress (std::forward<Args_t> (args)...) {}
 
     bool onMouseClick (const MouseClickEvent& event) override;
     ~Button () final = default;
@@ -145,17 +147,48 @@ template <typename ButtonFunctor_t>
 bool Button<ButtonFunctor_t>::onMouseClick (const MouseClickEvent& event) {
 
     printf ("Зашел в onClick кнопки\n");
-    bool is_consumed = false;
+    // bool is_consumed = false;
      
-    printf ("пытаюсь поглотить\n");
+    // printf ("пытаюсь поглотить\n");
         
-    is_consumed = CheckCoordinate (event.pos_x, event.pos_y);
-    if (!is_consumed) return false;
-    printf ("поглатил\n");
+    bool our_coords = CheckCoordinate (event.pos_x, event.pos_y);
+    // if (!is_consumed) return false;
+    // printf ("поглатил\n");
 
-    MousePress (this, event);
-    return true;
+    lbutton_down = false;
+    if (event.button == MouseButtonTypes::LEFT) {
+        if(MouseButtonActions::PRESS == event.action)
+            lbutton_down = true;
+         else if (MouseButtonActions::RELEASE == event.action)
+            lbutton_down = false;
+    }
+
+    if (lbutton_down) {
+        if (our_coords) {
+            printf ("***** our_coords+ldown\n");
+            trappings.color -= COLORS::DEFAULT_BLACOUT;
+            return true;
+        }
+    } else {
+        trappings.color = default_color;
+        if (our_coords) {
+            MousePress (this, event);
+            printf ("***** our_coords+lrelease\n");
+            return true;
+        }
+    }
+    printf ("****lrelease + othercoords\n");
+    return false;
 }
+
+
+
+
+
+template <typename ButtonFunctor_t>
+class ImageButton : public Button<ButtonFunctor_t> {
+    
+};
 
 
 #endif // BUTTON_H

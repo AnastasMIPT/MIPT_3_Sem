@@ -51,6 +51,7 @@ public:
 class AbstractWindow : public IWindow {
 public:
     ab::Rect trappings;
+    //unsigned int rect_id;
     /* vector <IComponent*> properties;*/
 public:
     AbstractWindow (const ab::Rect& _trappings);
@@ -102,8 +103,9 @@ protected:
 public:
     AbstractDragableWindow (const ab::Rect& _trappings)
     : AbstractWindow (_trappings) {}
+
     bool onMouseClick (const MouseClickEvent& event) override;
-    void onMouseMove (const MouseMoveEvent& event) override;
+    void onMouseMove  (const MouseMoveEvent& event) override;
     virtual void move (double xpos, double ypos) = 0;
 };
 
