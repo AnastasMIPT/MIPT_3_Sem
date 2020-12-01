@@ -10,6 +10,7 @@ namespace ab {
         double red   = 1.0;
         double green = 1.0;
         double blue  = 1.0;
+        double alpha = 1.0;
     };
 
     namespace COLORS {
@@ -22,6 +23,7 @@ namespace ab {
         constexpr Color BLUE               {0.0, 0.0, 1.0};
         constexpr Color WHITE              {1.0, 1.0, 1.0};
         constexpr Color BLACK              {0.0, 0.0, 0.0};
+        constexpr Color TRANSPARENT        {0.0, 0.0, 0.0, 0.0};
         
     };
 
