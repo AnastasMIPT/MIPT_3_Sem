@@ -15,6 +15,7 @@
 
 
 #include "window.h"
+#include "scrollable_windows.h"
 
 const double DefaultMaxVal = -228;
 

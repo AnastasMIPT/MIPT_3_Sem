@@ -8,8 +8,8 @@ using GSystem = SFML;
 using GEngine = Engine<GSystem>;
 
 
-constexpr int WindowWidth = 600;
-constexpr int WindowHeight = 675;
+constexpr int WindowWidth = 1280;
+constexpr int WindowHeight = 720;
 
 
 template<typename T>

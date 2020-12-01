@@ -7,7 +7,6 @@
 #include "events.h"
 #include "config.h"
 
-
 // class IComponent {
 // public:
 //     virtual void attach () = 0; // ==> subscribe to events
@@ -32,7 +31,7 @@
 
 
 class Object {
-    
+
 };
 
 
@@ -51,10 +50,10 @@ public:
 
 class AbstractWindow : public IWindow {
 public:
-    Rect trappings;
+    ab::Rect trappings;
     /* vector <IComponent*> properties;*/
 public:
-    AbstractWindow (const Rect& _trappings);
+    AbstractWindow (const ab::Rect& _trappings);
     bool CheckCoordinate (double pos_x, double pos_y) const override;
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override {}
@@ -82,7 +81,7 @@ public:
         return subwindows.end ();
     }
 
-    WindowContainer (const Rect& _trappings);
+    WindowContainer (const ab::Rect& _trappings);
 
     void addWindow (IWindow* window);
     
@@ -93,31 +92,6 @@ public:
 };
 
 
-class IScrollableWindow : IWindow {
-public:
-    virtual double getRatio () = 0;
-    virtual void scrollOnceUp () = 0;
-    virtual void scrollOnceDown () = 0;
-
-    virtual ~IScrollableWindow () = default;
-};
-
-
-class AbstractScrollableWindow : public IScrollableWindow {
-    int num_of_first_unit = 0;
-    int num_of_units;
-    int num_of_visable_units;
-public:
-    AbstractScrollableWindow (int _num_of_units, int _num_of_visable_units);
-    double getRatio () override;
-    void scrollOnceUp   () override;
-    void scrollOnceDown () override;
-    void draw () const {}
-    bool onMouseClick (const MouseClickEvent& event)   {return false;}
-    void onMouseMove  (const MouseMoveEvent&  event)   {}
-    bool CheckCoordinate (double pos_x, double pos_y) const override {return false;}
-
-};
 
 
 class AbstractDragableWindow : public AbstractWindow {
@@ -126,7 +100,7 @@ protected:
     double off_x = 0;
     double off_y = 0;
 public:
-    AbstractDragableWindow (const Rect& _trappings)
+    AbstractDragableWindow (const ab::Rect& _trappings)
     : AbstractWindow (_trappings) {}
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override;

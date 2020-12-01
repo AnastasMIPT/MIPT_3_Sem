@@ -13,6 +13,8 @@
 class SFML : IEngine {
 private:
     sf::RenderWindow window;
+    sf::Font font;
+
     int width  = 0;
     int height = 0;
     SFML (int width, int height, const char* name);
@@ -26,11 +28,19 @@ public:
     void drawTriangle (const Triangle& triangele) override;
     void drawLineStrip (const Vector<Point2d>& points, const Color& color) override;
     
+    void drawText (const std::string& _text, const Point2d& pos, int character_size = 24);
 
     Point2d convertAbstrToRealCoords (const Point2d& abstract_coords);
     Point2d convertRealToAbstrCoords (const Point2d& real_coords);
     Rect convertAbstrToRealRect (const Rect& abstract_rect);
     Rect convertRealToAbstrRect (const Rect& real_rect);
+
+    int convertHorizontalSizeToPixels (double size);
+    int convertVerticalSizeToPixels   (double size);
+    
+    double convertPixelsToHorizontalSize (int size);
+    double convertPixelsToVerticalSize   (int size);
+    
 
     bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);
 
