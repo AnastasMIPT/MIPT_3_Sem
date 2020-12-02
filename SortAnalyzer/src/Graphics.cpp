@@ -34,7 +34,7 @@ int main  (void)
     );
 
     std::unique_ptr<LabelWindow> label (
-        new LabelWindow ("anastas", {0.1, 0.1, 0.4, 0.3, ab::COLORS::BLUE})
+        new LabelWindow ("\tanastas", {0.1, 0.1, 0.4, 0.3, ab::COLORS::BLUE})
     );
 
     Application::addObject (s_bar.get ());

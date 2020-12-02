@@ -2,7 +2,7 @@
 
 void LabelWindow::draw () const {
     AbstractWindow::draw ();
-    GEngine::system.drawText (text, trappings.coords);
+    GEngine::system.drawText (text, trappings);
 }
 
 
