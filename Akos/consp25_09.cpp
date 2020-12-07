@@ -588,3 +588,75 @@ sigqueue
 1. проставлять только флаги в обр-ке сигналов
 2. 
 3. обработчик с тремя арг sigqueue 
+
+
+
+
+
+
+
+
+int my_readdir(
+    const char* path,
+    void* buf,
+    fuse_fill_dir_t filler,
+    off_t offset,
+    struct fuse_file_info* fi)
+{
+
+
+    // std::vector<fs::path> dirs;
+    // for (auto& root : roots) {
+    //     fs::path full_path = root / path;
+    //     if (fs::exists(full_path) &&
+    //         fs::is_directory(fs::directory_entry(full_path).status())) {
+    //         dirs.push_back(full_path);
+    //         std::cout << "dir match: " << full_path << std::endl;
+    //     }
+    // }
+
+    char dirs[FileSystem.dirs_num][PATH_MAX] = {};
+    size_t dir_num = 0;
+    char buf_path[PATH_MAX] = {};
+
+    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
+        strncpy (buf_path, FileSystem.files[i].path, PATH_MAX);
+        strcat  (buf_path, path);
+        
+        struct stat st;
+        stat(buf_path, &st);
+        
+        if (0 == access (buf_path, F_OK) && S_ISDIR (st.st_mode)) {
+            strncpy (dirs[dir_num], buf_path, PATH_MAX);
+            dir_num++;
+        }
+    }
+
+
+
+    // if (dirs.size() == 0) {
+    //     return -ENOENT; // no dirs found
+    // }
+    if (0 == dir_num) {
+        return -ENOENT;
+    }
+
+    // two mandatory entries: the directory itself and its parent
+    filler(buf, ".", NULL, 0);
+    filler(buf, "..", NULL, 0);
+
+    // std::unordered_set<std::string> added;
+
+    // for (auto& dir : dirs) {
+    //     for (auto& entity : fs::directory_iterator(dir)) {
+    //         std::string filename(fs::path(entity).filename().c_str());
+    //         if (added.count(filename) == 0) {
+    //             added.insert(filename);
+    //             filler(buf, filename.data(), NULL, 0);
+    //         }
+    //     }
+    // }
+
+
+    return 0; // success
+}

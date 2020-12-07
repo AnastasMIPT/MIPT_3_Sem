@@ -1,6 +1,10 @@
 {
     "files.associations": {
-        "cstdio": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "c",
+        "deque": "c",
+        "unordered_map": "c",
+        "unordered_set": "c",
+        "vector": "c",
+        "optional": "c"
     }
 }

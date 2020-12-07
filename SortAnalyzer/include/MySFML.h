@@ -9,18 +9,21 @@
 #include "engine.h"
 #include "events.h"
 #include <unordered_map>
+#include <vector>
+
 
 class SFML : IEngine {
 private:
     sf::RenderWindow window;
     sf::Font font;
 
+    std::map<size_t, sf::Texture> images;
 
-    std::unordered_map<int, sf::RectangleShape> rects;
+    //std::unordered_map<int, sf::RectangleShape> rects;
 
     int width  = 0;
     int height = 0;
-    //int cur_id = 1;
+    size_t cur_image_id = 1;
 
     SFML (int width, int height, const char* name);
 public:
@@ -50,6 +53,8 @@ public:
     double convertPixelsToHorizontalSize (int size);
     double convertPixelsToVerticalSize   (int size);
     
+    size_t loadTexture (const char* _path);
+
 
     bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);
 

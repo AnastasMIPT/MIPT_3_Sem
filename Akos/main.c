@@ -1,147 +1,270 @@
-#include <arpa/inet.h>
+
+
+#define FUSE_USE_VERSION 30 // API version 3.0
+#define _FILE_OFFSET_BITS 64
+
+#include <dirent.h>
 #include <errno.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <signal.h>
+#include <fuse.h>
+#include <limits.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/wait.h>
-#include <zconf.h>
+#include <unistd.h>
 
-volatile sig_atomic_t signal_is = 0;
-int wait_connection = 0;
+//#define DEBUG
+//#include "../MyLib/debug_info.h"
 
-void sig_handler(int sign)
+const size_t MaxNumFiles = 1024;
+
+struct MyFile {
+    char path[PATH_MAX];
+};
+
+struct FileSystem {
+    size_t dirs_num;
+    struct MyFile* files;
+
+} FileSystem;
+
+void filesystem_open(char* directories)
 {
-    signal_is = 1;
-    if (wait_connection) {
-        exit(0);
+    //DEB_INFO
+    size_t num_of_dir = 0;
+    for (char* str_p = directories; *str_p; str_p++) {
+        if (*str_p == ':') {
+            num_of_dir++;
+        }
+    }
+    num_of_dir++;
+    //printf ("dir_num = %lu\n", num_of_dir);
+    //DEB_INFO
+    FileSystem.files = calloc(num_of_dir, sizeof(struct MyFile));
+    FileSystem.dirs_num = num_of_dir;
+
+    char* dir_p = directories;
+    for (size_t i = 0; i < num_of_dir; ++i) {
+        char* delim = strchr(dir_p, ':');
+
+        if (delim)
+            *delim = '\0';
+        //printf ("dir_p = %s\n", dir_p);
+        realpath(dir_p, FileSystem.files[i].path);
+        //printf ("f_path = %s\n", FileSystem.files[i].path);
+        delim++;
+        dir_p = delim;
+    }
+
+    //DEB_INFO
+    //printf ("f_dir_num = %lu\n", FileSystem.dirs_num);
+    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
+        //DEB_INFO
+        //printf ("i = %lu, path = %s\n", i, FileSystem.files[i].path);
     }
 }
 
-void SetSignalHandlers();
-int StartListenngTCP(const char* IPv4, const char* port);
-void ProccesConnection(int client_fd, char* path);
-void ProccesReadbleFile(int client_fd, const char* path_to_file);
-
-int main(int argc, char** argv)
+char* GetMostRecentFile(
+    const char* rel_path,
+    char* res_path_buf) //const std::string& rel_path)
 {
-    int tcp_socket = StartListenngTCP("127.0.0.1", argv[1]);
-    SetSignalHandlers();
+    if (!res_path_buf)
+        return NULL;
 
-    while (!signal_is) {
-        wait_connection = 1;
-        int client_fd = accept(tcp_socket, NULL, NULL);
-        if (-1 == client_fd) {
-            break;
+    ssize_t dir_id = -1;
+    struct timespec recent_time = {0};
+
+    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
+        strcpy(res_path_buf, FileSystem.files[i].path);
+        strcat(res_path_buf, rel_path);
+        struct stat st;
+        if (0 == stat(res_path_buf, &st) &&
+            recent_time.tv_sec < st.st_mtim.tv_nsec) {
+            recent_time.tv_sec = st.st_mtim.tv_nsec;
+            dir_id = i;
         }
-        wait_connection = 0;
-        //printf("accepted fd = %d\n", client_fd);
-
-        ProccesConnection(client_fd, argv[2]);
-
-        shutdown(client_fd, SHUT_RDWR);
-        close(client_fd);
     }
 
-    close(tcp_socket);
+    if (-1 == dir_id) {
+        return NULL;
+    }
+
+    strcpy(res_path_buf, FileSystem.files[dir_id].path);
+    strcat(res_path_buf, rel_path);
+    return res_path_buf;
+}
+
+int my_stat(const char* path, struct stat* st, struct fuse_file_info* fi)
+{
+    char most_resent_path[PATH_MAX];
+    if (!GetMostRecentFile(path, most_resent_path)) {
+        return -ENOENT;
+    }
+
+    memset(st, 0, sizeof(struct stat));
+
+    int status = stat(most_resent_path, st);
+
+    if (S_ISREG(st->st_mode)) {
+        st->st_mode = S_IFREG | 0444;
+    }
+    if (S_ISDIR(st->st_mode)) {
+        st->st_mode = S_IFDIR | 0555;
+    }
+    return status;
+}
+
+int my_readdir(
+    const char* path,
+    void* out,
+    fuse_fill_dir_t filler,
+    off_t off,
+    struct fuse_file_info* fi,
+    enum fuse_readdir_flags flags)
+{
+    char dir_files[MaxNumFiles][NAME_MAX];
+    size_t dir_files_num = 0;
+
+    filler(out, ".", NULL, 0, 0);
+    filler(out, "..", NULL, 0, 0);
+
+    char buf_path[PATH_MAX];
+    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
+        strncpy(buf_path, FileSystem.files[i].path, PATH_MAX);
+        strcat(buf_path, path);
+        DIR* f_dir = opendir(buf_path);
+        if (f_dir != NULL) {
+
+            struct dirent* dir_data = readdir(f_dir);
+            while (dir_data != NULL) {
+                size_t j = 0;
+                for (; j < dir_files_num; ++j) {
+                    if (0 == strcmp((*dir_data).d_name, dir_files[j]))
+                        break;
+                }
+                if (j == dir_files_num) {
+                    strcpy(dir_files[j], (*dir_data).d_name);
+                    dir_files_num++;
+                }
+                dir_data = readdir(f_dir);
+            }
+        }
+        closedir(f_dir);
+    }
+
+    for (size_t i = 0; i < dir_files_num; i++) {
+        filler(out, dir_files[i], NULL, 0, 0);
+    }
     return 0;
 }
 
-void ProccesConnection(int client_fd, char* path)
+int my_read(
+    const char* path,
+    char* out,
+    size_t size,
+    off_t off,
+    struct fuse_file_info* fi)
 {
-    char path_to_file[PATH_MAX];
-    memset(path_to_file, 0, PATH_MAX);
-    strncpy(path_to_file, path, PATH_MAX);
+    char newest_path[PATH_MAX] = "";
+    
+    char buf_path[PATH_MAX];
+    struct timespec time_of_last_modification = {0};
+    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
+        strncpy(buf_path, FileSystem.files[i].path, PATH_MAX);
+        strcat(buf_path, path);
 
-    char buf[BUFSIZ];
-    if (-1 == read(client_fd, buf, BUFSIZ)) {
-        perror("read");
-        return;
-    }
-
-    sscanf(buf, "GET %s", buf);
-    strcat(path_to_file, "/");
-    strcat(path_to_file, buf);
-
-    if (-1 == access(path_to_file, F_OK)) {
-        dprintf(client_fd, "HTTP/1.1 404 Not Found\r\n");
-    } else if (-1 == access(path_to_file, R_OK)) {
-        dprintf(client_fd, "HTTP/1.1 403 Forbidden\r\n");
-    } else if (-1 != access(path_to_file, X_OK)) {
-        dprintf(client_fd, "HTTP/1.1 200 OK\r\n");
-        pid_t pid = fork();
-        if (-1 == pid) {
-            perror("fork");
-            return;
+        struct stat stats;
+        // remember file if it is newer than the last one found
+        if (0 == stat(buf_path, &stats) &&
+            time_of_last_modification.tv_sec < stats.st_mtim.tv_sec) {
+            time_of_last_modification = stats.st_mtim;
+            strcpy(newest_path, buf_path);
         }
-        if (0 == pid) {
-            if (-1 == dup2(client_fd, 1)) {
-                perror("dup2");
-            }
-            close(client_fd);
-            execl(path_to_file, path_to_file, NULL);
-            perror("execl");
+    }
+
+    if (newest_path == "") {
+        return -ENOENT;
+    }
+    struct stat stats;
+    stat(newest_path, &stats);
+    if (off >= stats.st_size) {
+        return 0;
+    }
+    FILE* cur_file = fopen(newest_path, "r");
+    fseek(cur_file, off, SEEK_CUR);
+    fread(out, 1, stats.st_size, cur_file);
+    fseek(cur_file, -(off + stats.st_size), SEEK_CUR);
+    return stats.st_size;
+}
+
+int my_open(const char* path, struct fuse_file_info* fi)
+{
+    char newest_path[PATH_MAX] = "";
+    //printf ("allow\n");
+
+    char buf_path[PATH_MAX];
+    struct timespec time_of_last_modification = {0};
+    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
+        strncpy(buf_path, FileSystem.files[i].path, PATH_MAX);
+        strcat(buf_path, path);
+
+        struct stat stats;
+        if (0 == stat(buf_path, &stats) &&
+            time_of_last_modification.tv_sec < stats.st_mtim.tv_sec) {
+            time_of_last_modification = stats.st_mtim;
+            strcpy(newest_path, buf_path);
         }
-        wait(0);
-    } else {
-        ProccesReadbleFile(client_fd, path_to_file);
     }
+
+    if (newest_path == "") {
+        return -ENOENT;
+    }
+    // using bitwise & to check file access mode
+    return (O_RDONLY == ((*fi).flags & O_ACCMODE)) ? 0 : -EACCES;
 }
 
-void ProccesReadbleFile(int client_fd, const char* path_to_file)
+void filesystem_close()
 {
-
-    struct stat f_stats;
-    stat(path_to_file, &f_stats);
-    dprintf(
-        client_fd,
-        "HTTP/1.1 200 OK\r\nContent-Length: %ld\r\n\r\n",
-        f_stats.st_size);
-    int fd = open(path_to_file, O_RDONLY);
-    char buf[BUFSIZ];
-    int nread = 0;
-    while ((nread = read(fd, buf, BUFSIZ)) > 0) {
-        write(client_fd, buf, nread);
-    }
-
-    close(fd);
+    free(FileSystem.files);
 }
 
-void SetSignalHandlers()
+struct fuse_operations operations = {.readdir = my_readdir,
+                                     .read = my_read,
+                                     .getattr = my_stat,
+                                     .open = my_open};
+
+int main(int argc, char** argv)
 {
+    // arguments to be preprocessed before passing to /sbin/mount.fuse3
+    struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
 
-    struct sigaction sa = {.sa_handler = sig_handler, .sa_flags = SA_RESTART};
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGTERM, &sa, NULL);
-}
+    //printf ("allou\n");
 
-int StartListenngTCP(const char* IPv4, const char* port)
-{
-    int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (-1 == tcp_socket) {
-        perror("socket");
-        return -1;
-    }
-    struct sockaddr_in addr;
-    addr.sin_addr.s_addr = inet_addr(IPv4);
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(atoi(port));
+    typedef struct {
+        char* dirs;
+    } my_options_t;
 
-    if (-1 == bind(tcp_socket, (const struct sockaddr*)&addr, sizeof(addr))) {
-        perror("bind");
-        close(tcp_socket);
-        return -1;
-    }
+    my_options_t my_options;
+    memset(&my_options, 0, sizeof(my_options));
 
-    if (-1 == listen(tcp_socket, SOMAXCONN)) {
-        perror("listen");
-        close(tcp_socket);
-        return -1;
-    }
-    return tcp_socket;
+    struct fuse_opt opt_specs[] = {
+        {"--src %s", offsetof(my_options_t, dirs), 0}, {NULL, 0, 0}};
+    //DEB_INFO
+    fuse_opt_parse(&args, &my_options, opt_specs, NULL);
+    //DEB_INFO
+    filesystem_open(my_options.dirs);
+
+    // run daemon
+    int ret = fuse_main(
+        args.argc,
+        args.argv,   // arguments to be passed to /sbin/mount.fuse3
+        &operations, // pointer to callback functions
+        NULL         // optional pointer to user-defined data
+    );
+
+    filesystem_close();
+
+    return ret;
 }

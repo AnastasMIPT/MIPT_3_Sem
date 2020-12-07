@@ -32,6 +32,7 @@ public:
 
 template <typename IEngineImpl>
 class Engine {
+    ~Engine () = default;
 public:
     static IEngineImpl system;
 };
