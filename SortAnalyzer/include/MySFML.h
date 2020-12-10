@@ -10,7 +10,7 @@
 #include "events.h"
 #include <unordered_map>
 #include <vector>
-
+#include <image.h>
 
 class SFML : IEngine {
 private:
@@ -53,7 +53,7 @@ public:
     double convertPixelsToHorizontalSize (int size);
     double convertPixelsToVerticalSize   (int size);
     
-    size_t loadTexture (const char* _path);
+    Image loadImageFromFile (const char* _path);
 
 
     bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);

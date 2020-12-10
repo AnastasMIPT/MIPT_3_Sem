@@ -1,270 +1,140 @@
-
-
-#define FUSE_USE_VERSION 30 // API version 3.0
-#define _FILE_OFFSET_BITS 64
-
-#include <dirent.h>
-#include <errno.h>
-#include <fuse.h>
-#include <limits.h>
-#include <stddef.h>
+#include <arpa/inet.h>
+#include <ctype.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
+#include <sys/epoll.h>
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
 
-//#define DEBUG
-//#include "../MyLib/debug_info.h"
+volatile sig_atomic_t signal_is = 0;
 
-const size_t MaxNumFiles = 1024;
-
-struct MyFile {
-    char path[PATH_MAX];
-};
-
-struct FileSystem {
-    size_t dirs_num;
-    struct MyFile* files;
-
-} FileSystem;
-
-void filesystem_open(char* directories)
+void sig_handler(int sign)
 {
-    //DEB_INFO
-    size_t num_of_dir = 0;
-    for (char* str_p = directories; *str_p; str_p++) {
-        if (*str_p == ':') {
-            num_of_dir++;
-        }
-    }
-    num_of_dir++;
-    //printf ("dir_num = %lu\n", num_of_dir);
-    //DEB_INFO
-    FileSystem.files = calloc(num_of_dir, sizeof(struct MyFile));
-    FileSystem.dirs_num = num_of_dir;
-
-    char* dir_p = directories;
-    for (size_t i = 0; i < num_of_dir; ++i) {
-        char* delim = strchr(dir_p, ':');
-
-        if (delim)
-            *delim = '\0';
-        //printf ("dir_p = %s\n", dir_p);
-        realpath(dir_p, FileSystem.files[i].path);
-        //printf ("f_path = %s\n", FileSystem.files[i].path);
-        delim++;
-        dir_p = delim;
-    }
-
-    //DEB_INFO
-    //printf ("f_dir_num = %lu\n", FileSystem.dirs_num);
-    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
-        //DEB_INFO
-        //printf ("i = %lu, path = %s\n", i, FileSystem.files[i].path);
-    }
+    signal_is = 1;
 }
 
-char* GetMostRecentFile(
-    const char* rel_path,
-    char* res_path_buf) //const std::string& rel_path)
-{
-    if (!res_path_buf)
-        return NULL;
-
-    ssize_t dir_id = -1;
-    struct timespec recent_time = {0};
-
-    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
-        strcpy(res_path_buf, FileSystem.files[i].path);
-        strcat(res_path_buf, rel_path);
-        struct stat st;
-        if (0 == stat(res_path_buf, &st) &&
-            recent_time.tv_sec < st.st_mtim.tv_nsec) {
-            recent_time.tv_sec = st.st_mtim.tv_nsec;
-            dir_id = i;
-        }
-    }
-
-    if (-1 == dir_id) {
-        return NULL;
-    }
-
-    strcpy(res_path_buf, FileSystem.files[dir_id].path);
-    strcat(res_path_buf, rel_path);
-    return res_path_buf;
-}
-
-int my_stat(const char* path, struct stat* st, struct fuse_file_info* fi)
-{
-    char most_resent_path[PATH_MAX];
-    if (!GetMostRecentFile(path, most_resent_path)) {
-        return -ENOENT;
-    }
-
-    memset(st, 0, sizeof(struct stat));
-
-    int status = stat(most_resent_path, st);
-
-    if (S_ISREG(st->st_mode)) {
-        st->st_mode = S_IFREG | 0444;
-    }
-    if (S_ISDIR(st->st_mode)) {
-        st->st_mode = S_IFDIR | 0555;
-    }
-    return status;
-}
-
-int my_readdir(
-    const char* path,
-    void* out,
-    fuse_fill_dir_t filler,
-    off_t off,
-    struct fuse_file_info* fi,
-    enum fuse_readdir_flags flags)
-{
-    char dir_files[MaxNumFiles][NAME_MAX];
-    size_t dir_files_num = 0;
-
-    filler(out, ".", NULL, 0, 0);
-    filler(out, "..", NULL, 0, 0);
-
-    char buf_path[PATH_MAX];
-    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
-        strncpy(buf_path, FileSystem.files[i].path, PATH_MAX);
-        strcat(buf_path, path);
-        DIR* f_dir = opendir(buf_path);
-        if (f_dir != NULL) {
-
-            struct dirent* dir_data = readdir(f_dir);
-            while (dir_data != NULL) {
-                size_t j = 0;
-                for (; j < dir_files_num; ++j) {
-                    if (0 == strcmp((*dir_data).d_name, dir_files[j]))
-                        break;
-                }
-                if (j == dir_files_num) {
-                    strcpy(dir_files[j], (*dir_data).d_name);
-                    dir_files_num++;
-                }
-                dir_data = readdir(f_dir);
-            }
-        }
-        closedir(f_dir);
-    }
-
-    for (size_t i = 0; i < dir_files_num; i++) {
-        filler(out, dir_files[i], NULL, 0, 0);
-    }
-    return 0;
-}
-
-int my_read(
-    const char* path,
-    char* out,
-    size_t size,
-    off_t off,
-    struct fuse_file_info* fi)
-{
-    char newest_path[PATH_MAX] = "";
-    
-    char buf_path[PATH_MAX];
-    struct timespec time_of_last_modification = {0};
-    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
-        strncpy(buf_path, FileSystem.files[i].path, PATH_MAX);
-        strcat(buf_path, path);
-
-        struct stat stats;
-        // remember file if it is newer than the last one found
-        if (0 == stat(buf_path, &stats) &&
-            time_of_last_modification.tv_sec < stats.st_mtim.tv_sec) {
-            time_of_last_modification = stats.st_mtim;
-            strcpy(newest_path, buf_path);
-        }
-    }
-
-    if (newest_path == "") {
-        return -ENOENT;
-    }
-    struct stat stats;
-    stat(newest_path, &stats);
-    if (off >= stats.st_size) {
-        return 0;
-    }
-    FILE* cur_file = fopen(newest_path, "r");
-    fseek(cur_file, off, SEEK_CUR);
-    fread(out, 1, stats.st_size, cur_file);
-    fseek(cur_file, -(off + stats.st_size), SEEK_CUR);
-    return stats.st_size;
-}
-
-int my_open(const char* path, struct fuse_file_info* fi)
-{
-    char newest_path[PATH_MAX] = "";
-    //printf ("allow\n");
-
-    char buf_path[PATH_MAX];
-    struct timespec time_of_last_modification = {0};
-    for (size_t i = 0; i < FileSystem.dirs_num; ++i) {
-        strncpy(buf_path, FileSystem.files[i].path, PATH_MAX);
-        strcat(buf_path, path);
-
-        struct stat stats;
-        if (0 == stat(buf_path, &stats) &&
-            time_of_last_modification.tv_sec < stats.st_mtim.tv_sec) {
-            time_of_last_modification = stats.st_mtim;
-            strcpy(newest_path, buf_path);
-        }
-    }
-
-    if (newest_path == "") {
-        return -ENOENT;
-    }
-    // using bitwise & to check file access mode
-    return (O_RDONLY == ((*fi).flags & O_ACCMODE)) ? 0 : -EACCES;
-}
-
-void filesystem_close()
-{
-    free(FileSystem.files);
-}
-
-struct fuse_operations operations = {.readdir = my_readdir,
-                                     .read = my_read,
-                                     .getattr = my_stat,
-                                     .open = my_open};
+int StartListenngTCP(const char* IPv4, const char* port);
+void SetSignalHandlers();
+void ProccesConnection(int client_fd);
+void SetEventInfo(int cur_fd, int epoll_fd);
+void HandleNewConnections(int tcp_socket, int epoll_fd);
 
 int main(int argc, char** argv)
 {
-    // arguments to be preprocessed before passing to /sbin/mount.fuse3
-    struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
 
-    //printf ("allou\n");
+    SetSignalHandlers();
 
-    typedef struct {
-        char* dirs;
-    } my_options_t;
+    int tcp_socket = StartListenngTCP("127.0.0.1", argv[1]);
+    fcntl(
+        tcp_socket,
+        F_SETFL,
+        fcntl(tcp_socket, F_GETFL) |
+            O_NONBLOCK); // now accept() doesn't block program
 
-    my_options_t my_options;
-    memset(&my_options, 0, sizeof(my_options));
+    int epoll_fd = epoll_create1(0);
+    if (epoll_fd == -1) {
+        perror("epoll_create");
+        exit(EXIT_FAILURE);
+    }
+    SetEventInfo(tcp_socket, epoll_fd);
 
-    struct fuse_opt opt_specs[] = {
-        {"--src %s", offsetof(my_options_t, dirs), 0}, {NULL, 0, 0}};
-    //DEB_INFO
-    fuse_opt_parse(&args, &my_options, opt_specs, NULL);
-    //DEB_INFO
-    filesystem_open(my_options.dirs);
+    struct epoll_event event_buf[BUFSIZ];
 
-    // run daemon
-    int ret = fuse_main(
-        args.argc,
-        args.argv,   // arguments to be passed to /sbin/mount.fuse3
-        &operations, // pointer to callback functions
-        NULL         // optional pointer to user-defined data
-    );
+    while (!signal_is) {
+        int event_count = epoll_wait(epoll_fd, event_buf, BUFSIZ, -1);
+        if (-1 == event_count) {
+            break;
+        }
+        for (int i = 0; i < event_count; ++i) {
+            int cur_fd = event_buf[i].data.fd;
+            if (cur_fd == tcp_socket) {
+                HandleNewConnections(tcp_socket, epoll_fd);
+            } else {
+                ProccesConnection(cur_fd);
+            }
+        }
+    }
 
-    filesystem_close();
+    close(epoll_fd);
+    close(tcp_socket);
+    return 0;
+}
 
-    return ret;
+void ProccesConnection(int client_fd)
+{
+    char buf[BUFSIZ];
+    memset(buf, 0, BUFSIZ);
+
+    int n_read = read(client_fd, buf, BUFSIZ);
+    if (-1 == n_read || 0 == n_read) {
+        shutdown(client_fd, SHUT_RDWR);
+        close(client_fd);
+        return;
+    }
+
+    for (int i = 0; i < n_read; ++i) {
+        buf[i] = toupper(buf[i]);
+    }
+
+    int n_write = write(client_fd, buf, n_read);
+    if (-1 == n_write || 0 == n_write) {
+        shutdown(client_fd, SHUT_RDWR);
+        close(client_fd);
+        return;
+    }
+}
+
+void HandleNewConnections(int tcp_socket, int epoll_fd)
+{
+    int client_fd = 0;
+    while (1) {
+        client_fd = accept(tcp_socket, NULL, NULL);
+        fcntl(client_fd, F_SETFL, fcntl(client_fd, F_GETFL) | O_NONBLOCK);
+        if (-1 == client_fd)
+            break;
+        SetEventInfo(client_fd, epoll_fd);
+    }
+}
+
+void SetEventInfo(int cur_fd, int epoll_fd)
+{
+    struct epoll_event poll_ev = {.events = EPOLLIN, .data.fd = cur_fd};
+    epoll_ctl(epoll_fd, EPOLL_CTL_ADD, cur_fd, &poll_ev);
+}
+
+void SetSignalHandlers()
+{
+    struct sigaction sa = {.sa_handler = sig_handler, .sa_flags = SA_RESTART};
+    sigaction(SIGTERM, &sa, NULL);
+}
+
+int StartListenngTCP(const char* IPv4, const char* port)
+{
+    int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (-1 == tcp_socket) {
+        perror("socket");
+        return -1;
+    }
+    struct sockaddr_in addr;
+    addr.sin_addr.s_addr = inet_addr(IPv4);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(atoi(port));
+
+    if (-1 == bind(tcp_socket, (const struct sockaddr*)&addr, sizeof(addr))) {
+        perror("bind");
+        close(tcp_socket);
+        return -1;
+    }
+
+    if (-1 == listen(tcp_socket, SOMAXCONN)) {
+        perror("listen");
+        close(tcp_socket);
+        return -1;
+    }
+    return tcp_socket;
 }

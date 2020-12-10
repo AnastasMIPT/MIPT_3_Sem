@@ -15,10 +15,20 @@ class Image {
 
 public:
 
+    Image () = default;
     Image (size_t _height, size_t _width, const Pixel& default_pixel);
+    Image (size_t _height, size_t _width, const std::vector<Pixel>& pixel_buf);
     
-    Pixel getPixel (size_t x, size_t y) const;
+    // TO_DO constructor with param std::vector<Pixel>&&
+    
+
+    size_t getWidth  () const;
+    size_t getHeight () const;
+    Pixel  getPixel  (size_t x, size_t y) const;
+    
+
     void  setPixel (size_t x, size_t y, const Pixel& pixel);
+
 };
 
 #endif

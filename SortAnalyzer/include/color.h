@@ -36,12 +36,12 @@ namespace ab {
     };
 
     struct Pixel {
-        uint8_t red   = 255;
-        uint8_t green = 255;
-        uint8_t blue  = 255;
-        uint8_t alpha = 255;
+        u_int8_t red   = 255;
+        u_int8_t green = 255;
+        u_int8_t blue  = 255;
+        u_int8_t alpha = 255;
         
-        Pixel (uint8_t _red, uint8_t _green, uint8_t _blue, uint8_t _alpha)
+        Pixel (u_int8_t _red, u_int8_t _green, u_int8_t _blue, u_int8_t _alpha)
         : red (_red), green (_green), blue (_blue), alpha (_alpha) {} 
         
         Pixel (const Color& clr)
