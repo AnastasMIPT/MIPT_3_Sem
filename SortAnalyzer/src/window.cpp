@@ -1,6 +1,6 @@
 
 #define DEBUG
-#include "../../MyLib/debug_info.h"
+#include "debug_info.h"
 #include "window.h"
 #include "application.h"
 

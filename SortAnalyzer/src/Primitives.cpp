@@ -1,9 +1,9 @@
 
 #define DEBUG_ASSERT
-#include "../MyLib/debug_assert.h"
+#include "debug_assert.h"
 
 #define DEBUG
-#include "../MyLib/debug_info.h"
+#include "debug_info.h"
 
 #include "Primitives.h"
 #include "button.h"

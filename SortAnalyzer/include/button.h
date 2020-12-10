@@ -2,8 +2,7 @@
 #define BUTTON_H
 
 #include "Sorts.h"
-#include "../MyLib/MyInteger.h"
-
+#include "MyInteger.h"
 #include "Primitives.h"
 #include "window.h"
 

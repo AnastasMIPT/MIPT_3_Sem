@@ -7,10 +7,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "../MyLib/my_vector.h"
+#include "my_vector.h"
 
 //#define DEBUG
-#include "../MyLib/debug_info.h"
+#include "debug_info.h"
 #include "color.h"
 
 

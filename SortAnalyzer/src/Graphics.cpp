@@ -5,7 +5,7 @@
 #include "button.h"
 #include "window.h"
 //#define DEBUG
-#include "../../MyLib/debug_info.h"
+#include "debug_info.h"
 #include "config.h"
 #include "application.h"
 #include "label.h"
@@ -33,12 +33,12 @@ int main  (void)
         new ScrollBar (scroll_w.get (), {0.975, 0.0, 0.02, 1.0, ab::COLORS::LIGHT_GRAY})
     );
 
-    std::unique_ptr<LabelWindow> label (
-        new LabelWindow ("\tanastas", {0.1, 0.1, 0.4, 0.3, ab::COLORS::BLUE})
-    );
+    // std::unique_ptr<LabelWindow> label (
+    //     new LabelWindow ("\tanastas", {0.1, 0.1, 0.4, 0.3, ab::COLORS::BLUE})
+    // );
 
     Application::addObject (s_bar.get ());
-    Application::addObject (label.get ());
+    //Application::addObject (label.get ());
 
     GraphicsMainLoop ();
 
@@ -46,8 +46,18 @@ int main  (void)
 }
 
 void GraphicsMainLoop () {
+    Image my_img = GEngine::system.loadImageFromFile ("./resources/images/kotik.jpg");
+    printf ("height = %lu\n", my_img.getHeight ());
+    for (int i = 0; i < 10; i++) {
+        auto pixel = my_img.getPixel (i, 0);
+        printf ("r= %d, g = %d, b = %d, a = %d\n", pixel.red, pixel.green, pixel.blue, pixel.alpha);
+    }
+    //GEngine::system.drawImage ({0.1, 0.1, 0.4, 0.3}, my_img);
+        
     while  (!Application::shouldCLose ()) {
+        GEngine::system.drawImage ({0.1, 0.1, 0.4, 0.3}, my_img);
         Application::run ();
+    
     }
 }
 

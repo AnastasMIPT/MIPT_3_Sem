@@ -4,7 +4,7 @@
 #include <memory>
 #include "events.h"
 #include "color.h"
-#include "../MyLib/my_vector.h"
+#include "my_vector.h"
 
 using namespace ab;
 

@@ -21,3 +21,8 @@ size_t Image::getWidth () const {
 size_t Image::getHeight () const {
     return height;
 }
+
+const Pixel* Image::getPixelArray () const {
+    return &pixels[0];
+}
+

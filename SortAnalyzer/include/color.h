@@ -41,6 +41,8 @@ namespace ab {
         u_int8_t blue  = 255;
         u_int8_t alpha = 255;
         
+        Pixel () = default;
+
         Pixel (u_int8_t _red, u_int8_t _green, u_int8_t _blue, u_int8_t _alpha)
         : red (_red), green (_green), blue (_blue), alpha (_alpha) {} 
         

@@ -24,6 +24,7 @@ public:
 
     size_t getWidth  () const;
     size_t getHeight () const;
+    const Pixel* getPixelArray () const;
     Pixel  getPixel  (size_t x, size_t y) const;
     
 
