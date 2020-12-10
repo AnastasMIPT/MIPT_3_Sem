@@ -36,6 +36,7 @@ public:
     void drawTriangle (const Triangle& triangele) override;
     void drawLineStrip (const Vector<Point2d>& points, const Color& color) override;
     
+    void drawImage (const Rect& area, const Image& img);
 
     // unsigned int constructRectForFastDraw (const Rect& rect);
     // void drawRectFast (unsigned int id);
@@ -53,7 +54,7 @@ public:
     double convertPixelsToHorizontalSize (int size);
     double convertPixelsToVerticalSize   (int size);
     
-    Image loadImageFromFile (const char* _path);
+    Image loadImageFromFile (const char* path);
 
 
     bool checkCoordsInRect (double pos_x, double pos_y, const Rect& rect);

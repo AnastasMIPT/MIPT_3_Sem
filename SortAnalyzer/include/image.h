@@ -16,8 +16,8 @@ class Image {
 public:
 
     Image () = default;
-    Image (size_t _height, size_t _width, const Pixel& default_pixel);
-    Image (size_t _height, size_t _width, const std::vector<Pixel>& pixel_buf);
+    Image (size_t _width, size_t _height, const Pixel& default_pixel);
+    Image (size_t _width, size_t _height, const std::vector<Pixel>& pixel_buf);
     
     // TO_DO constructor with param std::vector<Pixel>&&
     
