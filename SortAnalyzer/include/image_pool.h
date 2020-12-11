@@ -5,12 +5,25 @@
 #include "config.h"
 
 class ImagePool {
-    inline static std::vector<Image> images;
+    enum DefaultImages {
+        SCROLL_BUTTON_UP,
+        SCROLL_BUTTON_DOWN,
+        SCROLL_BUTTON_LEFT,
+        SCROLL_BUTTON_RIGHT,
+        PENCIL,
+        A_PENCIL,
+        ERASER,
+        DEFAULT_IMAGES_COUNT
+    };
+    inline static std::vector<Image> images = std::vector<Image> (DEFAULT_IMAGES_COUNT);
+    
 public:
     ImagePool () = delete;
-    size_t addImage (const char* path);
-    Image* getImageById (size_t id);
-    void clear ();
+    static size_t addImage (const char* path);
+    static Image* getImageById (size_t id);
+    static void clear ();
+
+    static void loadDefaultImages ();
 };
 
 #endif // IMAGE_POOL_H

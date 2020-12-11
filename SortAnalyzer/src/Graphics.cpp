@@ -19,13 +19,15 @@ void GraphicsMainLoop ();
 int main  (void)
 {
  
+    ImagePool::loadDefaultImages ();
+
     AbstractScrollableWindow scroll_w (50, 30);
     ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 1.0, ab::COLORS::LIGHT_GRAY});
 
     Application::addObject (&s_bar);
  
 
- 
+
     GraphicsMainLoop ();
 
     return 0;

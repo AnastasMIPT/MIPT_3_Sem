@@ -9,10 +9,12 @@ class AbstractApplication {
 protected:
     inline static WindowContainer windows = 
         WindowContainer ({0.0, 0.0, 1.0, 1.0, COLORS::DEFAULT_BACKGROUND});
-        
+
     inline static std::queue <std::unique_ptr<Event>> event_queue;
     inline static IWindow* active_window = NULL;
 public:
+
+    AbstractApplication ();
     virtual ~AbstractApplication () = default;
     static void addObject (IWindow* window);
     static void drawObjects ();
@@ -27,6 +29,7 @@ public:
     static void pollEvent ();
     static void run ();
     static bool shouldCLose ();
+    static void loadImages ();
 };
 
 

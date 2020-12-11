@@ -54,3 +54,4 @@ void AbstractApplication::drawObjects () {
 void AbstractApplication::setActiveWindow (IWindow* window) {
     active_window = window;
 }
+
