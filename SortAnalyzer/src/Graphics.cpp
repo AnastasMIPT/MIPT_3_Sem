@@ -46,18 +46,8 @@ int main  (void)
 }
 
 void GraphicsMainLoop () {
-    Image my_img = GEngine::system.loadImageFromFile ("./resources/images/kotik.jpg");
-    printf ("height = %lu\n", my_img.getHeight ());
-    for (int i = 0; i < 10; i++) {
-        auto pixel = my_img.getPixel (i, 0);
-        printf ("r= %d, g = %d, b = %d, a = %d\n", pixel.red, pixel.green, pixel.blue, pixel.alpha);
-    }
-    //GEngine::system.drawImage ({0.1, 0.1, 0.4, 0.3}, my_img);
-        
     while  (!Application::shouldCLose ()) {
-        GEngine::system.drawImage ({0.1, 0.1, 0.4, 0.3}, my_img);
-        Application::run ();
-    
+        Application::run ();  
     }
 }
 

@@ -29,8 +29,10 @@ void Application::pollEvent () {
 
 void Application::run () {
     GEngine::system.clear ();
+    Image my_img = GEngine::system.loadImageFromFile ("./resources/images/kotik.jpg");
     
     drawObjects ();
+    GEngine::system.drawImageInArea ({0.1, 0.1, 0.4, 0.8}, my_img);
     std::unique_ptr<Event> event = std::move (GEngine::system.pollEvent ());
     if (event->type != Event::EventTypes::DEFAULT_EVENT) event_queue.push (std::move (event));
     pollEvent ();

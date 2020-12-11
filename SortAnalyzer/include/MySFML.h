@@ -38,6 +38,8 @@ public:
     
     void drawImage (const Rect& area, const Image& img);
 
+    void drawImageInArea (const Rect& area, const Image& img, bool no_distortion = false);
+
     // unsigned int constructRectForFastDraw (const Rect& rect);
     // void drawRectFast (unsigned int id);
 
@@ -66,6 +68,8 @@ public:
     void EventConvert (sf::Event& sf_event, Event& my_event);
     int  ButtonConvert (sf::Mouse::Button button);
     sf::Color ConvertColor (const Color& color);
+
+    sf::RenderWindow* _getSfWindow ();
 
     friend Engine<SFML>;
     ~SFML ();
