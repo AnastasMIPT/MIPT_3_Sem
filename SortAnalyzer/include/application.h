@@ -7,7 +7,9 @@
 
 class AbstractApplication {
 protected:
-    static WindowContainer windows;
+    inline static WindowContainer windows = 
+        WindowContainer ({0.0, 0.0, 1.0, 1.0, COLORS::DEFAULT_BACKGROUND});
+        
     inline static std::queue <std::unique_ptr<Event>> event_queue;
     inline static IWindow* active_window = NULL;
 public:
