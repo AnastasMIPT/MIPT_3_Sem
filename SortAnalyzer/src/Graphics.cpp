@@ -9,13 +9,10 @@
 #include "config.h"
 #include "application.h"
 #include "label.h"
-
-std::queue <std::unique_ptr<Event>> AbstractApplication::event_queue;
-IWindow* AbstractApplication::active_window = NULL;
+#include "image_pool.h"
 
 template <>
 GSystem GEngine::system;
-
 
 WindowContainer AbstractApplication::windows ({0.0, 0.0, 1.0, 1.0, COLORS::DEFAULT_BACKGROUND});
 

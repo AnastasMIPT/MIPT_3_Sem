@@ -8,8 +8,8 @@
 class AbstractApplication {
 protected:
     static WindowContainer windows;
-    static std::queue <std::unique_ptr<Event>> event_queue;
-    static IWindow* active_window;
+    inline static std::queue <std::unique_ptr<Event>> event_queue;
+    inline static IWindow* active_window = NULL;
 public:
     virtual ~AbstractApplication () = default;
     static void addObject (IWindow* window);

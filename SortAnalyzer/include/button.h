@@ -63,12 +63,24 @@ template <typename ButtonFunctor_t>
 class Button : public AbstractWindow {
     bool lbutton_down = false;
     Color default_color;
+    Image* image = NULL;
 public:
     ButtonFunctor_t MousePress;
     template <typename ...Args_t>
     Button (const Rect& _trappings, Args_t&&... args) 
     : AbstractWindow (_trappings), default_color (trappings.color), MousePress (std::forward<Args_t> (args)...) {}
 
+    void setImage (Image* _image) {
+        image = _image;
+    }
+
+
+    void draw () const override {
+        AbstractWindow::draw ();
+        if (image) {
+            GEngine::system.drawImageInArea (trappings, *image, true);
+        }
+    }
     bool onMouseClick (const MouseClickEvent& event) override;
     ~Button () final = default;
 };

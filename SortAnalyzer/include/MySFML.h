@@ -28,7 +28,7 @@ private:
     SFML (int width, int height, const char* name);
 public:
 
-    static std::queue<std::unique_ptr<Event>> event_que;
+    inline static std::queue<std::unique_ptr<Event>> event_que;
 
 
     void drawRect (const Rect& rect) override;
