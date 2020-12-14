@@ -25,3 +25,12 @@ ToolBar::ToolBar (const Rect& _trappings)
     //subwindows.push_back (but.get());
 }
 
+ToolBar::~ToolBar () {
+    for (auto ptr : tools) {
+        delete ptr;
+    }
+    for (auto ptr : subwindows) {
+        delete ptr;
+    }
+}
+

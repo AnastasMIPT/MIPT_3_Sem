@@ -16,6 +16,7 @@ class ToolBar : public WindowContainer {
 public:
     
     ToolBar (const Rect& _trappings);
+    ~ToolBar ();
  //   AbstractTool* getToolById (size_t id);
 
 
