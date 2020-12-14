@@ -74,7 +74,7 @@ public:
     void draw () const override {
         AbstractWindow::draw ();
         if (image) {
-            GEngine::system.drawImageInArea (trappings, *image, true);
+           GEngine::system.drawImageInArea (trappings, *image, true);
         }
     }
     bool onMouseClick (const MouseClickEvent& event) override;
@@ -107,9 +107,9 @@ public:
 
 
 class ToolFunctor {
-    TOOLS::TOOL_ID tool_id;
+    size_t tool_id;
 public:
-    ToolFunctor (TOOLS::TOOL_ID _tool_id) : tool_id (_tool_id) {}
+    ToolFunctor (size_t _tool_id) : tool_id (_tool_id) {}
     void operator() (Button<ToolFunctor>* _but, const MouseClickEvent& event);
 };
 

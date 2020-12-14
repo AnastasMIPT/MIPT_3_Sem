@@ -4,12 +4,12 @@
 #include "canvas.h"
 #include "window.h"
 #include "application.h"
-#include "tool_manager.h"
+#include "tool_bar.h"
 
-class Painter : WindowContainer {
+class Painter : public WindowContainer {
     AbstractTool* active_tool;
     Canvas* canvas;
-    ToolManager* tools;
+    ToolBar* tools;
 
     Color active_color;
     bool is_applying = false;

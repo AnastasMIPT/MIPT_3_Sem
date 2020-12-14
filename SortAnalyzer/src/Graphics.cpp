@@ -9,6 +9,7 @@
 #include "config.h"
 #include "application.h"
 #include "label.h"
+#include "tool_bar.h"
 
 template <>
 GSystem GEngine::system;
@@ -25,12 +26,14 @@ int main  (void)
 
     //Image my_img = GEngine::system.loadImageFromFile ("./resources/images/pencil.png");
     
-    Button<ToolFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT}, TOOLS::PENCIL);
-    im_but.setImage (ImagePool::getImageById (DEF_IMAGES::PENCIL));
+    // Button<ToolFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT}, TOOLS::PENCIL);
+    // im_but.setImage (ImagePool::getImageById (DEF_IMAGES::PENCIL));
+
+    ToolBar tool_bar ({0.1, 0.1, 0.2, 0.2, COLORS::DEFAULT_TOOL_BAR});
 
     Application::addObject (&s_bar);
-    Application::addObject (&im_but);
- 
+    Application::addObject (&tool_bar);
+    
 
 
     GraphicsMainLoop ();

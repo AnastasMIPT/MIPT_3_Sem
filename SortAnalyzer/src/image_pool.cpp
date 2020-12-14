@@ -28,6 +28,9 @@ void ImagePool::loadDefaultImages () {
 
     images[DEF_IMAGES::A_PENCIL]            = GEngine::system.loadImageFromFile
                                             ("./resources/images/a_pencil.png");
+
+    images[DEF_IMAGES::A_ERASER]            = GEngine::system.loadImageFromFile
+                                            ("./resources/images/a_eraser.png");
     
     
     images[DEF_IMAGES::SCROLL_BUTTON_UP]    = GEngine::system.loadImageFromFile 

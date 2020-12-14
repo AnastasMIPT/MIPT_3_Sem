@@ -9,6 +9,7 @@ namespace DEF_IMAGES {
         PENCIL,
         ERASER,
         A_PENCIL,
+        A_ERASER,
         SCROLL_BUTTON_UP,
         SCROLL_BUTTON_DOWN,
         SCROLL_BUTTON_LEFT,

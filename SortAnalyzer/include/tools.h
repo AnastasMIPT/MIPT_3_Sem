@@ -17,18 +17,27 @@ public:
     virtual void startApplying () = 0;
     virtual void apply (Canvas* canvas, double x, double y) = 0;
     virtual void finishApplying () = 0;
-    ~AbstractTool ();
+    virtual ~AbstractTool () = default;
 };
 
-class Eraser : AbstractTool {
+class Eraser : public AbstractTool {
+
 
 public:
-    void startApplying ();
-    void apply (Canvas* canvas, double x, double y);
-    void finishApplying ();
+
+    Eraser () = default;
+    void startApplying () override {}
+    void apply (Canvas* canvas, double x, double y) override {}
+    void finishApplying () override {}
 };
 
-class Pecil : Eraser {
+class Pencil : public Eraser {
+
+public:
+
+    void startApplying () override {}
+    void apply (Canvas* canvas, double x, double y) override {}
+    void finishApplying () override {}
 
 };
 
