@@ -50,9 +50,15 @@ class Pencil : public Eraser {
 
 public:
 
-    void startApplying () override {}
-    void apply (Canvas* canvas, double x, double y) override {}
-    void finishApplying () override {}
+    void startApplying () override {
+        printf ("Я карандаш, я начал применяться\n");
+    }
+    void apply (Canvas* canvas, double x, double y) override {
+        printf ("Применяюсь по координатам x = %lf, y = %lf\n", x, y);
+    }
+    void finishApplying () override {
+        printf ("Я карандаш, я закончил применяться\n");
+    }
 
 };
 
