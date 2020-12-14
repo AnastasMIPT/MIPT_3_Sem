@@ -2,7 +2,7 @@
 #define APPLICATION_H
 
 #include "window.h"
-
+#include "image_pool.h"
 
 
 class AbstractApplication {
@@ -14,11 +14,14 @@ protected:
     inline static IWindow* active_window = NULL;
 public:
 
-    AbstractApplication ();
+    AbstractApplication () = delete;
     virtual ~AbstractApplication () = default;
     static void addObject (IWindow* window);
     static void drawObjects ();
     static void setActiveWindow (IWindow* window);
+    static void pollEvent ();
+    static void run ();
+    static bool shouldCLose ();
 };
 
 
@@ -26,10 +29,8 @@ public:
 class Application : public AbstractApplication {
 public:
     Application () = delete;
-    static void pollEvent ();
-    static void run ();
-    static bool shouldCLose ();
-    static void loadImages ();
+
+    static void loadDefaultImages ();
 };
 
 
