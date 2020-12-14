@@ -10,6 +10,7 @@
 #include "application.h"
 #include "label.h"
 #include "tool_bar.h"
+#include "painter.h"
 
 template <>
 GSystem GEngine::system;
@@ -31,8 +32,17 @@ int main  (void)
 
     ToolBar tool_bar ({0.7, 0.8, 0.2, 0.2, COLORS::DEFAULT_TOOL_BAR});
 
+    Image white (500, 200, Pixel (255, 255, 255, 255));
+    Canvas canvas (&white, {0.1, 0.1, 0.4, 0.4});
+
+    Painter painter (&canvas, &tool_bar);
+
+
+
     Application::addObject (&s_bar);
-    Application::addObject (&tool_bar);
+    Application::addObject (&painter);
+    // Application::addObject (&tool_bar);
+    // Application::addObject (&canvas);
     
 
 

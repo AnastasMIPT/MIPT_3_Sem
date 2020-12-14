@@ -2,9 +2,9 @@
 
 
 bool Painter::onMouseClick (const MouseClickEvent& event) {
-
+    printf ("Painter: onClick\n");
     if (event.button == MouseButtonTypes::LEFT) {
-        
+        printf ("Left buton\n");
         if(MouseButtonActions::PRESS == event.action
            && canvas->CheckCoordinate (event.pos_x, event.pos_y)) {
             
@@ -19,7 +19,7 @@ bool Painter::onMouseClick (const MouseClickEvent& event) {
             Application::setActiveWindow (NULL);
             active_tool->finishApplying ();
         }
-
+        printf ("smth\n");
         tools->onMouseClick (event);
     }
 }
@@ -27,4 +27,10 @@ bool Painter::onMouseClick (const MouseClickEvent& event) {
 void Painter::onMouseMove (const MouseMoveEvent& event) {
     Point2d canvas_coords = canvas->convertToCanvasCoords ({event.pos_x, event.pos_y});
     active_tool->apply (canvas, canvas_coords.x, canvas_coords.y);
+}
+
+Painter::Painter (Canvas* _canvas, ToolBar* _tools)
+: WindowContainer ({}), canvas (_canvas), tools (_tools) {
+    WindowContainer::addWindow (_canvas);
+    WindowContainer::addWindow (_tools);
 }

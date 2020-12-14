@@ -12,6 +12,7 @@ public:
     Point2d convertToCanvasCoords (const Point2d& screen_coords);
    // bool is
 
+    void draw () const override;
 };
 
 

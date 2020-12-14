@@ -20,15 +20,30 @@ public:
     virtual ~AbstractTool () = default;
 };
 
+
+// class DumpTool : public AbstractTool {
+
+// public:
+//     DumpTool () = default;
+//     void sta
+// };
+
+
 class Eraser : public AbstractTool {
 
 
 public:
 
     Eraser () = default;
-    void startApplying () override {}
-    void apply (Canvas* canvas, double x, double y) override {}
-    void finishApplying () override {}
+    void startApplying () override {
+        printf ("Я ластик, я начал применяться\n");
+    }
+    void apply (Canvas* canvas, double x, double y) override {
+        printf ("Применяюсь по координатам x = %lf, y = %lf\n", x, y);
+    }
+    void finishApplying () override {
+        printf ("Я ластик, я закончил применяться\n");
+    }
 };
 
 class Pencil : public Eraser {
