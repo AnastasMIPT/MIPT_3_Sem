@@ -7,7 +7,6 @@
 #include "tool_bar.h"
 
 class Painter : public WindowContainer {
-    AbstractTool* active_tool = new Eraser ();
     Canvas* canvas;
     ToolBar* tools;
 
@@ -19,8 +18,6 @@ public:
 
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove  (const MouseMoveEvent& event)  override;
-
-
 };
 
 

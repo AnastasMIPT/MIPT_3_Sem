@@ -3,12 +3,7 @@
 
 ToolBar::ToolBar (const Rect& _trappings) 
 : WindowContainer (_trappings) {
-    tools.push_back (new Pencil ());
-    tools.push_back (new Eraser ());
-    
 
-    ToolManager::setActiveTool (tools[TOOLS::PENCIL]);
-    
 
     for (size_t tool_id = 0; tool_id < TOOLS::TOOLS_COUNT; ++tool_id) {
         double but_h = (trappings.height - top_off * trappings.height * 2) / 2;
@@ -22,15 +17,15 @@ ToolBar::ToolBar (const Rect& _trappings)
         //printf ("cur_but tool = %lu\n", tool_id);
     }
 
-    //create Buttons ...
+    ToolManager::setActiveTool    (TOOLS::PENCIL);
+    auto* pencil_but = dynamic_cast<Button<ToolFunctor>*> (subwindows[0]);
+    ToolManager::setActiveToolBut (pencil_but);
+    pencil_but->setImage (ImagePool::getImageById (TOOLS::PENCIL + TOOLS::TOOLS_COUNT));
 
-    //subwindows.push_back (but.get());
+
 }
 
 ToolBar::~ToolBar () {
-    for (auto ptr : tools) {
-        delete ptr;
-    }
     for (auto ptr : subwindows) {
         delete ptr;
     }
