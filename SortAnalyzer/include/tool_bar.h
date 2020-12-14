@@ -2,6 +2,7 @@
 #define TOOL_BAR_H
 #include "tools.h"
 #include "window.h"
+#include "tool_manger.h"
 #include <vector>
 #include <memory>
 

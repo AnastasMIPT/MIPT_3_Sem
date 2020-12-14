@@ -4,8 +4,8 @@
 class ToolManager {
 
     inline static AbstractTool* active_tool;
-    inline static Color active_color;
-    inline static size_t thickness = 5;
+    inline static Color active_color = COLORS::GREEN;
+    inline static size_t thickness   = 5;
 
 public:
     ToolManager () = delete;

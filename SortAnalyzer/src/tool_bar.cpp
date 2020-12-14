@@ -5,7 +5,10 @@ ToolBar::ToolBar (const Rect& _trappings)
 : WindowContainer (_trappings) {
     tools.push_back (new Pencil ());
     tools.push_back (new Eraser ());
-        
+    
+
+    ToolManager::setActiveTool (tools[TOOLS::PENCIL]);
+    
 
     for (size_t tool_id = 0; tool_id < TOOLS::TOOLS_COUNT; ++tool_id) {
         double but_h = (trappings.height - top_off * trappings.height * 2) / 2;
@@ -19,7 +22,6 @@ ToolBar::ToolBar (const Rect& _trappings)
         //printf ("cur_but tool = %lu\n", tool_id);
     }
 
-    
     //create Buttons ...
 
     //subwindows.push_back (but.get());

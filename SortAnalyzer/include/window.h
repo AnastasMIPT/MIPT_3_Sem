@@ -3,6 +3,7 @@
 
 #include <list>
 #include <queue>
+#include <vector>
 #include <memory>
 #include "events.h"
 #include "config.h"
@@ -66,7 +67,7 @@ public:
 
 class WindowContainer : public AbstractWindow {
 protected:
-    using WindowList = std::list<IWindow*>;
+    using WindowList = std::vector<IWindow*>;
     WindowList subwindows;
 
 public:
