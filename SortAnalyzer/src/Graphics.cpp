@@ -22,14 +22,14 @@ int main  (void)
     Application::loadDefaultImages ();
 
     AbstractScrollableWindow scroll_w (50, 30);
-    ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 1.0, ab::COLORS::LIGHT_GRAY});
+    ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
 
     //Image my_img = GEngine::system.loadImageFromFile ("./resources/images/pencil.png");
     
     // Button<ToolFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT}, TOOLS::PENCIL);
     // im_but.setImage (ImagePool::getImageById (DEF_IMAGES::PENCIL));
 
-    ToolBar tool_bar ({0.1, 0.1, 0.2, 0.2, COLORS::DEFAULT_TOOL_BAR});
+    ToolBar tool_bar ({0.7, 0.8, 0.2, 0.2, COLORS::DEFAULT_TOOL_BAR});
 
     Application::addObject (&s_bar);
     Application::addObject (&tool_bar);
