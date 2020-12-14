@@ -4,20 +4,23 @@
 #include "image.h"
 #include "config.h"
 
-enum DEF_IMAGES {
-    SCROLL_BUTTON_UP,
-    SCROLL_BUTTON_DOWN,
-    SCROLL_BUTTON_LEFT,
-    SCROLL_BUTTON_RIGHT,
-    PENCIL,
-    A_PENCIL,
-    ERASER,
-    DEFAULT_IMAGES_COUNT
+namespace DEF_IMAGES {
+    enum {
+        PENCIL,
+        ERASER,
+        A_PENCIL,
+        SCROLL_BUTTON_UP,
+        SCROLL_BUTTON_DOWN,
+        SCROLL_BUTTON_LEFT,
+        SCROLL_BUTTON_RIGHT,
+        DEFAULT_IMAGES_COUNT
+    };
+
 };
 
 class ImagePool {
     
-    inline static std::vector<Image> images = std::vector<Image> (DEFAULT_IMAGES_COUNT);
+    inline static std::vector<Image> images = std::vector<Image> (DEF_IMAGES::DEFAULT_IMAGES_COUNT);
     
 public:
     ImagePool () = delete;

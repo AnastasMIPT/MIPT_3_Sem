@@ -2,6 +2,15 @@
 #define TOOLS_H
 #include "canvas.h"
 
+namespace TOOLS {
+    enum TOOL_ID {
+        PENCIL,
+        EREASER,
+        TOOLS_COUNT
+    };
+};
+
+
 class AbstractTool {
 
 public:

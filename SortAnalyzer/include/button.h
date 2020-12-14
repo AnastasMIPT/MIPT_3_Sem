@@ -5,6 +5,8 @@
 #include "MyInteger.h"
 #include "Primitives.h"
 #include "window.h"
+#include "tools.h"
+#include "image_pool.h"
 
 using MyType = Numeric<int>;
 
@@ -90,20 +92,6 @@ public:
 
 
 
-template <typename T>
-class SortDrawFunctor {
-    CoordinatePlane* coord_plane_ass;
-    CoordinatePlane* coord_plane_comp;
-    SortFunc_t<T> func_sort;
-    
-public:
-    SortDrawFunctor (CoordinatePlane* _coord_plane_ass, CoordinatePlane* _coord_plane_comp, SortFunc_t<T> _func_sort);
-
-    void operator() (Button<SortDrawFunctor<T>>* but, const MouseClickEvent& event);
-
-};
-
-
 
 
 
@@ -115,6 +103,40 @@ public:
     ScrollFunctor (IScrollableWindow* _scroll_window, const Color& _color, bool _scroll_up)
     : scroll_window (_scroll_window), color (_color), scroll_up (_scroll_up) {}
     void operator() (Button<ScrollFunctor>* _but, const MouseClickEvent& event);
+};
+
+
+class ToolFunctor {
+    TOOLS::TOOL_ID tool_id;
+public:
+    ToolFunctor (TOOLS::TOOL_ID _tool_id) : tool_id (_tool_id) {}
+    void operator() (Button<ToolFunctor>* _but, const MouseClickEvent& event);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+template <typename T>
+class SortDrawFunctor {
+    CoordinatePlane* coord_plane_ass;
+    CoordinatePlane* coord_plane_comp;
+    SortFunc_t<T> func_sort;
+    
+public:
+    SortDrawFunctor (CoordinatePlane* _coord_plane_ass, CoordinatePlane* _coord_plane_comp, SortFunc_t<T> _func_sort);
+
+    void operator() (Button<SortDrawFunctor<T>>* but, const MouseClickEvent& event);
+
 };
 
 

@@ -25,8 +25,8 @@ int main  (void)
 
     //Image my_img = GEngine::system.loadImageFromFile ("./resources/images/pencil.png");
     
-    Button<EmptyFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT});
-    im_but.setImage (ImagePool::getImageById (DEF_IMAGES::A_PENCIL));
+    Button<ToolFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT}, TOOLS::PENCIL);
+    im_but.setImage (ImagePool::getImageById (DEF_IMAGES::PENCIL));
 
     Application::addObject (&s_bar);
     Application::addObject (&im_but);

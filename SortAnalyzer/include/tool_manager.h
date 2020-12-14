@@ -4,12 +4,11 @@
 #include "window.h"
 #include <vector>
 
+
+
 class ToolManager : public WindowContainer {
     std::vector <AbstractTool*> tools;
-    enum TOOLS {
-        EREASER,
-        PENCIL
-    };
+
 public:
     
     ToolManager (const Rect& _trappings);
