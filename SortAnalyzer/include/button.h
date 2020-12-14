@@ -48,12 +48,6 @@ Vector<Vector<size_t>> CompGraph_of_sort (SortFunc_t<T> func_sort, size_t start_
     return result;
 }
 
-class EmptyFunctor {
-public:
-    void operator() () {printf ("*****************I'm release functor\n");}
-};
-
-
 
 
 
@@ -85,6 +79,13 @@ public:
     ~Button () final = default;
 };
 
+
+
+class EmptyFunctor {
+public:
+    void operator() (Button<EmptyFunctor>* _but, const MouseClickEvent& event) 
+    {printf ("*****************I'm release functor\n");}
+};
 
 
 

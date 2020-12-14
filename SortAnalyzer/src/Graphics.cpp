@@ -23,7 +23,13 @@ int main  (void)
     AbstractScrollableWindow scroll_w (50, 30);
     ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 1.0, ab::COLORS::LIGHT_GRAY});
 
+    Image my_img = GEngine::system.loadImageFromFile ("./resources/images/kotik.jpg");
+    
+    Button<EmptyFunctor> im_but ({0.1, 0.1, 0.3, 0.2});
+    im_but.setImage (&my_img);
+
     Application::addObject (&s_bar);
+    Application::addObject (&im_but);
  
 
 
