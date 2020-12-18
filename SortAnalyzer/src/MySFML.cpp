@@ -238,7 +238,8 @@ void SFML::drawImage (const Rect& area, const Image& img) {
 }
 
 
-void SFML::drawImageInArea (const Rect& area, const Image& img, bool no_distortion) {
+void SFML::drawImageInArea (const Rect& area, const Image& img,
+        bool no_distortion, const ViewPort& view) {
     Rect real_area = convertAbstrToRealRect (area);
     
     sf::Texture sf_texture;
@@ -251,6 +252,9 @@ void SFML::drawImageInArea (const Rect& area, const Image& img, bool no_distorti
     
     sf::Sprite sf_sprite;
     sf_sprite.setTexture (sf_texture);
+    sf_sprite.setTextureRect (sf::IntRect (view.off_x, view.off_y, 
+        std::min (view.width - view.off_x, (int) im_width), 
+        std::min (view.height - view.off_y, (int) im_height)));
 
     if (no_distortion) {
         double ratio_y = real_area.height / im_height;

@@ -1,63 +1,59 @@
 
-#include <fcntl.h>
-#include <stdint.h>
+#include <limits.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/epoll.h>
-#include <unistd.h>
+#include <string.h>
 
-struct event_info {
-    int fd;
-    char ended;
-};
 
-size_t read_data(int epoll_fd, int N, int in[N])
+void* sum(void* arg)
 {
-    struct epoll_event event_buf[BUFSIZ];
-    char read_buf[BUFSIZ];
-    size_t result = 0;
-
-    int open_fd_count = N;
-    while (open_fd_count) {
-        int event_count = epoll_wait(epoll_fd, event_buf, BUFSIZ, -1);
-        for (int i = 0; i < event_count; ++i) {
-            int cur_fd = ((struct event_info*)event_buf[i].data.ptr)->fd;
-            int n_read = read(cur_fd, read_buf, BUFSIZ);
-            if (n_read > 0) {
-                result += n_read;
-            } else {
-                close(cur_fd);
-                open_fd_count--;
-            }
-        }
+    int* part_sum = (int*)arg;
+    int num = 0;
+    while (scanf("%d", &num) > 0) {
+        *part_sum += num;
     }
-    close(epoll_fd);
-    return result;
+    return NULL;
 }
 
-extern size_t read_data_and_count(size_t N, int in[N])
+
+int main(int argc, char** argv)
 {
+    size_t N = strtol(argv[1], NULL, 10);
+
+    pthread_t threads[N];
+    int part_sums[N];
+    memset(part_sums, 0, N*sizeof(int));
+
+    // Create threads' attribute.
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    // Minimize memory usage.
+    pthread_attr_setstacksize(&attr, PTHREAD_STACK_MIN);
+    pthread_attr_setguardsize(&attr, 0);
+
     for (size_t i = 0; i < N; ++i) {
-        fcntl(in[i], F_SETFL, fcntl(in[i], F_GETFL) | O_NONBLOCK);
+        if (pthread_create(&threads[i], NULL, sum, &part_sums[i]) != 0) {
+            perror("pthread_create");
+            exit(EXIT_FAILURE);
+        }
     }
 
-    int epoll_fd = epoll_create1(0);
-    if (epoll_fd == -1) {
-        perror("epoll_create");
+    int result = 0;
+    for (size_t i = 0; i < N; ++i) {
+        if (pthread_join(threads[i], NULL) != 0) {
+            perror("pthread_join");
+            exit(EXIT_FAILURE);
+        }
+        result += part_sums[i];
+    }
+
+    printf("%d\n", result);
+    // Destroy threads' attribute.
+    if (pthread_attr_destroy(&attr) != 0) {
+        perror("pthread_attr_destroy");
         exit(EXIT_FAILURE);
     }
 
-    struct event_info* events_info = calloc(N, sizeof(struct event_info));
-    for (int i = 0; i < N; ++i) {
-        events_info[i].fd = in[i];
-        events_info[i].ended = 0;
-    }
-
-    for (size_t i = 0; i < N; ++i) {
-        struct epoll_event poll_ev = {
-            .events = EPOLLIN, .data.ptr = &events_info[i]};
-        epoll_ctl(epoll_fd, EPOLL_CTL_ADD, in[i], &poll_ev);
-    }
-
-    return read_data(epoll_fd, N, in);
+    return 0;
 }

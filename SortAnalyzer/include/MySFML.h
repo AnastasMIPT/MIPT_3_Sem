@@ -6,11 +6,15 @@
 #include <stdlib.h>
 #include <queue>
 #include <memory>
-#include "engine.h"
-#include "events.h"
 #include <unordered_map>
 #include <vector>
-#include <image.h>
+#include <algorithm>
+#include "engine.h"
+#include "events.h"
+#include "view_port.h"
+#include "window_size.h"
+
+#include "image.h"
 
 class SFML : IEngine {
 private:
@@ -38,7 +42,8 @@ public:
     
     void drawImage (const Rect& area, const Image& img);
 
-    void drawImageInArea (const Rect& area, const Image& img, bool no_distortion = false);
+    void drawImageInArea (const Rect& area, const Image& img, bool no_distortion = false,
+            const ViewPort& view = ViewPort {0, 0, WindowWidth, WindowHeight});
 
     // unsigned int constructRectForFastDraw (const Rect& rect);
     // void drawRectFast (unsigned int id);

@@ -10,7 +10,7 @@ namespace TOOLS {
     };
 };
 
-
+    
 class AbstractTool {
 
 public:
@@ -19,14 +19,6 @@ public:
     virtual void finishApplying () = 0;
     virtual ~AbstractTool () = default;
 };
-
-
-// class DumpTool : public AbstractTool {
-
-// public:
-//     DumpTool () = default;
-//     void sta
-// };
 
 
 class Eraser : public AbstractTool {

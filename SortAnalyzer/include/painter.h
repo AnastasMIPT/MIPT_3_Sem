@@ -10,7 +10,6 @@ class Painter : public WindowContainer {
     Canvas* canvas;
     ToolBar* tools;
 
-    Color active_color;
     bool is_applying = false;
 
 public:
