@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "Primitives.h"
 #include "button.h"
@@ -12,6 +13,7 @@
 #include "tool_bar.h"
 #include "painter.h"
 
+
 template <>
 GSystem GEngine::system;
 
@@ -21,6 +23,8 @@ int main  (void)
 {
 
     Application::loadDefaultImages ();
+    size_t im_id = ImagePool::addImage ("./resources/images/kotik.jpg");
+    
 
     AbstractScrollableWindow scroll_w (50, 30);
     ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
@@ -34,6 +38,10 @@ int main  (void)
 
     Image white (500, 200, Pixel (255, 255, 255, 255));
     Canvas canvas (&white, {0.1, 0.1, 0.4, 0.4});
+    printf ("im_id = %lu\n", im_id);
+
+    assert (ImagePool::getImageById (im_id));
+    canvas.setImage (ImagePool::getImageById (im_id));
 
     Painter painter (&canvas, &tool_bar);
 

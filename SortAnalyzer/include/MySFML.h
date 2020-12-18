@@ -13,6 +13,8 @@
 #include "events.h"
 #include "view_port.h"
 #include "window_size.h"
+#include "image_pool.h"
+
 
 #include "image.h"
 
@@ -44,6 +46,10 @@ public:
 
     void drawImageInArea (const Rect& area, const Image& img, bool no_distortion = false,
             const ViewPort& view = ViewPort {0, 0, WindowWidth, WindowHeight});
+
+    void drawImageInAreaById (const Rect& area, size_t im_id, bool no_distortion = false,
+            const ViewPort& view = ViewPort {0, 0, WindowWidth, WindowHeight});
+    
 
     // unsigned int constructRectForFastDraw (const Rect& rect);
     // void drawRectFast (unsigned int id);

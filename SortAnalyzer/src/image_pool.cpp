@@ -1,10 +1,10 @@
 #include "image_pool.h"
-
+#include "config.h"
 
 
 size_t ImagePool::addImage (const char* path) {
     images.push_back (GEngine::system.loadImageFromFile (path));
-    return images.size ();
+    return images.size () - 1;
 }
 
 void ImagePool::clear () {

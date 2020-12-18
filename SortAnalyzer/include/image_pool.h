@@ -2,7 +2,6 @@
 #define IMAGE_POOL_H
 
 #include "image.h"
-#include "config.h"
 
 namespace DEF_IMAGES {
     enum {

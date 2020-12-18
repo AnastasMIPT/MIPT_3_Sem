@@ -1,5 +1,4 @@
 #include "MySFML.h"
-#include "config.h"
 
 // std::queue <std::unique_ptr<Event>> SFML::event_que;
 
@@ -210,6 +209,7 @@ Image SFML::loadImageFromFile (const char* path) {
     sf::Image sf_img;
     sf_img.loadFromFile (path);
 
+
     size_t img_width  = sf_img.getSize().x;
     size_t img_height = sf_img.getSize().y;
 
@@ -238,8 +238,16 @@ void SFML::drawImage (const Rect& area, const Image& img) {
 }
 
 
+
+void SFML::drawImageInAreaById (const Rect& area, size_t im_id,
+        bool no_distortion, const ViewPort& view) {
+    Image* img = ImagePool::getImageById (im_id);
+    drawImageInArea (area, *img, no_distortion, view);
+}
+
 void SFML::drawImageInArea (const Rect& area, const Image& img,
         bool no_distortion, const ViewPort& view) {
+    
     Rect real_area = convertAbstrToRealRect (area);
     
     sf::Texture sf_texture;
