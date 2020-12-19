@@ -18,9 +18,9 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
     if (is_vertical) {
         arrow_up = new ::Button<ScrollFunctor> ({{s_bar_x, s_bar_y + s_bar_h - but_size}, 
                                        s_bar_w, but_size, but_color}, 
-                                       scroll_window, but_color, true);
+                                       scroll_window, but_color, true, is_vertical);
 
-        double slider_size = (s_bar_h - 2 * but_size) * scroll_window->getRatio ();
+        double slider_size = (s_bar_h - 2 * but_size) * scroll_window->getRatio (is_vertical);
         slider = Slider ({{s_bar_x, s_bar_y + s_bar_h - slider_size - but_size}, 
                  s_bar_w, slider_size, 
                  slider_color}, s_bar_y + s_bar_h - but_size, s_bar_y + but_size,
@@ -30,14 +30,14 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 
         arrow_down = new ::Button<ScrollFunctor>  ({{s_bar_x, s_bar_y}, 
                                                  s_bar_w, but_size, but_color},
-                                                 scroll_window, but_color, false);
+                                                 scroll_window, but_color, false, is_vertical);
     } else {
         // HORIZONTAL
         printf ("horizontal\n");
         arrow_down = new ::Button<ScrollFunctor>  ({{s_bar_x, s_bar_y}, 
                                                  but_size, s_bar_h, but_color},
-                                                 scroll_window, but_color, true);
-        double slider_size = (s_bar_w - 2 * but_size) * scroll_window->getRatio ();
+                                                 scroll_window, but_color, true, is_vertical);
+        double slider_size = (s_bar_w - 2 * but_size) * scroll_window->getRatio (is_vertical);
         slider = Slider ({{s_bar_x + but_size, s_bar_y}, 
                  slider_size, s_bar_h, 
                  slider_color}, s_bar_x + s_bar_w - but_size, s_bar_x + but_size,
@@ -45,7 +45,7 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 
         arrow_up = new ::Button<ScrollFunctor> ({{s_bar_x + s_bar_w - but_size, s_bar_y}, 
                                        but_size, s_bar_h, but_color}, 
-                                       scroll_window, but_color, false);
+                                       scroll_window, but_color, false, is_vertical);
     }
     
 
@@ -65,7 +65,7 @@ bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
         CheckCoordinate (event.pos_x, event.pos_y)) {
 
         slider.jumpToCoord (event.pos_x, event.pos_y);
-        scroll_window->slideByRatio (slider.getRatio ());
+        scroll_window->slideByRatio (slider.getRatio (), is_vertical);
     }
 }
 
@@ -136,7 +136,7 @@ void Slider::move (double posx, double posy) {
         if (limit_down < new_y && new_y + trappings.height < limit_up) {
             printf ("yes\n");
             trappings.coords.y = new_y;
-            slidable_wind->slideByRatio (getRatio ());
+            slidable_wind->slideByRatio (getRatio (), is_vertical);
         }
     } else {
         double new_x = posx - off_x;
@@ -144,7 +144,7 @@ void Slider::move (double posx, double posy) {
         if (limit_down < new_x && new_x + trappings.width < limit_up) {
             printf ("yes\n");
             trappings.coords.x = new_x;
-            slidable_wind->slideByRatio (getRatio ());
+            slidable_wind->slideByRatio (getRatio (), is_vertical);
         }
     }
     

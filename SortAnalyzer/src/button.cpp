@@ -10,9 +10,9 @@ size_t Numeric<int>::num_comparisons = 0;
 
 void ScrollFunctor::operator() (Button<ScrollFunctor>* _but, const MouseClickEvent& event) {
     if (scroll_up) 
-        scroll_window->scrollOnceUp ();
+        scroll_window->scrollOnceUp (is_vertical);
     else
-        scroll_window->scrollOnceDown ();
+        scroll_window->scrollOnceDown (is_vertical);
 }
 
 

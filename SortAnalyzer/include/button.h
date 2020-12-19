@@ -100,9 +100,12 @@ class  ScrollFunctor {
     IScrollableWindow* scroll_window;
     Color color;
     bool scroll_up;
+    bool is_vertical;
 public:
-    ScrollFunctor (IScrollableWindow* _scroll_window, const Color& _color, bool _scroll_up)
-    : scroll_window (_scroll_window), color (_color), scroll_up (_scroll_up) {}
+    ScrollFunctor (IScrollableWindow* _scroll_window, const Color& _color,
+                   bool _scroll_up, bool _is_vertical)
+    : scroll_window (_scroll_window), color (_color), 
+      scroll_up (_scroll_up), is_vertical (_is_vertical) {}
     void operator() (Button<ScrollFunctor>* _but, const MouseClickEvent& event);
 };
 

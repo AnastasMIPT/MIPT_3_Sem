@@ -5,7 +5,7 @@
 
 class ISlidable {
 public:
-    virtual void slideByRatio (double ratio) = 0;
+    virtual void slideByRatio (double ratio, bool is_vertical) = 0;
     virtual ~ISlidable () = default;
 };
 
@@ -19,7 +19,7 @@ public:
     SlidableValue (const T& value, const T& lim_up, const T& lim_down)
     : value (value), lim_up (lim_up), lim_down (lim_down) {}
 
-    void slideByRatio (double ratio) override;
+    void slideByRatio (double ratio, bool is_vertical = true) override;
 
     T getValue     () const;
     T getLimitUp   () const;
@@ -31,7 +31,7 @@ public:
 
 
 template <typename T>
-void SlidableValue<T>::slideByRatio (double ratio) {
+void SlidableValue<T>::slideByRatio (double ratio, bool is_vertical) {
     value = ratio * (lim_up - lim_down);
 }
 

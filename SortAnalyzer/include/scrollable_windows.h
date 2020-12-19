@@ -6,10 +6,10 @@
 
 class IScrollableWindow : public ISlidable {
 public:
-    virtual double getRatio () = 0;
-    virtual void scrollOnceUp () = 0;
-    virtual void scrollOnceDown () = 0;
-    virtual void slideByRatio (double ratio) = 0;
+    virtual double getRatio (bool is_vertical) = 0;
+    virtual void scrollOnceUp (bool is_vertical) = 0;
+    virtual void scrollOnceDown (bool is_vertical) = 0;
+    //virtual void slideByRatio (double ratio) = 0;
 };
 
 
@@ -19,10 +19,10 @@ class AbstractScrollableWindow : public IScrollableWindow {
     int num_of_visable_units;
 public:
     AbstractScrollableWindow (int _num_of_units, int _num_of_visable_units);
-    double getRatio () override;
-    void scrollOnceUp    () override;
-    void scrollOnceDown  () override;
-    void slideByRatio   (double retio) override;
+    double getRatio (bool is_vertical) override;
+    void scrollOnceUp    (bool is_vertical) override;
+    void scrollOnceDown  (bool is_vertical) override;
+    void slideByRatio   (double retio, bool is_vertical) override;
 };
 
 
