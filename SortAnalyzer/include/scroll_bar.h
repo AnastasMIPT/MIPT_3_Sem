@@ -43,4 +43,7 @@ public:
     bool onMouseClick (const MouseClickEvent& event) override;
 };
 
+
+
+
 #endif // SCROLL_BAR_H

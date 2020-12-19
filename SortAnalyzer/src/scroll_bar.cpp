@@ -57,10 +57,8 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 
 
 bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
-    for (auto window : subwindows) {
-        window->onMouseClick (event);
-    }
-    
+    WindowContainer::onMouseClick (event);
+
     if (event.button == MouseButtonTypes::LEFT &&
         event.action == MouseButtonActions::PRESS &&
         CheckCoordinate (event.pos_x, event.pos_y)) {

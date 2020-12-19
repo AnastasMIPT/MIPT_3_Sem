@@ -13,6 +13,7 @@
 #include "tool_bar.h"
 #include "painter.h"
 #include "scroll_bar.h"
+#include "fader.h"
 
 template <>
 GSystem GEngine::system;
@@ -41,6 +42,9 @@ int main  (void)
     
     Canvas canvas (&white, {0.1, 0.1, 0.8, 0.65});
     
+    SlidableValue<double> val (0.8, 0.0, 1.0);
+
+    Fader<double> fad ({0.1, 0.9, 0.3, 0.1, COLORS::DEFAULT_BACKGROUND}, &val, COLORS::RED);
 
     ScrollBar s_bar (&canvas, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
     ScrollBar s_bar2 (&canvas, {0.0, 0.0, 0.8, 0.05, ab::COLORS::LIGHT_GRAY});
@@ -58,6 +62,7 @@ int main  (void)
     Application::addObject (&s_bar);
     Application::addObject (&painter);
     Application::addObject (&s_bar2);
+    Application::addObject (&fad);
     // Application::addObject (&tool_bar);
     // Application::addObject (&canvas);
     

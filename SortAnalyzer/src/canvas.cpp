@@ -26,6 +26,7 @@ Point2d Canvas::convertToCanvasCoords (const Point2d& screen_coords) {
 
 
 void Canvas::draw () const {
+    
     GEngine::system.drawImage (trappings.coords, *canvas_pixels, view);
 }
 
@@ -77,18 +78,20 @@ double Canvas::getRatio (bool is_vertical) {
 
 
 void Canvas::scrollOnceUp (bool is_vertical) {
-    if (is_vertical) {
-        if (view.off_y - 1 > 0) view.off_y--;
-    } else {
-        if (view.off_x + view.width + 1 < canvas_pixels->getWidth ())
-            view.off_x++;
-    }
+    // if (is_vertical) {
+    //     if (view.off_y - 1 > 0) view.off_y--;
+    //     printf ("\n\n\n^^^^ view_y = %d\n\n\n", view.off_y);
+    // } else {
+    //     if (view.off_x + view.width + 1 < canvas_pixels->getWidth ())
+    //         view.off_x++;
+    // }
 }
 
 
 void Canvas::scrollOnceDown (bool is_vertical) {
     if (is_vertical) {
-        if (view.off_y + 1 + view.height< canvas_pixels->getHeight ()) view.off_y++;
+        view.off_y++;
+        printf ("\n\n\nview_y = %d\n\n\n", view.off_y);
     } else {
         if (view.off_x - 1 > 0)
             view.off_x--;
@@ -101,4 +104,7 @@ void Canvas::slideByRatio (double ratio, bool is_vertical) {
     } else {
         view.off_x = ratio * (canvas_pixels->getWidth () - view.width);
     }
+
+    printf ("\n\n\nv_x = %d, v_y = %d, v_w = %d, v_h = %d\n\n\n", 
+             view.off_x, view.off_y, view.width, view.height);
 }

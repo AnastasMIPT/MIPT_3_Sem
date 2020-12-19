@@ -238,11 +238,11 @@ void SFML::drawImage (const Point2d& coords, const Image& img, const ViewPort& v
     sf_sprite.setTexture (sf_texture);
     
     sf_sprite.setTextureRect (sf::IntRect (view.off_x, view.off_y, 
-        std::min (view.width - view.off_x, (int) im_width), 
-        std::min (view.height - view.off_y, (int) im_height)));
+        std::min (view.width,  (int) im_width), 
+        std::min (view.height, (int) im_height)));
     
     sf_sprite.setPosition (read_coords.x, read_coords.y - 
-                std::min (view.height - view.off_y, (int) im_height));
+                std::min (view.height, (int) im_height));
     
     window.draw (sf_sprite);
 }

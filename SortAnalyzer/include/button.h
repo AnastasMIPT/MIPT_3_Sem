@@ -185,13 +185,8 @@ template <typename ButtonFunctor_t>
 bool Button<ButtonFunctor_t>::onMouseClick (const MouseClickEvent& event) {
 
     printf ("Зашел в onClick кнопки\n");
-    // bool is_consumed = false;
-     
-    // printf ("пытаюсь поглотить\n");
         
     bool our_coords = CheckCoordinate (event.pos_x, event.pos_y);
-    // if (!is_consumed) return false;
-    // printf ("поглатил\n");
 
     lbutton_down = false;
     if (event.button == MouseButtonTypes::LEFT) {

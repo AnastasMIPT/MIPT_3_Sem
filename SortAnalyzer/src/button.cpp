@@ -12,7 +12,7 @@ void ScrollFunctor::operator() (Button<ScrollFunctor>* _but, const MouseClickEve
     if (scroll_up) 
         scroll_window->scrollOnceUp (is_vertical);
     else
-        scroll_window->scrollOnceDown (is_vertical);
+        scroll_window->scrollOnceDown (is_vertical);    
 }
 
 

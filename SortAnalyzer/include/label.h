@@ -1,3 +1,6 @@
+#ifndef LABEL_H
+#define LABEL_H
+
 #include "window.h"
 #include <string>
 
@@ -9,3 +12,6 @@ public:
 
     void draw () const override;
 };
+
+
+#endif // LABEL_H
