@@ -21,7 +21,8 @@ public:
     Slider () = default;
 
     double getRatio ();
-    void jumpToCoord (double coord);
+    bool jumpIsPossible (double x, double y);
+    void jumpToCoord (double x, double y);
     void move (double xpos, double ypos);
 };
 
