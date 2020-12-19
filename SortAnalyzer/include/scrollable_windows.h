@@ -1,10 +1,10 @@
 #ifndef SCROLLABLE_WINDOWS_H
 #define SCROLLABLE_WINDOWS_H
-#include "slidble.h"
+#include "slidable.h"
 
 
 
-class IScrollableWindow : public ISlidble {
+class IScrollableWindow : public ISlidable {
 public:
     virtual double getRatio () = 0;
     virtual void scrollOnceUp () = 0;
