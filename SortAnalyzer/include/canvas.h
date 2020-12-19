@@ -15,6 +15,7 @@ public:
     Point2d convertToCanvasCoords (const Point2d& screen_coords);
 
     void setImage (Image* image);
+    void setPixel (size_t x, size_t y, const Pixel& pixel);
    // bool is
 
     void draw () const override;

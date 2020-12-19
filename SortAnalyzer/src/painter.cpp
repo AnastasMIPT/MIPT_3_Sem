@@ -27,6 +27,7 @@ bool Painter::onMouseClick (const MouseClickEvent& event) {
 void Painter::onMouseMove (const MouseMoveEvent& event) {
     Point2d canvas_coords = canvas->convertToCanvasCoords ({event.pos_x, event.pos_y});
     auto* active_tool = ToolManager::getActiveTool ();
+    printf ("cc anc = %lf, %lf\n", canvas_coords.x, canvas_coords.y);
     active_tool->apply (canvas, canvas_coords.x, canvas_coords.y);
 }
 

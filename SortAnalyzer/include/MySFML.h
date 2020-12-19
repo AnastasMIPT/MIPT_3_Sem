@@ -42,7 +42,7 @@ public:
     void drawTriangle (const Triangle& triangele) override;
     void drawLineStrip (const Vector<Point2d>& points, const Color& color) override;
     
-    void drawImage (const Rect& area, const Image& img);
+    void drawImage (const Point2d& coords, const Image& img, const ViewPort& view);
 
     void drawImageInArea (const Rect& area, const Image& img, bool no_distortion = false,
             const ViewPort& view = ViewPort {0, 0, WindowWidth, WindowHeight});

@@ -23,7 +23,6 @@ int main  (void)
 {
 
     Application::loadDefaultImages ();
-    size_t im_id = ImagePool::addImage ("./resources/images/kotik.jpg");
     
 
     AbstractScrollableWindow scroll_w (50, 30);
@@ -33,15 +32,18 @@ int main  (void)
     
     // Button<ToolFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT}, TOOLS::PENCIL);
     // im_but.setImage (ImagePool::getImageById (DEF_IMAGES::PENCIL));
-
+    size_t im_id = ImagePool::addImage ("./resources/images/kotik.jpg");
+    
     ToolBar tool_bar ({0.7, 0.8, 0.2, 0.2, COLORS::DEFAULT_TOOL_BAR});
-
-    Image white (500, 200, Pixel (255, 255, 255, 255));
-    Canvas canvas (&white, {0.1, 0.1, 0.4, 0.4});
+    
+    Image white (1000, 700, Pixel (255, 128, 255, 255));
+    
+    Canvas canvas (&white, {0.1, 0.1, 0.4, 0.65});
+    
     printf ("im_id = %lu\n", im_id);
 
-    assert (ImagePool::getImageById (im_id));
-    canvas.setImage (ImagePool::getImageById (im_id));
+    //assert (ImagePool::getImageById (im_id));
+    //canvas.setImage (ImagePool::getImageById (im_id));
 
     Painter painter (&canvas, &tool_bar);
 

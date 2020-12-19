@@ -224,16 +224,26 @@ Image SFML::loadImageFromFile (const char* path) {
     return Image (img_width, img_height, pixels); 
 }
 
-void SFML::drawImage (const Rect& area, const Image& img) {
-    Rect real_area = convertAbstrToRealRect (area);
+void SFML::drawImage (const Point2d& coords, const Image& img, const ViewPort& view) {
+    Point2d read_coords = convertAbstrToRealCoords (coords);
     
     sf::Texture sf_texture;
-    sf_texture.create (img.getWidth (), img.getHeight ());
+    size_t im_width  = img.getWidth  ();
+    size_t im_height = img.getHeight ();
+    
+    sf_texture.create (im_width, im_height);
     sf_texture.update (reinterpret_cast<const sf::Uint8*> (img.getPixelArray ()));
     
     sf::Sprite sf_sprite;
     sf_sprite.setTexture (sf_texture);
-    sf_sprite.setPosition (real_area.coords.x, real_area.coords.y - real_area.height);
+    
+    sf_sprite.setTextureRect (sf::IntRect (view.off_x, view.off_y, 
+        std::min (view.width - view.off_x, (int) im_width), 
+        std::min (view.height - view.off_y, (int) im_height)));
+    
+    sf_sprite.setPosition (read_coords.x, read_coords.y - 
+                std::min (view.height - view.off_y, (int) im_height));
+    
     window.draw (sf_sprite);
 }
 

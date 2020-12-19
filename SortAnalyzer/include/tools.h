@@ -38,16 +38,19 @@ public:
     }
 };
 
-class Pencil : public Eraser {
+class Pencil : public AbstractTool {
+    Point2d last_apply_coords = {-1, -1};
+
+    void drawSquare (Canvas* canvas,
+                     double center_x, double center_y, int a,
+                     const ab::Pixel& pixel);
 
 public:
 
     void startApplying () override {
         printf ("Я карандаш, я начал применяться\n");
     }
-    void apply (Canvas* canvas, double x, double y) override {
-        printf ("Применяюсь по координатам x = %lf, y = %lf\n", x, y);
-    }
+    void apply (Canvas* canvas, double x, double y) override;
     void finishApplying () override {
         printf ("Я карандаш, я закончил применяться\n");
     }
