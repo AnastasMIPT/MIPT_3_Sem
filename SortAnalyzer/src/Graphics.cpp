@@ -28,7 +28,7 @@ int main  (void)
     AbstractScrollableWindow scroll_w (50, 30);
     ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
     
-    AbstractScrollableWindow scroll_w2 (50, 40);
+    AbstractScrollableWindow scroll_w2 (50, 20);
     ScrollBar s_bar2 (&scroll_w2, {0.0, 0.0, 0.8, 0.05, ab::COLORS::LIGHT_GRAY});
 
     //Image my_img = GEngine::system.loadImageFromFile ("./resources/images/pencil.png");

@@ -1,4 +1,3 @@
-
 #include "scrollable_windows.h"
 #include <stdio.h>
 
@@ -28,4 +27,3 @@ void AbstractScrollableWindow::slideByRatio (double ratio) {
     num_of_first_unit = ratio * (num_of_units - num_of_visable_units);
     printf ("nunit = %d\n", num_of_first_unit);
 }
-
