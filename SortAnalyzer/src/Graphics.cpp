@@ -12,7 +12,7 @@
 #include "label.h"
 #include "tool_bar.h"
 #include "painter.h"
-
+#include "scroll_bar.h"
 
 template <>
 GSystem GEngine::system;
@@ -43,7 +43,7 @@ int main  (void)
     printf ("im_id = %lu\n", im_id);
 
     //assert (ImagePool::getImageById (im_id));
-    //canvas.setImage (ImagePool::getImageById (im_id));
+    canvas.setImage (ImagePool::getImageById (im_id));
 
     Painter painter (&canvas, &tool_bar);
 

@@ -56,6 +56,7 @@ public:
     /* vector <IComponent*> properties;*/
 public:
     AbstractWindow (const ab::Rect& _trappings);
+    AbstractWindow () = default;
     bool CheckCoordinate (double pos_x, double pos_y) const override;
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove (const MouseMoveEvent& event) override {}
@@ -104,6 +105,8 @@ protected:
 public:
     AbstractDragableWindow (const ab::Rect& _trappings)
     : AbstractWindow (_trappings) {}
+
+    AbstractDragableWindow () = default;
 
     bool onMouseClick (const MouseClickEvent& event) override;
     void onMouseMove  (const MouseMoveEvent& event) override;
