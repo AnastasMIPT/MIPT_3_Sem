@@ -57,22 +57,6 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
     WindowContainer::onMouseClick (event);
     if (event.button == MouseButtonTypes::LEFT && event.action == MouseButtonActions::PRESS) {
-        // if (is_vertical) {
-        //     if (event.pos_y >= trappings.coords.y + but_size &&
-        //         event.pos_y <= trappings.coords.y + trappings.height - but_size &&
-        //         event.pos_x >= trappings.coords.x &&
-        //         event.pos_x <= trappings.coords.x + trappings.width) {
-        //             slider.jumpToCoord (event.pos_x, event.pos_y);
-        //     }
-        // } else {
-        //     if (event.pos_x >= trappings.coords.x + but_size &&
-        //         event.pos_x <= trappings.coords.x + trappings.width - but_size &&
-        //         event.pos_y >= trappings.coords.y &&
-        //         event.pos_y <= trappings.coords.y + trappings.height) {
-        //             slider.jumpToCoord (event.pos_x, event.pos_y);
-          //  }
-        //}
-
         slider.jumpToCoord (event.pos_x, event.pos_y);
         scroll_window->slideByRatio (slider.getRatio ());
     }
