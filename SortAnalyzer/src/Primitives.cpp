@@ -6,7 +6,12 @@
 #include "debug_info.h"
 
 #include "Primitives.h"
-#include "button.h"
+
+
+
+
+
+
 double Len_of_vec (const glm::highp_vec2& vec) {
     return sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 }
@@ -129,75 +134,4 @@ void Graph::change_max_x (double _max_x) {
 void Graph::change_max_y (double _max_y) {
 
     max_y = _max_y;
-}
-
-
-void ScrollBar::ArrowUpMouseClick (const MouseClickEvent& event) {
-    bool lbutton_down = false;
-    if (event.button == MouseButtonTypes::LEFT) {
-        if(MouseButtonActions::PRESS == event.action)
-            lbutton_down = true;
-         else if (MouseButtonActions::RELEASE == event.action)
-            lbutton_down = false;
-    }
-
-    Color temp = arrow_up->trappings.color;
-    if (lbutton_down) {
-        arrow_up->trappings.color = COLORS::BLACK;
-    } else {
-        arrow_up->trappings.color = but_color;
-    }
-}
-
-void ScrollBar::ArrowDownMouseClick (const MouseClickEvent& event) {
-    bool lbutton_down = false;
-    if (event.button == MouseButtonTypes::LEFT) {
-        if(MouseButtonActions::PRESS == event.action)
-            lbutton_down = true;
-         else if (MouseButtonActions::RELEASE == event.action)
-            lbutton_down = false;
-    }
-
-    
-    if (lbutton_down) {
-        arrow_down->trappings.color = COLORS::BLACK;
-    } else {
-        arrow_down->trappings.color = but_color;
-    }
-}
-
-
-
-ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
-: WindowContainer (_trappings),
-  scroll_window (_scroll_window),
-  arrow_up (new Button<ScrollFunctor> ({{_trappings.coords.x, _trappings.coords.y + _trappings.height - but_size}, 
-                                       _trappings.width, but_size, but_color}, 
-                                       _scroll_window, but_color, true)),
-
-  slider (new Slider ({{_trappings.coords.x, _trappings.coords.y + _trappings.height - slider_size - but_size}, 
-                      _trappings.width, /*(size_x - 2 * but_size) * scroll_window->getRatio ()*/slider_size, slider_color}, 
-                       _trappings.coords.y + _trappings.height - but_size, _trappings.coords.y + but_size)),
-
-  arrow_down (new ::Button<ScrollFunctor>  ({{_trappings.coords.x, _trappings.coords.y}, _trappings.width, but_size, but_color},
-                                             _scroll_window, but_color, false)) {
-
-    subwindows.push_back (arrow_up.get ());
-    subwindows.push_back (slider.get ()); 
-    subwindows.push_back (arrow_down.get ());
-}
-
-
-Slider::Slider (const Rect& _trappings, double _limit_up, 
-                double _limit_down)
-    : AbstractDragableWindow (_trappings),
-      limit_up (_limit_up), limit_down (_limit_down) {}
-
-void Slider::move (double posx, double posy) {
-    double new_y = posy - off_y;
-    printf ("move: pos_x = %lf, pos_y = %lf, new_y = %lf\n", posx, posy, new_y);
-    if (limit_down < new_y && new_y + trappings.height < limit_up) {
-        printf ("yes\n");
-        trappings.coords.y = new_y;
-    }
 }

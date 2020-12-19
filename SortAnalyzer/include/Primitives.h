@@ -8,52 +8,15 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include "my_vector.h"
+#include "color.h"
+#include "engine.h"
+#include "window.h"
+
 
 //#define DEBUG
 #include "debug_info.h"
-#include "color.h"
-
-
-#include "window.h"
-#include "scrollable_windows.h"
 
 const double DefaultMaxVal = -228;
-
-
-
-
-class Slider : public AbstractDragableWindow {
-    double limit_up;
-    double limit_down;
-public:
-    Slider (const Rect& _trappings, double _limit_up, double _limit_down);
-    void move (double xpos, double ypos);
-};
-
-class ScrollBar : public WindowContainer {
-    IScrollableWindow* scroll_window;
-    std::unique_ptr<::AbstractWindow> arrow_up;
-    std::unique_ptr<::AbstractWindow> slider;
-    std::unique_ptr<::AbstractWindow> arrow_down;
-    
-
-    static constexpr Color but_color = COLORS::DEFAULT_BUTTON;
-    static constexpr Color slider_color = COLORS::DEFAULT_SLIDER;
-    static constexpr double but_size = 0.1;
-    static constexpr double slider_size = 0.2;
-
-    void ArrowUpMouseClick (const MouseClickEvent& event);
-    void ArrowDownMouseClick (const MouseClickEvent& event);
-
-public:
-    ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings);
-
-    //bool onMouseClick (const MouseClickEvent& event) override;
-};
-
-
-
-
 
 
 
