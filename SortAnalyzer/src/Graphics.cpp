@@ -26,11 +26,9 @@ int main  (void)
     
 
     AbstractScrollableWindow scroll_w (50, 5);
-    ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
     
     AbstractScrollableWindow scroll_w2 (50, 20);
-    ScrollBar s_bar2 (&scroll_w2, {0.0, 0.0, 0.8, 0.05, ab::COLORS::LIGHT_GRAY});
-
+    
     //Image my_img = GEngine::system.loadImageFromFile ("./resources/images/pencil.png");
     
     // Button<ToolFunctor> im_but ({0.1, 0.1, 0.025, 0.05, COLORS::TRANSPARENT}, TOOLS::PENCIL);
@@ -43,6 +41,11 @@ int main  (void)
     
     Canvas canvas (&white, {0.1, 0.1, 0.8, 0.65});
     
+
+    ScrollBar s_bar (&canvas, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
+    ScrollBar s_bar2 (&canvas, {0.0, 0.0, 0.8, 0.05, ab::COLORS::LIGHT_GRAY});
+
+
     printf ("im_id = %lu\n", im_id);
 
     //assert (ImagePool::getImageById (im_id));

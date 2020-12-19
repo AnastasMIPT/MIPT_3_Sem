@@ -21,6 +21,7 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
                                        scroll_window, but_color, true, is_vertical);
 
         double slider_size = (s_bar_h - 2 * but_size) * scroll_window->getRatio (is_vertical);
+        printf ("vert slide_size = %lf\n", slider_size);
         slider = Slider ({{s_bar_x, s_bar_y + s_bar_h - slider_size - but_size}, 
                  s_bar_w, slider_size, 
                  slider_color}, s_bar_y + s_bar_h - but_size, s_bar_y + but_size,

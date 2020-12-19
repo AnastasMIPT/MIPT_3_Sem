@@ -63,3 +63,42 @@ void Canvas::drawLine (Point2d p1, Point2d p2, const Pixel& pixel, int thickness
         }
     }
 }
+
+
+
+double Canvas::getRatio (bool is_vertical) {
+    if (is_vertical) {
+        return view.height / (double) canvas_pixels->getHeight ();
+    } else {
+        return view.width  / (double) canvas_pixels->getWidth ();
+    }
+    
+}
+
+
+void Canvas::scrollOnceUp (bool is_vertical) {
+    if (is_vertical) {
+        if (view.off_y - 1 > 0) view.off_y--;
+    } else {
+        if (view.off_x + view.width + 1 < canvas_pixels->getWidth ())
+            view.off_x++;
+    }
+}
+
+
+void Canvas::scrollOnceDown (bool is_vertical) {
+    if (is_vertical) {
+        if (view.off_y + 1 + view.height< canvas_pixels->getHeight ()) view.off_y++;
+    } else {
+        if (view.off_x - 1 > 0)
+            view.off_x--;
+    }
+}
+
+void Canvas::slideByRatio (double ratio, bool is_vertical) {
+    if (is_vertical) {
+        view.off_y = ratio * (canvas_pixels->getHeight () - view.height);
+    } else {
+        view.off_x = ratio * (canvas_pixels->getWidth () - view.width);
+    }
+}
