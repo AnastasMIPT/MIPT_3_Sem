@@ -41,10 +41,6 @@ public:
 class Pencil : public AbstractTool {
     Point2d last_apply_coords = {-1, -1};
 
-    void drawSquare (Canvas* canvas,
-                     double center_x, double center_y, int a,
-                     const ab::Pixel& pixel);
-
 public:
 
     void startApplying () override;

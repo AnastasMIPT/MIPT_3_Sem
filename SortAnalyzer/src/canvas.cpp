@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include "assert.h"
 
 Canvas::Canvas (Image* _pixels, const Rect& _trappings)
 : AbstractWindow (_trappings), canvas_pixels (_pixels) {
@@ -36,3 +37,29 @@ void Canvas::setPixel (size_t x, size_t y, const Pixel& pixel) {
     canvas_pixels->setPixel (x, y, pixel);
 }
 
+
+void Canvas::drawSquare (double center_x, double center_y, int a, const Pixel& pixel) {
+    assert (center_y > 0);
+    assert (center_x > 0);
+    assert (a > 0);
+
+    for (int y = center_y - a / 2; y <= center_y + a / 2; ++y) {
+        for (int x = center_x - a / 2; x <= center_x + a / 2; ++x) {
+            setPixel (x, y, pixel);
+        }
+    }
+}
+
+void Canvas::drawLine (Point2d p1, Point2d p2, const Pixel& pixel, int thickness) {
+    if (std::abs (p2.x - p1.x) > std::abs (p2.y - p1.y)) {
+        for (int t = std::min (p1.x, p2.x); t < std::max (p2.x, p1.x); ++t) {
+            double y_t = (t - p1.x) * (p2.y - p1.y) / (p2.x - p1.x) + p1.y; // calc y_t by t
+            drawSquare (t, y_t, thickness, pixel);
+        }
+    } else {
+        for (int t_y = std::min (p1.y, p2.y); t_y < std::max (p2.y, p1.y); ++t_y) {
+            double t = (t_y - p1.y) * (p2.x - p1.x) / (p2.y - p1.y) + p1.x; // calc y_t by t
+            drawSquare (t, t_y, thickness, pixel);
+        }
+    }
+}
