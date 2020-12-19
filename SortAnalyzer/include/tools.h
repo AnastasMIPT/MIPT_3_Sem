@@ -47,13 +47,9 @@ class Pencil : public AbstractTool {
 
 public:
 
-    void startApplying () override {
-        printf ("Я карандаш, я начал применяться\n");
-    }
+    void startApplying () override;
     void apply (Canvas* canvas, double x, double y) override;
-    void finishApplying () override {
-        printf ("Я карандаш, я закончил применяться\n");
-    }
+    void finishApplying () override;
 
 };
 
