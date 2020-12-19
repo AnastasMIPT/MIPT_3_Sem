@@ -2,6 +2,7 @@
 #include "scrollable_windows.h"
 #include <stdio.h>
 
+
 AbstractScrollableWindow::AbstractScrollableWindow (int _num_of_units, int _num_of_visable_units)
 : num_of_units (_num_of_units), num_of_visable_units (_num_of_visable_units) {}
 
@@ -22,3 +23,9 @@ void AbstractScrollableWindow::scrollOnceDown () {
     if (num_of_first_unit + 1 < num_of_units - num_of_visable_units) num_of_first_unit++;
     printf ("nunit = %d\n", num_of_first_unit);
 }
+
+void AbstractScrollableWindow::slideByRatio (double ratio) {
+    num_of_first_unit = ratio * (num_of_units - num_of_visable_units);
+    printf ("nunit = %d\n", num_of_first_unit);
+}
+
