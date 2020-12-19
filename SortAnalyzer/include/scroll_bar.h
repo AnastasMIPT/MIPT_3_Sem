@@ -12,12 +12,15 @@ class Slider : public AbstractDragableWindow {
     double limit_down;
     bool is_vertical;
     ISlidable* slidable_wind;
+
+    
 public:
     Slider (const Rect& _trappings, double _limit_up, double _limit_down,
             ISlidable* _slidable_wind, bool _is_vertical = true);
 
     Slider () = default;
 
+    double getRatio ();
     void jumpToCoord (double coord);
     void move (double xpos, double ypos);
 };
@@ -36,7 +39,7 @@ class ScrollBar : public WindowContainer {
 public:
     ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings);
 
-    //bool onMouseClick (const MouseClickEvent& event) override;
+    bool onMouseClick (const MouseClickEvent& event) override;
 };
 
 #endif // SCROLL_BAR_H

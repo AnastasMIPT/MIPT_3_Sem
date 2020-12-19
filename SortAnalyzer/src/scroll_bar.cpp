@@ -35,7 +35,7 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
         printf ("horizontal\n");
         arrow_down = new ::Button<ScrollFunctor>  ({{s_bar_x, s_bar_y}, 
                                                  but_size, s_bar_h, but_color},
-                                                 scroll_window, but_color, false);
+                                                 scroll_window, but_color, true);
         double slider_size = (s_bar_w - 2 * but_size) * scroll_window->getRatio ();
         slider = Slider ({{s_bar_x + but_size, s_bar_y}, 
                  slider_size, s_bar_h, 
@@ -44,7 +44,7 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 
         arrow_up = new ::Button<ScrollFunctor> ({{s_bar_x + s_bar_w - but_size, s_bar_y}, 
                                        but_size, s_bar_h, but_color}, 
-                                       scroll_window, but_color, true);
+                                       scroll_window, but_color, false);
     }
     
 
@@ -52,6 +52,30 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
     subwindows.push_back (&slider); 
     subwindows.push_back (arrow_down);
 }
+
+
+bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
+    WindowContainer::onMouseClick (event);
+    if (event.button == MouseButtonTypes::LEFT && event.action == MouseButtonActions::PRESS) {
+        if (is_vertical) {
+            if (event.pos_y >= trappings.coords.y + but_size &&
+                event.pos_y <= trappings.coords.y + trappings.height - but_size &&
+                event.pos_x >= trappings.coords.x &&
+                event.pos_x <= trappings.coords.x + trappings.width) {
+                    slider.jumpToCoord (event.pos_y);
+            }
+        } else {
+            if (event.pos_x >= trappings.coords.x + but_size &&
+                event.pos_x <= trappings.coords.x + trappings.width - but_size &&
+                event.pos_y >= trappings.coords.y &&
+                event.pos_y <= trappings.coords.y + trappings.height) {
+                    slider.jumpToCoord (event.pos_x);
+            }
+        }
+        scroll_window->slideByRatio (slider.getRatio ());
+    }
+}
+
 
 
 Slider::Slider (const Rect& _trappings, double _limit_up, 
@@ -85,6 +109,19 @@ void Slider::jumpToCoord (double coord) {
     }
 }
 
+double Slider::getRatio () {
+    if (is_vertical) {
+        double numerator   = limit_up - trappings.height - trappings.coords.y;
+        double denominator = limit_up - trappings.height - limit_down;
+        return numerator / denominator;
+    } else {
+        double numerator   = trappings.coords.x - limit_down;
+        double denominator = limit_up - (limit_down + trappings.width);
+        return numerator / denominator;
+    }
+    
+}
+
 void Slider::move (double posx, double posy) {
     if (is_vertical) {
         double new_y = posy - off_y;
@@ -92,9 +129,7 @@ void Slider::move (double posx, double posy) {
         if (limit_down < new_y && new_y + trappings.height < limit_up) {
             printf ("yes\n");
             trappings.coords.y = new_y;
-            double numerator   = limit_up - trappings.height - trappings.coords.y;
-            double denominator = limit_up - trappings.height - limit_down;
-            slidable_wind->slideByRatio (numerator / denominator);
+            slidable_wind->slideByRatio (getRatio ());
         }
     } else {
         double new_x = posx - off_x;
@@ -102,9 +137,7 @@ void Slider::move (double posx, double posy) {
         if (limit_down < new_x && new_x + trappings.width < limit_up) {
             printf ("yes\n");
             trappings.coords.x = new_x;
-            double numerator   = trappings.coords.x - limit_down;
-            double denominator = limit_up - (limit_down + trappings.width);
-            slidable_wind->slideByRatio (numerator / denominator);
+            slidable_wind->slideByRatio (getRatio ());
         }
     }
     

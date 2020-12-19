@@ -25,7 +25,7 @@ int main  (void)
     Application::loadDefaultImages ();
     
 
-    AbstractScrollableWindow scroll_w (50, 30);
+    AbstractScrollableWindow scroll_w (50, 5);
     ScrollBar s_bar (&scroll_w, {0.975, 0.0, 0.02, 0.8, ab::COLORS::LIGHT_GRAY});
     
     AbstractScrollableWindow scroll_w2 (50, 40);
