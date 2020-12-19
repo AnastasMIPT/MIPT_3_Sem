@@ -32,7 +32,7 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
                                                  scroll_window, but_color, false);
     } else {
         // HORIZONTAL
-
+        printf ("horizontal\n");
         arrow_down = new ::Button<ScrollFunctor>  ({{s_bar_x, s_bar_y}, 
                                                  but_size, s_bar_h, but_color},
                                                  scroll_window, but_color, false);
@@ -42,8 +42,8 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
                  slider_color}, s_bar_x + s_bar_w - but_size, s_bar_x + but_size,
                  scroll_window, is_vertical);
 
-        arrow_up = new ::Button<ScrollFunctor> ({{s_bar_x, s_bar_y + s_bar_h - but_size}, 
-                                       s_bar_w, but_size, but_color}, 
+        arrow_up = new ::Button<ScrollFunctor> ({{s_bar_x + s_bar_w - but_size, s_bar_y}, 
+                                       but_size, s_bar_h, but_color}, 
                                        scroll_window, but_color, true);
     }
     
