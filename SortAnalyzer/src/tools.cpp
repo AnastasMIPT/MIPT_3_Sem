@@ -24,6 +24,9 @@ void Pencil::startApplying () {
 
 
 void Pencil::apply (Canvas* canvas, double x, double y) {
+    int thickness = ToolManager::getThickness ();
+    
+    if (x - thickness / 2 < 0 || y - thickness / 2 < 0) return;
     assert (x > 0);
     assert (y > 0);
     assert (canvas);
@@ -36,7 +39,6 @@ void Pencil::apply (Canvas* canvas, double x, double y) {
     }
     
     ab::Pixel cur_pxl (ToolManager::getAcitveColor ());
-    int thickness = ToolManager::getThickness ();
     
     Point2d lst = last_apply_coords;
     if (std::abs (x - lst.x) > std::abs (y - lst.y)) {
