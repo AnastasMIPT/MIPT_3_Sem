@@ -1,5 +1,6 @@
 #include "scroll_bar.h"
 #include "button.h"
+#include <iostream>
 
 ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 : WindowContainer (_trappings),
@@ -55,8 +56,14 @@ ScrollBar::ScrollBar (IScrollableWindow* _scroll_window, const Rect& _trappings)
 
 
 bool ScrollBar::onMouseClick (const MouseClickEvent& event) {
-    WindowContainer::onMouseClick (event);
-    if (event.button == MouseButtonTypes::LEFT && event.action == MouseButtonActions::PRESS) {
+    for (auto window : subwindows) {
+        window->onMouseClick (event);
+    }
+    
+    if (event.button == MouseButtonTypes::LEFT &&
+        event.action == MouseButtonActions::PRESS &&
+        CheckCoordinate (event.pos_x, event.pos_y)) {
+
         slider.jumpToCoord (event.pos_x, event.pos_y);
         scroll_window->slideByRatio (slider.getRatio ());
     }
@@ -87,7 +94,6 @@ bool Slider::jumpIsPossible (double x, double y) {
 
 void Slider::jumpToCoord (double x, double y) {
     if (jumpIsPossible (x, y)) {
-
         if (is_vertical) {
             double coord_new = y - trappings.height / 2;
             if (coord_new + trappings.height > limit_up) {

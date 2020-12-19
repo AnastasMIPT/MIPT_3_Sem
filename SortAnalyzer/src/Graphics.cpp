@@ -41,7 +41,7 @@ int main  (void)
     
     Image white (1000, 700, Pixel (255, 128, 255, 255));
     
-    Canvas canvas (&white, {0.1, 0.1, 0.4, 0.65});
+    Canvas canvas (&white, {0.1, 0.1, 0.8, 0.65});
     
     printf ("im_id = %lu\n", im_id);
 
