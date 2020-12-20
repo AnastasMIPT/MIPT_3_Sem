@@ -33,7 +33,8 @@ SettingWindow<T>::SettingWindow (const Rect& _trappings, SlidableValue<T>* _valu
         trappings.coords.y + trappings.height - off_top - label_h,
         trappings.width - 2 * off, label_h, _trappings.color}),
 
-  fader (Rect {label.trappings.coords.x, label.trappings.coords.y - off_top - fader_h,
+  fader (Rect {label.trappings.coords.x, 
+        trappings.coords.y + trappings.height - label_h - 2 * off_top - fader_h - 0.1,
                        label.trappings.width, fader_h, _trappings.color},
                        _value)
 {

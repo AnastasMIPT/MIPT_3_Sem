@@ -6,7 +6,7 @@ void ToolManager::setActiveTool (size_t tool_id) {
 }
 
 void ToolManager::setAcitveColor (Color _color) {
-    active_color = _color;
+    active_color = SlidableColor (_color);
 }
 
 void ToolManager::setThickness (size_t _thickness) {
@@ -22,7 +22,7 @@ size_t ToolManager::getThickness () {
 }
 
 Color ToolManager::getAcitveColor () {
-    return active_color;
+    return active_color.getColor ();
 }
 
 void ToolManager::setActiveToolBut  (Button<ToolFunctor>* but) {

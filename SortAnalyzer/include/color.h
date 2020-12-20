@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <vector>
+#include "slidable.h"
 
 namespace ab {
 
@@ -18,6 +19,24 @@ namespace ab {
             green = std::max (0.0, green - other.green);
             blue  = std::max (0.0, blue  - other.blue);
         }
+    };
+
+    class SlidableColor {
+        SlidableValue<double> r = SlidableValue<double> (1.0, 1.0, 0.0);
+        SlidableValue<double> g = SlidableValue<double> (1.0, 1.0, 0.0);
+        SlidableValue<double> b = SlidableValue<double> (1.0, 1.0, 0.0);
+        SlidableValue<double> a = SlidableValue<double> (1.0, 1.0, 0.0);
+
+        public:
+        SlidableColor () = default;
+
+        SlidableColor (const Color& color)
+        : r (color.red, 1.0, 0.0),  g (color.green, 1.0, 0.0),
+          b (color.blue, 1.0, 0.0), a (color.alpha, 1.0, 1.0) {}
+
+        Color getColor () {
+            return {r.getValue (), g.getValue (), b.getValue (), a.getValue ()};
+        } 
     };
 
     namespace COLORS {
@@ -53,6 +72,7 @@ namespace ab {
           blue (clr.blue * 255), alpha (clr.alpha * 255) {} 
 
     };
+
 
 
     struct Point2d
