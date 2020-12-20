@@ -51,6 +51,7 @@ namespace ab {
         constexpr Color BLACK              {0.0, 0.0, 0.0};
         constexpr Color TRANSPARENT        {0.0, 0.0, 0.0, 0.0};
         constexpr Color DEFAULT_TOOL_BAR   {240.0 / 255, 240.0 / 255, 240.0 / 255 };
+        constexpr Color DEFAULT_TEXT       {0.0, 0.5, 0.5};
 
         constexpr Color DEFAULT_BLACOUT    {0.2, 0.2, 0.2};
     };

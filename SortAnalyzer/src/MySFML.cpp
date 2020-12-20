@@ -168,7 +168,8 @@ bool SFML::checkCoordsInRect (double pos_x, double pos_y, const Rect& rect) {
            pos_y > rec_y - rect.height?  true : false;
 }
 
-void SFML::drawText (const std::string& _text, const Rect& pos, int character_height) {
+void SFML::drawText (const std::string& _text, const Rect& pos,
+                     int character_height, const Color& color) {
     sf::Text text;
     text.setFont (font);
     text.setString (_text);
@@ -176,7 +177,8 @@ void SFML::drawText (const std::string& _text, const Rect& pos, int character_he
     text.setCharacterSize (character_height);
     text.setPosition (real_rect.coords.x, real_rect.coords.y - real_rect.height);
     text.setCharacterSize (character_height);
-    
+    text.setFillColor (ConvertColor (color));
+
     window.draw (text);
 
 }

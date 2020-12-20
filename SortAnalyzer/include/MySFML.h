@@ -54,7 +54,8 @@ public:
     // unsigned int constructRectForFastDraw (const Rect& rect);
     // void drawRectFast (unsigned int id);
 
-    void drawText (const std::string& _text, const Rect& pos, int character_size = 24);
+    void drawText (const std::string& _text, const Rect& pos, 
+                   int character_size = 24, const Color& color = COLORS::DEFAULT_TEXT);
 
     Point2d convertAbstrToRealCoords (const Point2d& abstract_coords);
     Point2d convertRealToAbstrCoords (const Point2d& real_coords);
