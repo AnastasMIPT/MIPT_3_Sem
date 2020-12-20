@@ -7,6 +7,7 @@ namespace TOOLS {
         PENCIL,
         EREASER,
         BOX_BLUR,
+        COLOR_FILTER,
         TOOLS_COUNT
     };
 };

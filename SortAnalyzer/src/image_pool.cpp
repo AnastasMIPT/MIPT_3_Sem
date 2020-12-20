@@ -28,6 +28,9 @@ void ImagePool::loadDefaultImages () {
     images[DEF_IMAGES::BOX_BLUR]            = GEngine::system.loadImageFromFile
                                             ("./plugins/BoxBlur/icon.png");
 
+    images[DEF_IMAGES::COLOR_FILTER]        = GEngine::system.loadImageFromFile
+                                            ("./plugins/ColorFilter/icon.png");                                        
+
 
     images[DEF_IMAGES::A_PENCIL]            = GEngine::system.loadImageFromFile
                                             ("./resources/images/a_pencil.png");
@@ -38,7 +41,10 @@ void ImagePool::loadDefaultImages () {
     images[DEF_IMAGES::A_BOX_BLUR]          = GEngine::system.loadImageFromFile
                                             ("./plugins/BoxBlur/icon.png");
 
-    
+    images[DEF_IMAGES::A_COLOR_FILTER]        = GEngine::system.loadImageFromFile
+                                            ("./plugins/ColorFilter/icon.png");
+
+
     images[DEF_IMAGES::SCROLL_BUTTON_UP]    = GEngine::system.loadImageFromFile 
                                             ("./resources/images/scroll_but.png");
     

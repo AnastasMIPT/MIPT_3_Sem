@@ -8,7 +8,7 @@
 class ToolManager {
 
     inline static std::vector<AbstractTool*> tools = 
-                        {new Pencil (), new Eraser (), new Plugin ("BoxBlur")};
+                        {new Pencil (), new Eraser (), new Plugin ("BoxBlur"), new Plugin ("ColorFilter")};
 
     inline static size_t active_tool;
     //inline static Color active_color = COLORS::GREEN;
