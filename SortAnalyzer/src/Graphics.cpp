@@ -15,6 +15,7 @@
 #include "scroll_bar.h"
 #include "fader.h"
 #include "setting_window.h"
+#include "color_picker.h"
 
 template <>
 GSystem GEngine::system;
@@ -43,12 +44,16 @@ int main  (void)
     
     Canvas canvas (&white, {0.0, 0.04, 0.98, 0.76});
     
-    SlidableValue<double> val (0.8, 0.0, 1.0);
+    ColorPicker picker ({0.0, 0.8, 0.4, 0.2, COLORS::DEFAULT_BACKGROUND},
+                        ToolManager::getSlidableColor ());
 
     //Fader<double> fad ({0.4, 0.9, 0.2, 0.05, COLORS::DEFAULT_BACKGROUND}, &val, COLORS::DEFAULT_BUTTON);
 
     SettingWindow<size_t> thickness_w ({0.4, 0.8, 0.2, 0.2, COLORS::DEFAULT_BACKGROUND},
             ToolManager::getSlidableThick (), "Thickness");
+
+
+
 
     ScrollBar s_bar (&canvas, {0.98, 0.04, 0.02, 0.76, ab::COLORS::LIGHT_GRAY});
     ScrollBar s_bar2 (&canvas, {0.0, 0.0, 0.98, 0.04, ab::COLORS::LIGHT_GRAY});
@@ -60,7 +65,7 @@ int main  (void)
     Painter painter (&canvas, &tool_bar);
 
 
-
+    Application::addObject (&picker);
     Application::addObject (&s_bar);
     Application::addObject (&painter);
     Application::addObject (&s_bar2);

@@ -21,13 +21,12 @@ namespace ab {
         }
     };
 
-    class SlidableColor {
+    struct SlidableColor {
         SlidableValue<double> r = SlidableValue<double> (1.0, 1.0, 0.0);
         SlidableValue<double> g = SlidableValue<double> (1.0, 1.0, 0.0);
         SlidableValue<double> b = SlidableValue<double> (1.0, 1.0, 0.0);
         SlidableValue<double> a = SlidableValue<double> (1.0, 1.0, 0.0);
 
-        public:
         SlidableColor () = default;
 
         SlidableColor (const Color& color)

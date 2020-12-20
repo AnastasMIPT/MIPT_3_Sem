@@ -40,3 +40,7 @@ size_t ToolManager::getActiveToolId () {
 SlidableValue<size_t>* ToolManager::getSlidableThick () {
     return &thickness;
 }
+
+SlidableColor* ToolManager::getSlidableColor () {
+    return &active_color;
+}

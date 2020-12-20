@@ -30,7 +30,7 @@ public:
     static size_t        getActiveToolId  ();
 
     static SlidableValue<size_t>* getSlidableThick ();
-    
+    static SlidableColor* getSlidableColor ();
 
 };
 
