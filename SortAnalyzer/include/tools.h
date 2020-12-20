@@ -8,6 +8,7 @@ namespace TOOLS {
         EREASER,
         BOX_BLUR,
         COLOR_FILTER,
+        BRIGHTNESS,
         TOOLS_COUNT
     };
 };

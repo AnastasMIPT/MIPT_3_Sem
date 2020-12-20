@@ -38,9 +38,9 @@ int main  (void)
     // im_but.setImage (ImagePool::getImageById (DEF_IMAGES::PENCIL));
     size_t im_id = ImagePool::addImage ("./resources/images/kotik.jpg");
     
-    ToolBar tool_bar ({0.7, 0.8, 0.2, 0.2, COLORS::DEFAULT_TOOL_BAR});
+    ToolBar tool_bar ({0.7, 0.8, 0.3, 0.2, COLORS::DEFAULT_TOOL_BAR});
     
-    Image white (1000, 700, Pixel (255, 128, 255, 255));
+    Image white (2000, 1000, Pixel (255, 255, 255, 255));
     
     Canvas canvas (&white, {0.0, 0.04, 0.98, 0.76});
     

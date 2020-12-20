@@ -29,7 +29,10 @@ void ImagePool::loadDefaultImages () {
                                             ("./plugins/BoxBlur/icon.png");
 
     images[DEF_IMAGES::COLOR_FILTER]        = GEngine::system.loadImageFromFile
-                                            ("./plugins/ColorFilter/icon.png");                                        
+                                            ("./plugins/ColorFilter/icon.png");  
+
+    images[DEF_IMAGES::BRIGHTNESS]        = GEngine::system.loadImageFromFile
+                                            ("./plugins/Brightness/icon.png");                                       
 
 
     images[DEF_IMAGES::A_PENCIL]            = GEngine::system.loadImageFromFile
@@ -43,6 +46,9 @@ void ImagePool::loadDefaultImages () {
 
     images[DEF_IMAGES::A_COLOR_FILTER]        = GEngine::system.loadImageFromFile
                                             ("./plugins/ColorFilter/icon.png");
+
+    images[DEF_IMAGES::A_BRIGHTNESS]        = GEngine::system.loadImageFromFile
+                                            ("./plugins/Brightness/icon.png");                                       
 
 
     images[DEF_IMAGES::SCROLL_BUTTON_UP]    = GEngine::system.loadImageFromFile 
