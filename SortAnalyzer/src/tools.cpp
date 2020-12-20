@@ -13,7 +13,7 @@ void Pencil::startApplying () {
 
 
 void Pencil::apply (Canvas* canvas, double x, double y) {
-    int thickness = ToolManager::getThickness ();
+    size_t thickness = ToolManager::getThickness ();
     
     if (x - thickness / 2 < 0 || y - thickness / 2 < 0) return;
     assert (x > 0);

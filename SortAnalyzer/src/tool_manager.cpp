@@ -10,7 +10,7 @@ void ToolManager::setAcitveColor (Color _color) {
 }
 
 void ToolManager::setThickness (size_t _thickness) {
-    thickness = _thickness;
+    thickness.setValue (_thickness);
 }
 
 AbstractTool* ToolManager::getActiveTool () {
@@ -18,7 +18,7 @@ AbstractTool* ToolManager::getActiveTool () {
 }
 
 size_t ToolManager::getThickness () {
-    return thickness;
+    return thickness.getValue ();
 }
 
 Color ToolManager::getAcitveColor () {
@@ -35,4 +35,8 @@ Button<ToolFunctor>* ToolManager::getAcitveToolBut  () {
 
 size_t ToolManager::getActiveToolId () {
     return active_tool;
+}
+
+SlidableValue<size_t>* ToolManager::getSlidableThick () {
+    return &thickness;
 }

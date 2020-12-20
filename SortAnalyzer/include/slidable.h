@@ -19,6 +19,8 @@ public:
     SlidableValue (const T& value, const T& lim_up, const T& lim_down)
     : value (value), lim_up (lim_up), lim_down (lim_down) {}
 
+    SlidableValue () = default;
+
     void slideByRatio (double ratio, bool is_vertical = true) override;
 
     T getValue     () const;

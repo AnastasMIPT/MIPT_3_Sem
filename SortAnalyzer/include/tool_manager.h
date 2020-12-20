@@ -11,7 +11,7 @@ class ToolManager {
 
     inline static size_t active_tool;
     inline static Color active_color = COLORS::GREEN;
-    inline static size_t thickness   = 5;
+    inline static SlidableValue<size_t> thickness   = SlidableValue<size_t> (5, 30, 3);
     inline static Button<ToolFunctor>* active_tool_but;
 
 public:
@@ -27,6 +27,8 @@ public:
     static size_t        getThickness     ();
     static Color         getAcitveColor   ();
     static size_t        getActiveToolId  ();
+
+    static SlidableValue<size_t>* getSlidableThick ();
     
 
 };

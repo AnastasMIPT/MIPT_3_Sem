@@ -23,6 +23,7 @@ namespace ab {
     namespace COLORS {
         constexpr Color DEFAULT_BACKGROUND {1.0, 1.0, 0.7};
         constexpr Color DEFAULT_SLIDER     {0.6, 0.6, 0.6};
+        constexpr Color DEFAULT_FADER_PIN  {0.65, 0.65, 0.65};
         constexpr Color DEFAULT_BUTTON     {0.7, 0.7, 0.7};
         constexpr Color LIGHT_GRAY         {0.9, 0.9, 0.9};
         constexpr Color GREEN              {0.0, 1.0, 0.0};

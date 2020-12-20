@@ -17,7 +17,9 @@ class Fader : public WindowContainer {
     static constexpr Color slider_color = COLORS::DEFAULT_SLIDER;
 
 public:
-    Fader (const Rect& _trappings, SlidableValue<T>* _val, const Color& _pin_color);
+    Fader (const Rect& _trappings, SlidableValue<T>* _val,
+           const Color& _pin_color = COLORS::DEFAULT_FADER_PIN);
+    Fader () = default;
 
     bool onMouseClick (const MouseClickEvent& event) override;
 };

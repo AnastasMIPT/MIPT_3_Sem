@@ -39,7 +39,7 @@ void Canvas::setPixel (size_t x, size_t y, const Pixel& pixel) {
 }
 
 
-void Canvas::drawSquare (double center_x, double center_y, int a, const Pixel& pixel) {
+void Canvas::drawSquare (double center_x, double center_y, size_t a, const Pixel& pixel) {
     assert (center_y > 0);
     assert (center_x > 0);
     assert (a > 0);
@@ -51,7 +51,7 @@ void Canvas::drawSquare (double center_x, double center_y, int a, const Pixel& p
     }
 }
 
-void Canvas::drawLine (Point2d p1, Point2d p2, const Pixel& pixel, int thickness) {
+void Canvas::drawLine (Point2d p1, Point2d p2, const Pixel& pixel, size_t thickness) {
     if (std::abs (p2.x - p1.x) > std::abs (p2.y - p1.y)) {
         for (int t = std::min (p1.x, p2.x); t < std::max (p2.x, p1.x); ++t) {
             double y_t = (t - p1.x) * (p2.y - p1.y) / (p2.x - p1.x) + p1.y; // calc y_t by t
