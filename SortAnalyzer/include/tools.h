@@ -6,6 +6,7 @@ namespace TOOLS {
     enum TOOL_ID {
         PENCIL,
         EREASER,
+        BOX_BLUR,
         TOOLS_COUNT
     };
 };

@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-
+#include "tool_manager.h"
 
 Plugin::Plugin (const std::string& name) {
 
@@ -28,7 +28,7 @@ Plugin::Plugin (const std::string& name) {
     api_plug = get_plugin();
     api_plug->init();
 
-    ImagePool::addImage (("./plugins/" + name + "/" + "icon.png").c_str ());
+   // ImagePool::addImage (("./plugins/" + name + "/" + "icon.png").c_str ());
     
 }
 
@@ -44,7 +44,7 @@ void Plugin::startApplying (Canvas* canvas, double x, double y) {
     size_t im_w = img->getWidth  ();
     size_t im_h = img->getHeight ();
     uint8_t* arr = (uint8_t*) (img->getPixelArray ());
-    api_canvas = {arr, im_w, im_h};
+    api_canvas = {arr, im_h, im_w};
     
     
     Point2d pixel_coords = canvas->convertToCanvasCoords ({x, y});

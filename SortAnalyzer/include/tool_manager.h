@@ -3,11 +3,12 @@
 
 #include "tools.h"
 #include "button.h"
+#include "plugin.h"
 
 class ToolManager {
 
     inline static std::vector<AbstractTool*> tools = 
-                        {new Pencil (), new Eraser ()};
+                        {new Pencil (), new Eraser (), new Plugin ("BoxBlur")};
 
     inline static size_t active_tool;
     //inline static Color active_color = COLORS::GREEN;

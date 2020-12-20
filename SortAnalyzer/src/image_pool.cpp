@@ -25,6 +25,9 @@ void ImagePool::loadDefaultImages () {
     images[DEF_IMAGES::ERASER]              = GEngine::system.loadImageFromFile
                                             ("./resources/images/eraser.png");
 
+    images[DEF_IMAGES::BOX_BLUR]            = GEngine::system.loadImageFromFile
+                                            ("./plugins/BoxBlur/icon.png");
+
 
     images[DEF_IMAGES::A_PENCIL]            = GEngine::system.loadImageFromFile
                                             ("./resources/images/a_pencil.png");
@@ -32,6 +35,9 @@ void ImagePool::loadDefaultImages () {
     images[DEF_IMAGES::A_ERASER]            = GEngine::system.loadImageFromFile
                                             ("./resources/images/a_eraser.png");
     
+    images[DEF_IMAGES::A_BOX_BLUR]          = GEngine::system.loadImageFromFile
+                                            ("./plugins/BoxBlur/icon.png");
+
     
     images[DEF_IMAGES::SCROLL_BUTTON_UP]    = GEngine::system.loadImageFromFile 
                                             ("./resources/images/scroll_but.png");

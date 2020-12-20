@@ -7,8 +7,10 @@ namespace DEF_IMAGES {
     enum {
         PENCIL,
         ERASER,
+        BOX_BLUR,
         A_PENCIL,
         A_ERASER,
+        A_BOX_BLUR,
         SCROLL_BUTTON_UP,
         SCROLL_BUTTON_DOWN,
         SCROLL_BUTTON_LEFT,

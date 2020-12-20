@@ -1,6 +1,8 @@
+#ifndef PLUGIN_H
+#define PLUGIN_H
+
 #include "../api/api.hpp"
 #include "tools.h"
-#include "tool_manager.h"
 #include "canvas.h"
 #include <string>
 
@@ -20,3 +22,6 @@ public:
 
     ~Plugin ();
 };
+
+
+#endif // PLUGIN_H
