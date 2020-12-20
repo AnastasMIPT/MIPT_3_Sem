@@ -24,20 +24,14 @@ public:
 
 
 class Eraser : public AbstractTool {
-
+    Point2d last_apply_coords = {-1, -1};
 
 public:
 
     Eraser () = default;
-    void startApplying (Canvas* canvas, double x, double y) override {
-        printf ("Я ластик, я начал применяться\n");
-    }
-    void apply (Canvas* canvas, double x, double y) override {
-        printf ("Применяюсь по координатам x = %lf, y = %lf\n", x, y);
-    }
-    void finishApplying (Canvas* canvas, double x, double y) override {
-        printf ("Я ластик, я закончил применяться\n");
-    }
+    void startApplying (Canvas* canvas, double x, double y) override;
+    void apply (Canvas* canvas, double x, double y) override;
+    void finishApplying (Canvas* canvas, double x, double y) override;
 };
 
 class Pencil : public AbstractTool {
