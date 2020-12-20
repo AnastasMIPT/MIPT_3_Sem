@@ -6,7 +6,7 @@
 
 
 
-void Pencil::startApplying () {
+void Pencil::startApplying (Canvas* canvas, double x, double y) {
     printf ("Я карандаш, я начал применяться\n");
     last_apply_coords = {-1, -1};
 }
@@ -34,7 +34,7 @@ void Pencil::apply (Canvas* canvas, double x, double y) {
     last_apply_coords = {x, y};
 }
 
-void Pencil::finishApplying () {
+void Pencil::finishApplying (Canvas* canvas, double x, double y) {
     printf ("Я карандаш, я закончил применяться\n");
     last_apply_coords = {-1, -1};
 }

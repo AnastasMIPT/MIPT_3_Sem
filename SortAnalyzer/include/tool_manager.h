@@ -18,6 +18,9 @@ class ToolManager {
 public:
     ToolManager () = delete;
 
+    
+
+
     static void setActiveToolBut  (Button<ToolFunctor>* but);
     static void setActiveTool     (size_t tool_id);
     static void setThickness      (size_t _thickness);

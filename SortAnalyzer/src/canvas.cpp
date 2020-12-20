@@ -108,3 +108,7 @@ void Canvas::slideByRatio (double ratio, bool is_vertical) {
     printf ("\n\n\nv_x = %d, v_y = %d, v_w = %d, v_h = %d\n\n\n", 
              view.off_x, view.off_y, view.width, view.height);
 }
+
+const Image* Canvas::getCanvasPixels () {
+    return canvas_pixels;
+}

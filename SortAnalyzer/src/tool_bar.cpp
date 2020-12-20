@@ -17,6 +17,9 @@ ToolBar::ToolBar (const Rect& _trappings)
         //printf ("cur_but tool = %lu\n", tool_id);
     }
 
+    
+
+
     ToolManager::setActiveTool    (TOOLS::PENCIL);
     auto* pencil_but = dynamic_cast<Button<ToolFunctor>*> (subwindows[0]);
     ToolManager::setActiveToolBut (pencil_but);

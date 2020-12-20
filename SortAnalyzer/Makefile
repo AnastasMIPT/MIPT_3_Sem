@@ -22,6 +22,10 @@ $(OBJ_D)/%.o: src/%.cpp
 	#@g++ $(CFlags) $(Warnings) $(NoWarnings) -c $< -o $@
 	@g++ $(CFlags) $(NoWarnings) -c $< -o $@
 
+$(OBJ_D)/plugin.o: src/plugin.cpp
+	@g++ $(CFlags) $(NoWarnings) -c $< -ldl -o $@
+
+
 test:
 	@g++ -c ./testing/main.cpp -o ./testing/main.o
 	@g++ -c ./src/glad.cpp -o ./testing/glad.o

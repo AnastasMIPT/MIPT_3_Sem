@@ -24,6 +24,9 @@ public:
     void scrollOnceDown  (bool is_vertical) override;
     void slideByRatio   (double retio, bool is_vertical) override;
 
+    const Image* getCanvasPixels ();
+    
+
    // bool is
 
     void draw () const override;
